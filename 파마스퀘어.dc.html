@@ -799,7 +799,7 @@ input, textarea, button, select { font-family:inherit; }
       </a>
     </div>
     <div style="padding:16px 28px; background:#F8FAFA; display:flex; align-items:center; justify-content:flex-end;">
-      <button onClick="{{ dismissPopupToday }}" style="font-size:12px; font-weight:500; color:#5B6B6D; background:none; border:1px solid #D5E0E0; border-radius:40px; padding:6px 16px; transition:.2s;" style-hover="background:#E3EAEA;">{{ t.popupDismiss }}</button>
+      <button onClick="{{ dismissPopupToday }}" style="font-size:12px; font-weight:500; color:#5B6B6D; background:none; border:1px solid #D5E0E0; border-radius:40px; padding:6px 16px; transition:.2s;" data-label="{{ t.popupDismissBtn }}" style-hover="background:#E3EAEA;">{{ t.popupDismissBtn }}</button>
     </div>
   </div>
 </div>
@@ -863,8 +863,8 @@ class Component extends DCLogic {
     this._onScroll();
 
     const dismissed = localStorage.getItem('ps_popup_dismiss');
-    const today = new Date().toDateString();
-    if (dismissed !== today) {
+    const now = Date.now();
+    if (!dismissed || now > parseInt(dismissed)) {
       this._popupTimer = setTimeout(() => this.setState({ popupVisible: true }), 1800);
     }
 
@@ -976,7 +976,7 @@ class Component extends DCLogic {
   toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
   closeMenu = () => this.setState({ menuOpen: false, langDropdownOpen: false });
   closePopup = () => this.setState({ popupVisible: false });
-  dismissPopupToday = () => { localStorage.setItem('ps_popup_dismiss', new Date().toDateString()); this.setState({ popupVisible: false }); };
+  dismissPopupToday = () => { localStorage.setItem('ps_popup_dismiss', String(Date.now() + 3 * 24 * 60 * 60 * 1000)); this.setState({ popupVisible: false }); };
   expandBrands = () => this.setState({ brandsExpanded: true });
   setField = (k) => (e) => { const v = e.target.value; this.setState(s => ({ form: { ...s.form, [k]: v } })); };
   setInquiryType = (type) => {
@@ -1044,7 +1044,7 @@ class Component extends DCLogic {
         typePharmacy: '약국 입점', typeBrand: '브랜드사 입점', typeStoreDev: '점포 개발 협업',
         footerDesc: '대한민국 No.1 AI 웰니스 플랫폼으로 성장하여 균형 있는 라이프스타일 문화를 선도합니다.', footerLegalName: '법인명', footerCEO: '대표이사', footerBizNum: '사업자번호', footerEmail: '이메일', footerAddr: '주소',
         copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: '개인정보취급방침',
-        popupTitle: '파마스퀘어와 함께할\n파트너를 찾습니다', popupPharmacyTitle: '약사 파트너 모집', popupPharmacyDesc: '독립 약국 개설 · 서울 및 경기권 우선 검토', popupStoreTitle: '점포 개발 협업', popupStoreDesc: '파마스퀘어 오픈에 적합한 입지 제안 환영', popupDismiss: '오늘 하루 보지 않기',
+        popupDismissBtn: '3일간 보지 않기', popupTitle: '파마스퀘어와 함께할\n파트너를 찾습니다', popupPharmacyTitle: '약사 파트너 모집', popupPharmacyDesc: '독립 약국 개설 · 서울 및 경기권 우선 검토', popupStoreTitle: '점포 개발 협업', popupStoreDesc: '파마스퀘어 오픈에 적합한 입지 제안 환영', popupDismiss: '오늘 하루 보지 않기',
         marqueeTagline: '건강은 더하고, 가격은 낮춥니다', marquee263: '263개 입점 브랜드', marqueePharmacy: '약사 파트너십 상시 모집', marqueeStoreDev: '점포 개발 협업 환영',
         brandsCountPrefix: '총 ', brandsCountMid: ' · ', expandBtn: '전체 브랜드 보기 (+{n}개) ↓',
         pillars: [ { n:1, en:'Harmony', desc:'건강과 미(美)의 조화' }, { n:2, en:'Balance', desc:'일상과 감각의 균형' }, { n:3, en:'Trust', desc:'전문가 기반의 신뢰 서비스' }, { n:4, en:'Experience', desc:'체험 기반의 프리미엄 H&B 공간' } ],
@@ -1105,7 +1105,7 @@ class Component extends DCLogic {
         typePharmacy: 'Pharmacy Partnership', typeBrand: 'Brand Partnership', typeStoreDev: 'Store Development',
         footerDesc: "Growing into South Korea's No.1 AI wellness platform, leading a balanced lifestyle culture.", footerLegalName: 'Legal Name', footerCEO: 'CEO', footerBizNum: 'Business Reg. No.', footerEmail: 'Email', footerAddr: 'Address',
         copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: 'Privacy Policy',
-        popupTitle: 'Looking for partners\nto grow with Phama Square', popupPharmacyTitle: 'Pharmacist Partner Recruitment', popupPharmacyDesc: 'Independent pharmacy setup · Priority review for Seoul & Gyeonggi', popupStoreTitle: 'Store Development Partnership', popupStoreDesc: 'Welcome proposals for locations suitable for Phama Square', popupDismiss: 'Do not show today',
+        popupDismissBtn: 'Do not show for 3 days', popupTitle: 'Looking for partners\nto grow with Phama Square', popupPharmacyTitle: 'Pharmacist Partner Recruitment', popupPharmacyDesc: 'Independent pharmacy setup · Priority review for Seoul & Gyeonggi', popupStoreTitle: 'Store Development Partnership', popupStoreDesc: 'Welcome proposals for locations suitable for Phama Square', popupDismiss: 'Do not show today',
         marqueeTagline: 'More health, better prices', marquee263: '263 partner brands', marqueePharmacy: 'Recruiting pharmacist partners', marqueeStoreDev: 'Store development welcome',
         brandsCountPrefix: 'Total ', brandsCountMid: ' · ', expandBtn: 'View all brands (+{n}) ↓',
         pillars: [ { n:1, en:'Harmony', desc:'Harmony of health & beauty' }, { n:2, en:'Balance', desc:'Balance of daily life & sensibility' }, { n:3, en:'Trust', desc:'Trust through expert-based service' }, { n:4, en:'Experience', desc:'Premium H&B experience space' } ],
@@ -1165,7 +1165,7 @@ class Component extends DCLogic {
         typePharmacy: '药局入驻', typeBrand: '品牌入驻', typeStoreDev: '门店开发合作',
         footerDesc: '致力于成为韩国No.1 AI健康平台，引领均衡生活方式文化。', footerLegalName: '法人名称', footerCEO: '代表董事', footerBizNum: '营业执照号', footerEmail: '邮箱', footerAddr: '地址',
         copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: '隐私政策',
-        popupTitle: '寻找与파马广场\n共同成长的合作伙伴', popupPharmacyTitle: '药剂师合作伙伴招募', popupPharmacyDesc: '独立药局开设 · 优先审核首尔及京畿地区', popupStoreTitle: '门店开发合作', popupStoreDesc: '欢迎提交适合파马广场开设的地址建议', popupDismiss: '今日不再显示',
+        popupDismissBtn: '3天内不再显示', popupTitle: '寻找与파马广场\n共同成长的合作伙伴', popupPharmacyTitle: '药剂师合作伙伴招募', popupPharmacyDesc: '独立药局开设 · 优先审核首尔及京畿地区', popupStoreTitle: '门店开发合作', popupStoreDesc: '欢迎提交适合파马广场开设的地址建议', popupDismiss: '今日不再显示',
         marqueeTagline: '健康加倍，价格更低', marquee263: '263个入驻品牌', marqueePharmacy: '常时招募药剂师合作伙伴', marqueeStoreDev: '欢迎门店开发合作',
         brandsCountPrefix: '共 ', brandsCountMid: ' · ', expandBtn: '查看所有品牌（+{n}个）↓',
         pillars: [ { n:1, en:'Harmony', desc:'健康与美丽的调和' }, { n:2, en:'Balance', desc:'日常与感性的平衡' }, { n:3, en:'Trust', desc:'基于专业的可信服务' }, { n:4, en:'Experience', desc:'体验型高端H&B空间' } ],
