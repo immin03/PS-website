@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<title>파마스퀘어 | PHAMA SQUARE — AI Wellness Platform</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XKSYPV3K2H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XKSYPV3K2H');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="512x512" href="./assets/favicon.png">
+<link rel="apple-touch-icon" href="./assets/favicon.png">
+<meta name="description" content="건강은 더하고, 가격은 낮춥니다. 파마스퀘어는 건강기능식품·뷰티·펫·약국이 한 공간에 모인 대형 복합 웰니스 플랫폼입니다.">
+<meta property="og:title" content="파마스퀘어 | PHAMA SQUARE">
+<meta property="og:description" content="건강은 더하고, 가격은 낮춥니다.">
+<meta property="og:image" content="./assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://phamasquare.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./assets/og-image.png">
+<meta name="theme-color" content="#005251">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; overflow-x:hidden; }
+body { font-family:'SUIT','Noto Sans SC',sans-serif; -webkit-font-smoothing:antialiased; background:#FBFCFC; color:#10181E; word-break:keep-all; overflow-x:hidden; }
+@media(hover:hover){ body, a, button { cursor:none; } }
+::selection { background:#01C0A4; color:#fff; }
+@keyframes ps-marquee { 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+@keyframes psFloat { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-14px); } }
+@keyframes psScroll { 0%{ transform:translateY(0); opacity:0; } 30%{ opacity:1; } 70%{ opacity:1; } 100%{ transform:translateY(14px); opacity:0; } }
+@keyframes psSpin { from{ transform:rotate(0); } to{ transform:rotate(360deg); } }
+@keyframes psPulse { 0%,100%{ opacity:.45; transform:scale(1); } 50%{ opacity:.9; transform:scale(1.08); } }
+a { color:inherit; text-decoration:none; }
+input, textarea, button, select { font-family:inherit; }
+.ps-cursor-dot, .ps-cursor-ring { display:none; }
+@media(hover:hover){ .ps-cursor-dot, .ps-cursor-ring { display:block; } }
+.ps-cursor-dot { position:fixed; width:8px; height:8px; border-radius:50%; background:#01C0A4; pointer-events:none; z-index:9999; top:0; left:0; will-change:transform; }
+.ps-cursor-ring { position:fixed; border-radius:50%; border:1.5px solid rgba(1,192,164,.55); pointer-events:none; z-index:9998; top:0; left:0; will-change:transform; transition:width .22s, height .22s, border-color .22s; }
+.ps-nav-link { position:relative; }
+.ps-nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px; background:#01C0A4; transition:width .35s cubic-bezier(.16,.84,.44,1); }
+.ps-nav-link:hover::after { width:100%; }
+.ps-news-dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border-radius:12px; box-shadow:0 12px 36px rgba(0,82,81,.18); border:1px solid rgba(0,82,81,.08); min-width:160px; overflow:hidden; z-index:300; transition:opacity .2s, transform .2s, visibility .2s; pointer-events:none; }
+.ps-news-nav:hover .ps-news-dropdown { visibility:visible; opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.ps-news-nav { position:relative; display:flex; align-items:center; }
+.ps-news-nav::after { content:''; position:absolute; top:100%; left:-12px; right:-12px; height:20px; }
+.ps-lift { transition:transform .55s cubic-bezier(.16,.84,.44,1), box-shadow .55s cubic-bezier(.16,.84,.44,1); }
+.ps-lift:hover { transform:translateY(-10px) !important; box-shadow:0 28px 64px rgba(0,82,81,.22) !important; }
+.ps-pcard { position:relative; overflow:hidden; transition:transform .55s cubic-bezier(.16,.84,.44,1), box-shadow .55s; }
+.ps-pcard::before { content:''; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,0)); opacity:0; transition:opacity .4s; pointer-events:none; }
+.ps-pcard:hover { transform:translateY(-10px); box-shadow:0 32px 72px rgba(0,82,81,.28); }
+.ps-pcard:hover::before { opacity:1; }
+.ps-input:focus { border-color:#01C0A4 !important; box-shadow:0 0 0 3px rgba(1,192,164,.14) !important; outline:none; }
+.ps-input { transition:border-color .25s, box-shadow .25s; width:100%; box-sizing:border-box; min-width:0; }
+@media(max-width:767px){ .ps-input { font-size:13px !important; } .ps-input::placeholder { font-size:13px !important; } }
+.ps-logo { display:block; height:40px; width:134px; flex:none; overflow:hidden; }
+.ps-logo img { height:100%; width:auto; display:block; transition:filter .5s ease; }
+@media(max-width:1023px){ .ps-logo{ height:34px; width:114px; } }
+.ps-burger { display:none !important; }
+.ps-brand-cell { transition:background .25s, color .25s, transform .18s; }
+.ps-brand-cell:hover { transform:scale(1.02); }
+.reveal { opacity:0; transform:translateY(30px); transition:opacity .9s cubic-bezier(.16,.84,.44,1), transform .9s cubic-bezier(.16,.84,.44,1); }
+.reveal.in { opacity:1; transform:none; }
+.ps-loc-grid { grid-template-columns:repeat(2,1fr); }
+.ps-ptypes-grid { grid-template-columns:1fr; }
+@media(min-width:1024px){
+  .ps-form-toggle { display:none !important; }
+  .ps-form-body { display:block !important; }
+  .ps-about-grid { grid-template-columns:0.85fr 1.15fr !important; }
+  .ps-why-row { grid-template-columns:1.15fr 1fr !important; }
+  .ps-inquiry-grid { grid-template-columns:0.9fr 1.1fr !important; }
+  .ps-location-grid { grid-template-columns:1.2fr 1fr !important; }
+  .ps-footer-grid { grid-template-columns:1.1fr 1fr !important; }
+  .ps-loc-grid { grid-template-columns:repeat(4,1fr) !important; }
+  .ps-ai-steps { grid-template-columns:repeat(3,1fr) !important; }
+  .ps-ptypes-grid { grid-template-columns:repeat(3,1fr) !important; }
+}
+@media(max-width:767px){ p, h1, h2, h3, li { overflow-wrap:anywhere; word-break:break-all; } }
+@media(max-width:1023px){ .ps-desktop-nav { display:none !important; } .ps-burger { display:flex !important; } .ps-mobile-lang { display:flex !important; } .ps-logo { height:36px; width:110px; } }
+@media(max-width:760px){ .ps-pillar-grid { grid-template-columns:repeat(2,1fr) !important; } .ps-form { grid-template-columns:1fr !important; } }
+@media(max-width:600px){ .ps-loc-grid { grid-template-columns:1fr !important; } }
+@media(max-width:440px){ .ps-pillar-grid { grid-template-columns:1fr !important; } }
+@media(max-width:767px){
+  section, footer { padding-left:22px !important; padding-right:22px !important; }
+  section[id] { padding-top:56px !important; padding-bottom:56px !important; }
+  p, h1, h2, h3, h4, li, span, div { overflow-wrap:break-word; word-break:keep-all; }
+  .ps-hero > div:not([style*="absolute"]) { padding:120px 22px 100px !important; }
+  .ps-hero-btns { flex-direction:column !important; gap:10px !important; }
+  .ps-hero-btns > a { width:100% !important; justify-content:center !important; height:52px !important; font-size:15px !important; }
+  .ps-scroll-ind { bottom:24px !important; }
+  .ps-why-row { grid-template-columns:1fr !important; gap:0 !important; border-bottom:1px solid #E3EAEA; padding-bottom:clamp(24px,3vw,36px) !important; }
+  .ps-why-deco { order:-1 !important; aspect-ratio:auto !important; min-height:auto !important; height:72px !important; border-radius:8px 8px 0 0 !important; flex-direction:row !important; justify-content:flex-start !important; padding:0 20px !important; gap:16px !important; }
+  .ps-why-deco > div { display:flex !important; flex-direction:row !important; align-items:center !important; gap:14px !important; text-align:left !important; }
+  .ps-why-deco > div > div:first-child { font-size:28px !important; line-height:1 !important; }
+  .ps-why-deco > div > div:last-child { font-size:11px !important; letter-spacing:0.14em !important; }
+  .ps-ai-steps { grid-template-columns:1fr !important; gap:12px !important; }
+  .ps-ai-steps > div { min-height:auto !important; padding:24px 22px !important; }
+  .ps-loc-tabs { overflow-x:auto !important; flex-wrap:nowrap !important; -webkit-overflow-scrolling:touch; padding-bottom:4px; scrollbar-width:none; }
+  .ps-loc-tabs::-webkit-scrollbar { display:none; }
+  .ps-loc-tabs > button { flex:none !important; height:38px !important; padding:0 14px !important; font-size:13px !important; }
+  .ps-about-stats { display:grid !important; grid-template-columns:1fr 1fr !important; gap:20px 16px !important; }
+  .ps-pillar-grid { grid-template-columns:1fr !important; gap:1px !important; background:#ffffff22 !important; border-radius:12px !important; overflow:hidden !important; }
+  .ps-pillar-grid > div { min-height:auto !important; flex-direction:column !important; align-items:flex-start !important; gap:10px !important; padding:22px 22px !important; border-radius:0 !important; border:none !important; border-bottom:1px solid rgba(255,255,255,.1) !important; background:rgba(255,255,255,.05) !important; justify-content:flex-start !important; }
+  .ps-pillar-grid > div > span { font-size:10px !important; }
+  .ps-pillar-grid > div > div > h3 { font-size:17px !important; }
+  .ps-pillar-grid > div > div > p { font-size:13px !important; margin-top:6px !important; }
+  .ps-why-row > div:last-child { background:#FAFCFB; border-radius:0 0 8px 8px; padding:16px 20px 20px !important; margin-top:0 !important; }
+  .ps-pcard h3 { font-size:clamp(22px,5.5vw,28px) !important; font-weight:700 !important; }
+  .ps-ptypes-grid { display:flex !important; flex-wrap:nowrap !important; overflow-x:auto !important; scroll-snap-type:x mandatory !important; -webkit-overflow-scrolling:touch !important; scrollbar-width:none !important; gap:14px !important; padding-bottom:8px !important; }
+  .ps-ptypes-grid::-webkit-scrollbar { display:none !important; }
+  .ps-ptypes-grid > * { flex:none !important; width:82vw !important; scroll-snap-align:start !important; }
+  .ps-swipe-hint { display:flex !important; }
+  .ps-lift:hover { transform:none !important; box-shadow:none !important; }
+  .ps-inquiry-grid, .ps-location-grid, .ps-footer-grid { grid-template-columns:1fr !important; }
+  .ps-loc-grid { display:flex !important; flex-wrap:nowrap !important; overflow-x:auto !important; scroll-snap-type:x mandatory !important; -webkit-overflow-scrolling:touch !important; scrollbar-width:none !important; gap:14px !important; padding-bottom:4px !important; }
+  .ps-loc-grid::-webkit-scrollbar { display:none !important; }
+  .ps-loc-grid > article { flex:none !important; width:78vw !important; scroll-snap-align:start !important; min-height:260px !important; padding:18px 16px !important; }
+  .ps-store-swipe-hint { display:flex !important; }
+  .ps-brand-grid { grid-template-columns:repeat(2,1fr) !important; gap:8px !important; }
+  .ps-brand-cell { font-size:14px !important; font-weight:600 !important; padding:10px 12px !important; min-height:44px !important; gap:8px !important; }
+  footer { padding-top:48px !important; padding-bottom:36px !important; }
+  footer img { height:44px !important; max-width:220px !important; }
+}
+@media(max-width:480px){ .ps-announce-label { display:none !important; } section[id] { padding-top:48px !important; padding-bottom:48px !important; } .ps-footer-info { grid-template-columns:1fr !important; } }
+@media(max-width:767px){
+  h2 { font-size:clamp(22px,5.5vw,30px) !important; line-height:1.2 !important; }
+  h3 { font-size:clamp(15px,3.8vw,19px) !important; }
+  #about p { font-size:14px !important; line-height:1.8 !important; }
+  #about .ps-about-stats div > div:first-child { font-size:clamp(26px,6vw,36px) !important; }
+  #why h3 { font-size:clamp(18px,4.5vw,22px) !important; }
+  #why li span { font-size:14px !important; line-height:1.75 !important; }
+  #why li { font-size:14px !important; }
+  .ps-hero p { font-size:14px !important; line-height:1.7 !important; }
+  [style*="letter-spacing:0.22em"] { font-size:10px !important; }
+}
+</style>
+<meta name="ext-resource-dependency" content="assets/c-gallery-01.jpg">
+<meta name="ext-resource-dependency" content="assets/c-gallery-02.jpg">
+<meta name="ext-resource-dependency" content="assets/c-gallery-03.jpg">
+<meta name="ext-resource-dependency" content="assets/c-gallery-04.jpg">
+<meta name="ext-resource-dependency" content="assets/c-gallery-05.jpg">
+<meta name="ext-resource-dependency" content="assets/c-gallery-06.jpg">
+<meta name="ext-resource-dependency" content="assets/c-gallery-07.jpg">
+<template id="__bundler_thumbnail"><svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="80" fill="#005251"/><text x="60" y="38" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle" font-family="sans-serif">PHAMA</text><text x="60" y="54" font-size="14" font-weight="bold" fill="#01C0A4" text-anchor="middle" font-family="sans-serif">SQUARE</text></svg></template>
+</helmet>
+
+<div style="position:relative; width:100%; overflow-x:hidden;">
+
+<!-- ============ ANNOUNCEMENT BAR ============ -->
+<div style="{{ barStyle }}">
+  <div style="max-width:1320px; margin:0 auto; padding:0 32px; height:44px; display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:nowrap;">
+    <span class="ps-announce-label" style="font-size:11px; font-weight:500; letter-spacing:0.12em; color:rgba(255,255,255,.7); white-space:nowrap;">{{ t.announceLabel }}</span>
+    <span style="display:inline-flex; align-items:center; padding:2px 8px; border-radius:40px; background:#2BCAB0; color:#fff; font-size:10px; font-weight:700; letter-spacing:0.1em; flex:none;">BETA</span>
+    <a href="https://steady-zabaione-c7993b.netlify.app/index.html" target="_blank" rel="noopener" style="font-size:12px; font-weight:600; color:#7FE6CF; border-bottom:1px solid rgba(127,230,207,.4); white-space:nowrap; transition:color .2s;" style-hover="color:#fff;">{{ t.announceLink }}</a>
+  </div>
+</div>
+
+<!-- ============ NAV ============ -->
+<nav style="{{ navStyle }}">
+  <div style="max-width:1440px; margin:0 auto; padding:0 40px; height:70px; display:flex; align-items:center; justify-content:space-between;">
+    <a href="#top" class="ps-logo" aria-label="PHAMA SQUARE">
+      <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="{{ logoImgStyle }}" />
+    </a>
+    <div style="display:flex; align-items:center; gap:22px; margin-left:clamp(32px,4vw,64px);" class="ps-desktop-nav">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+        <a href="{{ item.href }}" target="{{ item.target }}" class="ps-nav-link" style="{{ item.style }}">{{ item.label }}</a>
+      </sc-for>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; margin-left:20px;" class="ps-desktop-nav">
+      <div class="ps-news-nav" style="display:flex; align-items:center;">
+        <button style="{{ newsNavBtnStyle }}">{{ newsLabel }}<span style="font-size:8px; opacity:.5; margin-left:3px; line-height:1;">▾</span></button>
+        <div class="ps-news-dropdown">
+          <sc-for list="{{ newsDropItems }}" as="ni" hint-placeholder-count="3">
+            <a href="{{ ni.href }}" target="_blank" style="display:flex; align-items:center; justify-content:center; padding:13px 24px; font-size:13px; font-weight:500; color:#2B3A3C; border-bottom:1px solid #EEF3F3; white-space:nowrap; text-decoration:none; transition:background .15s;" style-hover="background:#F4F8F8; color:#005251;">{{ ni.label }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div style="width:1px; height:16px; background:rgba(128,180,180,.28); flex:none;"></div>
+      <a href="#inquiry" style="display:inline-flex; align-items:center; height:38px; padding:0 20px; border-radius:40px; background:#01C0A4; color:#fff; font-size:13px; font-weight:600; letter-spacing:0.04em; transition:background .25s;" style-hover="background:#00978F;">{{ t.partnershipCTA }}</a>
+      <!-- 언어 선택 -->
+      <div style="display:flex; align-items:center; gap:2px; border-left:1px solid rgba(128,180,180,.28); padding-left:10px;">
+        <sc-for list="{{ langButtons }}" as="lb" hint-placeholder-count="3">
+          <button onClick="{{ lb.onClick }}" style="{{ lb.style }}">{{ lb.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:2px; margin-left:auto;">
+      <div class="ps-mobile-lang" style="display:none; position:relative; align-items:center; margin-right:2px;">
+        <button onClick="{{ toggleLangDropdown }}" style="{{ langTriggerStyle }}" aria-label="language selector">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ navInk }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="opacity:.75; flex:none;"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          <span style="{{ langCodeStyle }}">{{ currentLangCode }}</span>
+        </button>
+        <div style="{{ langDropdownStyle }}">
+          <sc-for list="{{ langDropItems }}" as="ld" hint-placeholder-count="3">
+            <button onClick="{{ ld.onClick }}" style="{{ ld.itemStyle }}">
+              <span style="{{ ld.dotStyle }}"></span>
+              <span style="font-size:13px; font-weight:{{ ld.weight }}; color:{{ ld.color }}; letter-spacing:0.01em; white-space:nowrap;">{{ ld.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ toggleMenu }}" aria-label="menu" class="ps-burger" style="display:none; flex-direction:column; gap:5px; background:none; border:none; padding:8px; cursor:pointer;">
+        <span style="display:block; width:24px; height:2px; background:{{ navInk }}; transition:.3s;"></span>
+        <span style="display:block; width:24px; height:2px; background:{{ navInk }}; transition:.3s;"></span>
+        <span style="display:block; width:24px; height:2px; background:{{ navInk }}; transition:.3s;"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- mobile drawer -->
+<div style="{{ drawerStyle }}">
+  <div style="display:flex; flex-direction:column; height:100%; padding:76px 24px 32px; overflow-y:auto;">
+    <div style="flex:1; display:flex; flex-direction:column;">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
+        <a href="{{ item.href }}" target="{{ item.target }}" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff; text-decoration:none;">
+          <span style="font-size:15px; font-weight:500; letter-spacing:0.1em;">{{ item.label }}</span>
+          <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
+        </a>
+      </sc-for>
+      <a href="https://steady-zabaione-c7993b.netlify.app/index.html" target="_blank" rel="noopener" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
+        <span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:0.1em;">{{ t.healthGuide }}<span style="padding:2px 7px; border-radius:40px; background:#01C0A4; font-size:9px; font-weight:700; letter-spacing:0.1em;">BETA</span></span>
+        <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
+      </a>
+      <a href="./board.dc.html" target="_blank" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
+        <span style="font-size:15px; font-weight:500; letter-spacing:0.1em;">소식</span>
+        <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
+      </a>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <a href="#inquiry" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:center; height:50px; border-radius:40px; background:#01C0A4; color:#fff; font-size:15px; font-weight:600; letter-spacing:0.02em;">{{ t.partnershipCTAFull }}</a>
+      <div style="text-align:center; font-size:11px; color:rgba(255,255,255,.3); letter-spacing:0.04em;">official&#64;phamasquare&#46;com</div>
+      <a href="./admin.dc.html" onClick="{{ closeMenu }}" style="display:block; text-align:center; font-size:11px; color:rgba(255,255,255,.18); letter-spacing:0.06em; padding-top:6px; transition:color .2s;" style-hover="color:rgba(255,255,255,.5);">관리자 로그인</a>
+    </div>
+  </div>
+</div>
+
+<!-- 드로어 백드롭 -->
+<div onClick="{{ closeMenu }}" style="{{ backdropStyle }}"></div>
+
+<!-- ============ HERO ============ -->
+<header id="top" class="ps-hero" style="position:relative; min-height:100vh; display:flex; align-items:center; background:radial-gradient(120% 120% at 78% 18%, #00978F 0%, #006666 42%, #00302F 100%); overflow:hidden;">
+  <div class="ps-hero-c1" style="position:absolute; top:-12%; right:-8%; width:min(58vw,760px); height:min(58vw,760px); border-radius:50%; border:1px solid rgba(255,255,255,.16);"></div>
+  <div class="ps-hero-c2" style="position:absolute; top:6%; right:6%; width:min(40vw,520px); height:min(40vw,520px); border-radius:50%; background:radial-gradient(circle at 38% 34%, rgba(43,202,176,.55), rgba(1,192,164,0) 68%); filter:blur(8px);"></div>
+  <div style="position:absolute; bottom:-26%; left:-14%; width:min(46vw,640px); height:min(46vw,640px); border-radius:50%; border:1px solid rgba(255,255,255,.07); animation:psSpin 90s linear infinite;"></div>
+  <div style="position:relative; max-width:1320px; margin:0 auto; padding:148px 32px 120px; width:100%;">
+    <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 13px; border:1px solid rgba(255,255,255,.28); border-radius:40px; margin-bottom:36px;">
+      <span style="width:6px; height:6px; border-radius:50%; background:#2BCAB0; box-shadow:0 0 10px #2BCAB0; animation:psPulse 2.4s ease-in-out infinite; flex:none;"></span>
+      <span style="color:rgba(255,255,255,.85); font-size:10px; font-weight:600; letter-spacing:0.18em;">AI WELLNESS PLATFORM</span>
+    </div>
+    <h1 style="color:#fff; font-weight:200; font-size:clamp(58px,10vw,136px); line-height:0.96; letter-spacing:-0.02em;">Balance,<br><span style="font-weight:500; font-style:italic;">Beautifully.</span></h1>
+    <p style="margin-top:32px; color:rgba(255,255,255,.78); font-size:clamp(15px,1.8vw,20px); font-weight:300; line-height:1.8; max-width:520px; white-space:pre-line;">{{ t.heroDesc }}</p>
+    <div class="ps-hero-btns" style="margin-top:44px; display:flex; flex-wrap:wrap; gap:14px;">
+      <a href="#partnership" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; border:1px solid rgba(255,255,255,.4); color:#fff; font-size:15px; font-weight:500; transition:background .25s, border-color .25s;" style-hover="background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.7);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87"></path><path d="M16 3.13a4 4 0 010 7.75"></path></svg>{{ t.partnershipCTA }}</a>
+      <a href="https://steady-zabaione-c7993b.netlify.app/index.html" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; background:rgba(43,202,176,.25); border:1px solid rgba(43,202,176,.5); color:#fff; font-size:15px; font-weight:500; transition:background .25s;" style-hover="background:rgba(43,202,176,.4);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 110 20 10 10 0 010-20z"></path><path d="M12 6v6l4 2"></path></svg>{{ t.healthGuide }}<span style="padding:2px 7px; border-radius:40px; background:#2BCAB0; font-size:10px; font-weight:700; letter-spacing:0.08em;">BETA</span></a>
+    </div>
+  </div>
+  <div class="ps-scroll-ind" style="position:absolute; bottom:52px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:12px;">
+    <div style="width:24px; height:38px; border:1.5px solid rgba(255,255,255,.4); border-radius:14px; display:flex; justify-content:center; padding-top:7px;">
+      <span style="width:3px; height:8px; border-radius:3px; background:#fff; animation:psScroll 1.8s ease-in-out infinite;"></span>
+    </div>
+    <span style="color:rgba(255,255,255,.55); font-size:10px; letter-spacing:0.3em;">SCROLL</span>
+  </div>
+</header>
+
+<!-- 마키 스트립 -->
+<div style="background:#005251; overflow:hidden; padding:20px 0; border-top:1px solid rgba(255,255,255,.08);">
+  <div id="ps-marquee-track" style="display:flex; white-space:nowrap; width:max-content; animation:ps-marquee 32s linear infinite;">
+    <span style="display:inline-flex; align-items:center; gap:52px; padding-right:52px; font-size:clamp(12px,1.6vw,17px); font-weight:500; letter-spacing:0.12em; color:#fff;">
+      <span>PHAMA SQUARE</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueeTagline }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>AI WELLNESS PLATFORM</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">4,000+ SKU</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>HANAM FLAGSHIP NOW OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marquee263 }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>GURO EXPRESS 26.3Q OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueePharmacy }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueeStoreDev }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+    </span>
+    <span aria-hidden="true" style="display:inline-flex; align-items:center; gap:52px; padding-right:52px; font-size:clamp(12px,1.6vw,17px); font-weight:500; letter-spacing:0.12em; color:#fff;">
+      <span>PHAMA SQUARE</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueeTagline }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>AI WELLNESS PLATFORM</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">4,000+ SKU</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>HANAM FLAGSHIP NOW OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marquee263 }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>GURO EXPRESS 26.3Q OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueePharmacy }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueeStoreDev }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+    </span>
+  </div>
+</div>
+
+<!-- 브랜드 스테이트먼트 -->
+<section class="reveal" style="position:relative; overflow:hidden; height:clamp(460px,56vw,720px);">
+  <img src="./assets/branded-elevator.jpg" alt="PHAMA" style="width:100%; height:100%; object-fit:cover; object-position:center 30%; display:block;" />
+  <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,20,18,.18) 0%, rgba(0,32,28,.52) 100%);"></div>
+  <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:32px;">
+    <p style="font-size:11px; font-weight:600; letter-spacing:0.28em; color:#2BCAB0; margin-bottom:24px;">PHAMA SQUARE</p>
+    <h2 style="font-size:clamp(36px,6vw,86px); font-weight:700; color:#fff; letter-spacing:-0.03em; line-height:1.08; margin:0; text-shadow:0 2px 24px rgba(0,0,0,.18);">{{ t.taglineL1 }}<br>{{ t.taglineL2 }}</h2>
+    <div style="width:48px; height:2px; background:#01C0A4; margin:32px auto 0;"></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" style="padding:clamp(90px,12vw,170px) 32px;">
+  <div style="max-width:1320px; margin:0 auto;" class="reveal">
+    <div style="display:grid; grid-template-columns:1fr; gap:clamp(48px,7vw,110px);" class="ps-about-grid">
+      <div>
+        <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">ABOUT PHAMA SQUARE</span>
+        <h2 style="margin-top:24px; font-size:clamp(34px,4.6vw,60px); font-weight:300; line-height:1.18; letter-spacing:-0.02em;">{{ t.aboutTitleL1 }}<br>{{ t.aboutTitleL2 }}<br><span style="font-weight:600; color:#005251;">{{ t.aboutBrand }}</span></h2>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:flex-end; gap:32px;">
+        <p style="font-size:clamp(16px,1.5vw,19px); font-weight:300; line-height:1.95; color:#37474A;">{{ t.aboutP1 }}</p>
+        <p style="font-size:clamp(16px,1.5vw,19px); font-weight:300; line-height:1.95; color:#37474A;">{{ t.aboutP2 }}</p>
+        <p style="font-size:clamp(16px,1.5vw,19px); font-weight:300; line-height:1.95; color:#37474A;">{{ t.aboutP3 }}</p>
+        <div style="margin-top:8px; padding:22px 28px; border-left:3px solid #01C0A4; background:#F2F6F6; border-radius:0 8px 8px 0;">
+          <p style="font-size:clamp(18px,2vw,22px); font-weight:600; color:#005251; letter-spacing:-0.01em; line-height:1.4;">{{ t.taglineCenter }}</p>
+          <p style="margin-top:8px; font-size:14px; font-weight:300; color:#5B6B6D; line-height:1.6;">{{ t.taglineSub }}</p>
+        </div>
+        <div class="ps-about-stats" style="display:flex; gap:clamp(32px,4vw,56px); margin-top:8px; flex-wrap:wrap;">
+          <div>
+            <div style="font-size:clamp(28px,3.2vw,40px); font-weight:600; color:#005251; line-height:1;">{{ t.stat1Num }}<span style="font-size:0.45em; font-weight:400; margin-left:2px;">{{ t.stat1Unit }}</span></div>
+            <div style="margin-top:8px; font-size:13px; font-weight:600; color:#10181E;">{{ t.stat1Format }}</div>
+            <div style="margin-top:4px; font-size:12px; color:#5B6B6D;">{{ t.stat1Desc }}</div>
+          </div>
+          <div>
+            <div style="font-size:clamp(28px,3.2vw,40px); font-weight:600; color:#005251; line-height:1;">{{ t.stat2Num }}<span style="font-size:0.45em; font-weight:400; margin-left:2px;">{{ t.stat2Unit }}</span></div>
+            <div style="margin-top:8px; font-size:13px; font-weight:600; color:#10181E;">{{ t.stat2Format }}</div>
+            <div style="margin-top:4px; font-size:12px; color:#5B6B6D;">{{ t.stat2Desc }}</div>
+          </div>
+          <div>
+            <div style="font-size:clamp(28px,3.2vw,40px); font-weight:600; color:#005251; line-height:1;">7<span style="font-size:0.45em; font-weight:400;">{{ t.storeCountSuffix }}</span></div>
+            <div style="margin-top:8px; font-size:13px; font-weight:600; color:#10181E;">{{ t.stat3Format }}</div>
+            <div style="margin-top:4px; font-size:12px; color:#5B6B6D;">{{ t.stat3Desc }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOCATIONS ============ -->
+<section id="locations" style="padding:clamp(80px,10vw,140px) 32px; background:#F2F6F6;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:24px; margin-bottom:clamp(44px,5vw,72px);" class="reveal">
+      <div>
+        <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">WHERE — PHAMA SQUARE</span>
+        <h2 style="margin-top:20px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em; line-height:1.12; white-space:pre-line;">{{ t.locTitle }}</h2>
+      </div>
+      <p style="max-width:440px; font-size:15px; font-weight:300; line-height:1.85; color:#46585A;">{{ t.locDesc }}</p>
+    </div>
+    <div class="ps-store-swipe-hint" style="display:none; align-items:center; gap:8px; margin-bottom:14px; color:#8B9A9C; font-size:13px;">
+      <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M2 7h16M13 2l5 5-5 5" stroke="#01C0A4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>{{ t.swipeHint }}</span>
+    </div>
+    <div id="ps-store-scroll" style="display:grid; gap:clamp(16px,1.8vw,24px);" class="ps-loc-grid reveal">
+      <sc-for list="{{ stores }}" as="store" hint-placeholder-count="4">
+        <article class="ps-lift" style="position:relative; min-height:300px; border-radius:8px; overflow:hidden; background:{{ store.grad }}; padding:24px 20px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 8px 28px rgba(0,48,47,.09);">
+          <div style="position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; border:1px solid rgba(255,255,255,.14);"></div>
+          <div style="position:relative; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+            <div style="display:inline-flex; align-items:center; padding:4px 10px; border-radius:40px; background:rgba(255,255,255,.16); backdrop-filter:blur(6px); color:#fff; font-size:10px; font-weight:600; letter-spacing:0.1em; white-space:nowrap;">{{ store.format }}</div>
+            <div style="display:inline-flex; align-items:center; gap:5px; color:rgba(255,255,255,.88); font-size:11px; font-weight:500; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:50%; flex:none; background:{{ store.dot }};"></span>{{ store.status }}</div>
+          </div>
+          <div style="position:relative; margin-top:16px;">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:rgba(255,255,255,.5); margin-bottom:6px;">{{ store.en }}</div>
+            <div style="font-size:clamp(16px,1.8vw,22px); font-weight:700; color:#fff; line-height:1.25; word-break:keep-all;">{{ store.name }}</div>
+            <div style="margin-top:10px; display:flex; align-items:baseline; gap:3px;">
+              <span style="font-size:clamp(26px,3vw,38px); font-weight:200; color:rgba(255,255,255,.9); letter-spacing:-0.02em;">{{ store.size }}</span>
+              <span style="font-size:13px; font-weight:300; color:rgba(255,255,255,.65);">{{ t.storeSizeSuffix }}</span>
+            </div>
+            <div style="margin-top:8px; font-size:11px; font-weight:300; color:rgba(255,255,255,.55); line-height:1.5;">{{ store.addr }}</div>
+            <button onClick="{{ store.onMap }}" style="margin-top:14px; display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 14px; border-radius:40px; border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff; font-size:11px; font-weight:500; transition:background .25s;" style-hover="background:rgba(255,255,255,.15);">{{ t.locMapBtn }}</button>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <div id="ps-store-dots" class="ps-store-swipe-hint" style="display:none; justify-content:center; gap:8px; margin-top:16px;">
+      <span style="width:24px; height:4px; border-radius:2px; background:#005251; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHILOSOPHY ============ -->
+<section id="philosophy" style="position:relative; padding:clamp(60px,7vw,100px) 32px; background:radial-gradient(120% 120% at 18% 12%, #00978F 0%, #005251 48%, #00302F 100%); overflow:hidden;">
+  <div style="position:absolute; top:50%; right:-10%; width:min(50vw,640px); height:min(50vw,640px); border-radius:50%; border:1px solid rgba(255,255,255,.1); animation:psSpin 60s linear infinite;"></div>
+  <div style="position:relative; max-width:1320px; margin:0 auto;">
+    <div style="text-align:center; max-width:760px; margin:0 auto;" class="reveal">
+      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#2BCAB0;">PHAMA = PHILOSOPHY OF HARMONY</span>
+      <h2 style="margin-top:24px; color:#fff; font-size:clamp(34px,5vw,64px); font-weight:600; letter-spacing:-0.02em; line-height:1.12;">{{ t.philTitle }}</h2>
+      <p style="margin-top:28px; color:rgba(255,255,255,.82); font-size:clamp(16px,1.7vw,20px); font-weight:300; line-height:1.85; white-space:pre-line;">{{ t.philDesc }}</p>
+    </div>
+    <div style="margin-top:clamp(36px,4vw,56px); display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(14px,1.6vw,24px);" class="ps-pillar-grid reveal">
+      <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="4">
+        <div class="ps-lift" style="padding:clamp(28px,3vw,40px) clamp(22px,2.2vw,30px); border:1px solid rgba(255,255,255,.16); border-radius:8px; background:rgba(255,255,255,.04); min-height:264px; display:flex; flex-direction:column; justify-content:space-between;">
+          <span style="font-size:12px; font-weight:600; color:#2BCAB0; letter-spacing:0.1em;">0{{ p.n }}</span>
+          <div>
+            <h3 style="color:#fff; font-size:clamp(28px,3vw,42px); font-weight:500; letter-spacing:-0.02em; line-height:1.1; font-style:italic;">{{ p.en }}</h3>
+            <p style="margin-top:14px; color:rgba(255,255,255,.74); font-size:15px; font-weight:300; line-height:1.65;">{{ p.desc }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section id="why" style="padding:clamp(90px,12vw,170px) 32px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="margin-bottom:clamp(48px,6vw,80px);" class="reveal">
+      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">WHY PHAMA SQUARE</span>
+      <h2 style="margin-top:20px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em; line-height:1.12; white-space:pre-line;">{{ t.whyTitle }}</h2>
+      <p style="margin-top:18px; font-size:clamp(16px,1.8vw,20px); font-weight:500; color:#005251; letter-spacing:-0.01em;">{{ t.whyCatchphrase }}</p>
+      <p style="margin-top:10px; font-size:16px; font-weight:300; color:#5B6B6D; line-height:1.7; max-width:560px;">{{ t.whyDesc }}</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:clamp(28px,3vw,48px);">
+      <sc-for list="{{ advantages }}" as="adv" hint-placeholder-count="3">
+        <article class="ps-why-row reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,4vw,64px); align-items:center; padding-bottom:clamp(28px,3vw,48px); border-bottom:1px solid #E3EAEA;">
+          <div class="ps-lift ps-why-deco" style="position:relative; aspect-ratio:16/7; overflow:hidden; border-radius:8px; background:{{ adv.grad }}; display:flex; align-items:center; justify-content:center;">
+            <div style="position:absolute; top:-30px; left:-30px; width:160px; height:160px; border-radius:50%; border:1px solid rgba(255,255,255,.16);"></div>
+            <div style="position:absolute; bottom:-50px; right:-30px; width:220px; height:220px; border-radius:50%; border:1px solid rgba(255,255,255,.1);"></div>
+            <div style="position:relative; text-align:center;">
+              <div style="font-size:clamp(44px,6vw,80px); font-weight:200; color:rgba(255,255,255,.92); line-height:1; letter-spacing:-0.03em;">0{{ adv.n }}</div>
+              <div style="margin-top:10px; font-size:11px; font-weight:600; letter-spacing:0.22em; color:rgba(255,255,255,.76);">{{ adv.kw }}</div>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size:clamp(24px,3vw,38px); font-weight:700; letter-spacing:-0.02em; line-height:1.22;">{{ adv.title }}</h3>
+            <ul style="margin-top:22px; display:flex; flex-direction:column; gap:12px; list-style:none;">
+              <sc-for list="{{ adv.points }}" as="pt" hint-placeholder-count="3">
+                <li style="display:flex; gap:12px; font-size:16px; font-weight:300; color:#46585A; line-height:1.55;"><span style="color:#01C0A4; font-weight:600; flex:none;">—</span><span>{{ pt }}</span></li>
+              </sc-for>
+            </ul>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI WELLNESS PLATFORM ============ -->
+<section id="ai" style="position:relative; padding:clamp(96px,13vw,190px) 32px; background:radial-gradient(130% 110% at 82% 8%, #019a86 0%, #006062 40%, #061417 100%); overflow:hidden; color:#fff;">
+  <div style="position:absolute; top:14%; left:-8%; width:min(46vw,560px); height:min(46vw,560px); border-radius:50%; border:1px solid rgba(43,202,176,.22); animation:psSpin 80s linear infinite;"></div>
+  <div style="position:absolute; bottom:-18%; right:-6%; width:min(36vw,440px); height:min(36vw,440px); border-radius:50%; background:radial-gradient(circle at 40% 40%, rgba(1,192,164,.4), rgba(1,192,164,0) 70%); animation:psPulse 7s ease-in-out infinite;"></div>
+  <div style="position:relative; max-width:1320px; margin:0 auto;">
+    <div style="max-width:880px;" class="reveal">
+      <div style="display:inline-flex; align-items:center; gap:10px; padding:7px 16px; border:1px solid rgba(43,202,176,.4); border-radius:40px; margin-bottom:36px;">
+        <span style="width:7px; height:7px; border-radius:50%; background:#2BCAB0; box-shadow:0 0 12px #2BCAB0; animation:psPulse 2.4s ease-in-out infinite;"></span>
+        <span style="font-size:12px; font-weight:600; letter-spacing:0.16em; color:#7FE6CF;">THE NEXT PHAMA SQUARE</span>
+      </div>
+      <h2 style="font-size:clamp(34px,5.6vw,76px); font-weight:500; line-height:1.08; letter-spacing:-0.025em;">{{ t.aiTitleL1 }}<br><span style="font-weight:700; color:#2BCAB0;">{{ t.aiTitleL2 }}</span>{{ t.aiTitleSuffix }}</h2>
+      <p style="margin-top:16px; font-size:clamp(13px,1.4vw,15px); font-weight:500; letter-spacing:0.16em; color:rgba(255,255,255,.45);">FROM RETAIL TO AI WELLNESS PLATFORM</p>
+      <p style="margin-top:28px; font-size:clamp(16px,1.7vw,21px); font-weight:300; line-height:1.85; color:rgba(255,255,255,.84); max-width:680px;">{{ t.aiDesc }}</p>
+    </div>
+    <div style="margin-top:clamp(56px,7vw,88px); display:grid; grid-template-columns:1fr; gap:clamp(16px,2vw,28px);" class="ps-ai-steps reveal">
+      <sc-for list="{{ aiSteps }}" as="s" hint-placeholder-count="3">
+        <div class="ps-lift" style="padding:clamp(30px,3.2vw,44px) clamp(26px,2.6vw,36px); border:1px solid rgba(255,255,255,.14); border-radius:10px; background:rgba(255,255,255,.04); min-height:220px; display:flex; flex-direction:column; gap:clamp(20px,2vw,28px); min-width:0; overflow:hidden;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <span style="font-size:13px; font-weight:600; letter-spacing:0.12em; color:#2BCAB0; flex:none;">STEP 0{{ s.n }}</span>
+            <span style="font-size:11px; font-weight:500; letter-spacing:0.14em; color:rgba(255,255,255,.4); flex:none;">{{ s.en }}</span>
+          </div>
+          <div>
+            <h3 style="font-size:clamp(20px,2.1vw,26px); font-weight:600; letter-spacing:-0.01em; word-break:break-all; overflow-wrap:anywhere;">{{ s.title }}</h3>
+            <p style="margin-top:12px; font-size:15px; font-weight:300; line-height:1.7; color:rgba(255,255,255,.72); word-break:break-all; overflow-wrap:anywhere;">{{ s.desc }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- AI 가이드 배너 -->
+<div style="background:#10181E; padding:clamp(44px,5vw,64px) 32px;">
+  <div style="max-width:1320px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:28px;">
+    <div>
+      <div style="display:inline-flex; align-items:center; gap:8px; margin-bottom:14px;">
+        <span style="width:6px; height:6px; border-radius:50%; background:#2BCAB0; box-shadow:0 0 10px #2BCAB0; animation:psPulse 2.4s ease-in-out infinite;"></span>
+        <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#2BCAB0;">NOW LIVE</span>
+        <span style="padding:2px 9px; border-radius:40px; background:#2BCAB0; color:#fff; font-size:10px; font-weight:700; letter-spacing:0.1em;">BETA</span>
+      </div>
+      <h3 style="font-size:clamp(18px,2.4vw,28px); font-weight:600; color:#fff; line-height:1.3; letter-spacing:-0.01em;">{{ t.aiBannerTitle }}</h3>
+      <p style="margin-top:10px; font-size:14px; font-weight:300; color:rgba(255,255,255,.6); line-height:1.7;">{{ t.aiBannerDesc }}</p>
+    </div>
+    <a href="https://steady-zabaione-c7993b.netlify.app/index.html" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; height:52px; padding:0 30px; border-radius:40px; background:#2BCAB0; color:#fff; font-size:15px; font-weight:600; white-space:nowrap; flex:none; transition:background .25s;" style-hover="background:#01C0A4;">{{ t.aiBannerCTA }}</a>
+  </div>
+</div>
+
+<!-- ============ BRANDS ============ -->
+<section id="brands" style="padding:clamp(90px,11vw,160px) 32px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:clamp(40px,4vw,60px);" class="reveal">
+      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">PARTNERS</span>
+      <h2 style="margin-top:12px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em; line-height:1.12;">{{ t.brandsTitle }}</h2>
+      <div style="display:flex; align-items:baseline; gap:6px; margin-top:4px; flex-wrap:wrap;">
+        <span style="font-size:clamp(24px,2.6vw,36px); font-weight:700; color:#005251; letter-spacing:-0.02em; white-space:nowrap;">{{ totalBrandsLabel }}</span>
+        <span style="font-size:12px; color:#8B9A9C;">{{ t.brandsSub }}</span>
+      </div>
+    </div>
+    <div style="display:flex; flex-wrap:nowrap; gap:8px; margin-bottom:clamp(36px,4vw,52px); overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch;" class="reveal">
+      <sc-for list="{{ brandTabs }}" as="tab" hint-placeholder-count="4">
+        <button onClick="{{ tab.onClick }}" style="{{ tab.style }}">{{ tab.label }}<span style="margin-left:6px; opacity:.6; font-weight:400;">{{ tab.count }}</span></button>
+      </sc-for>
+    </div>
+    <div class="ps-brand-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px;">
+      <sc-for list="{{ visibleBrands }}" as="b" hint-placeholder-count="24">
+        <div class="ps-brand-cell ps-lift" onTouchStart="{{ noop }}" style="background:#fff; border:1px solid #E8F0F0; border-radius:8px; padding:16px 14px; min-height:68px; display:flex; align-items:center; justify-content:center; gap:10px; font-size:15px; font-weight:600; color:#2B3A3C; line-height:1.3; text-align:center; cursor:pointer; transition:background .2s, color .2s, border-color .2s, transform .25s; -webkit-tap-highlight-color:transparent;" style-hover="background:#F2F6F6; color:#005251; border-color:#B2CECE;" style-active="background:#E4F0EF; color:#005251; border-color:#01C0A4; transform:scale(0.97);">
+          <span style="word-break:keep-all;">{{ b }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:22px; font-size:13px; color:#8B9A9C; letter-spacing:0.02em;">{{ brandsCountInfo }}</div>
+    <sc-if value="{{ brandsCollapsed }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:16px; text-align:center;">
+        <button onClick="{{ expandBrands }}" style="height:44px; padding:0 28px; border-radius:40px; border:1.5px solid #005251; background:#fff; color:#005251; font-size:14px; font-weight:600; transition:.25s;" style-hover="background:#005251; color:#fff;">{{ expandBrandsText }}</button>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+<!-- ============ PARTNERSHIP ============ -->
+<section id="partnership" style="padding:clamp(90px,11vw,160px) 32px clamp(120px,14vw,200px); background:#F2F6F6;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="text-align:center; max-width:760px; margin:0 auto clamp(56px,7vw,88px);" class="reveal">
+      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">PARTNERSHIP</span>
+      <h2 style="margin-top:22px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em; line-height:1.12; white-space:pre-line;">{{ t.partnerTitle }}</h2>
+      <p style="margin-top:22px; font-size:clamp(15px,1.6vw,18px); font-weight:300; line-height:1.85; color:#46585A; white-space:pre-line;">{{ t.partnerDesc }}</p>
+    </div>
+    <div class="ps-swipe-hint" style="display:none; align-items:center; gap:8px; margin-bottom:14px; color:#8B9A9C; font-size:13px; font-weight:400; letter-spacing:0.04em;">
+      <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M2 7h16M13 2l5 5-5 5" stroke="#01C0A4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>{{ t.swipeHint }}</span>
+    </div>
+    <div id="ps-ptype-scroll" style="display:grid; gap:clamp(16px,2vw,24px);" class="ps-ptypes-grid reveal">
+      <sc-for list="{{ ptypes }}" as="pt" hint-placeholder-count="3">
+        <article class="ps-pcard" style="border-radius:10px; background:{{ pt.grad }}; padding:clamp(32px,3.6vw,52px) clamp(28px,3vw,44px); min-height:460px; display:flex; flex-direction:column; justify-content:space-between; color:#fff;">
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;">
+              <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:rgba(255,255,255,.65);">{{ pt.tag }}</span>
+              <div style="width:40px; height:40px; border-radius:50%; border:1.5px solid rgba(255,255,255,.3); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:300; color:rgba(255,255,255,.9);">{{ pt.icon }}</div>
+            </div>
+            <h3 style="font-size:clamp(28px,3.2vw,42px); font-weight:600; letter-spacing:-0.02em; line-height:1.15;">{{ pt.title }}</h3>
+            <p style="margin-top:16px; font-size:15px; font-weight:300; line-height:1.75; color:rgba(255,255,255,.78);">{{ pt.sub }}</p>
+            <ul style="margin-top:24px; display:flex; flex-direction:column; gap:10px; list-style:none;">
+              <sc-for list="{{ pt.points }}" as="pp" hint-placeholder-count="3">
+                <li style="display:flex; gap:10px; font-size:14px; font-weight:300; color:rgba(255,255,255,.7); line-height:1.5;"><span style="color:#7FE6CF; flex:none;">·</span><span>{{ pp }}</span></li>
+              </sc-for>
+            </ul>
+          </div>
+          <div style="margin-top:36px;">
+            <button onClick="{{ pt.onInquiry }}" style="display:inline-flex; align-items:center; height:50px; padding:0 28px; border-radius:40px; border:1.5px solid rgba(255,255,255,.55); background:transparent; color:#fff; font-size:14px; font-weight:600; letter-spacing:0.04em; transition:background .3s, border-color .3s;" style-hover="background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.9);">{{ pt.cta }} →</button>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <div id="ps-ptype-dots" class="ps-swipe-hint" style="display:none; justify-content:center; gap:8px; margin-top:18px;">
+      <span style="width:24px; height:4px; border-radius:2px; background:#005251; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+    </div>
+
+    <!-- Unified Form -->
+    <div id="inquiry" style="margin-top:clamp(64px,8vw,100px); display:grid; grid-template-columns:minmax(0,1fr); gap:clamp(40px,5vw,72px);" class="ps-inquiry-grid reveal">
+      <div>
+        <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#00978F;">INQUIRY</span>
+        <h3 style="margin-top:12px; font-size:clamp(26px,3.2vw,42px); font-weight:600; letter-spacing:-0.02em; line-height:1.18;">{{ t.inquiryTitle }}</h3>
+        <p style="margin-top:14px; font-size:16px; font-weight:300; line-height:1.75; color:#46585A; max-width:400px; word-break:break-all; overflow-wrap:anywhere;">{{ t.inquiryDesc }}</p>
+        <div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; gap:10px; align-items:flex-start;"><span style="width:6px; height:6px; border-radius:50%; background:#01C0A4; flex:none; margin-top:7px;"></span><span style="font-size:15px; font-weight:300; color:#2B3A3C; word-break:break-all; overflow-wrap:anywhere;">{{ t.inquiryP1 }}</span></div>
+          <div style="display:flex; gap:10px; align-items:flex-start;"><span style="width:6px; height:6px; border-radius:50%; background:#01C0A4; flex:none; margin-top:7px;"></span><span style="font-size:15px; font-weight:300; color:#2B3A3C; word-break:break-all; overflow-wrap:anywhere;">{{ t.inquiryP2 }}</span></div>
+        </div>
+      </div>
+
+      <div style="background:#fff; border-radius:10px; padding:clamp(28px,4vw,52px); box-shadow:0 8px 32px rgba(0,82,81,.06); min-width:0; overflow:hidden;">
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="min-height:460px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:18px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:#01C0A4; display:flex; align-items:center; justify-content:center; color:#fff; font-size:30px;">✓</div>
+            <h4 style="font-size:24px; font-weight:600;">{{ t.submittedTitle }}</h4>
+            <p style="font-size:15px; font-weight:300; color:#46585A; line-height:1.7; white-space:pre-line;">{{ t.submittedDesc }}</p>
+            <button onClick="{{ resetForm }}" style="margin-top:8px; height:44px; padding:0 24px; border-radius:40px; border:1px solid #C7D5D5; background:#fff; font-size:14px; font-weight:500;">{{ t.newInquiry }}</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-bottom:20px;">
+            <p style="font-size:12px; font-weight:500; color:#8B9A9C; margin-bottom:10px; letter-spacing:0.04em;">{{ t.fTypeLabel }}</p>
+            <div style="display:flex; flex-wrap:nowrap; gap:6px; overflow-x:auto; scrollbar-width:none;">
+              <sc-for list="{{ typePills }}" as="tp" hint-placeholder-count="3">
+                <button type="button" onClick="{{ tp.onClick }}" style="{{ tp.style }}">{{ tp.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <button type="button" onClick="{{ toggleFormOpen }}" class="ps-form-toggle" style="width:100%; display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-radius:8px; border:1.5px solid {{ formBorderColor }}; background:{{ formBg }}; cursor:pointer; transition:all .25s; margin-bottom:{{ formMarginBottom }};">
+            <span style="font-size:14px; font-weight:600; color:#10181E;">{{ formButtonLabel }}</span>
+            <span style="font-size:20px; color:#46585A; transition:transform .3s; transform:{{ chevronRotate }}; line-height:1;">{{ formButtonIcon }}</span>
+          </button>
+          <div class="ps-form-body" style="display:{{ formDisplayStyle }}">
+          <form onSubmit="{{ submitForm }}" style="display:flex; flex-direction:column; gap:0;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;" class="ps-form">
+              <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fName }}</span><input value="{{ form.name }}" onChange="{{ onName }}" placeholder="{{ t.fNamePH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#F9FBFB; font-size:14px;" /></label>
+              <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fPhone }}</span><input value="{{ form.phone }}" onChange="{{ onPhone }}" placeholder="{{ t.fPhonePH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#F9FBFB; font-size:14px;" /></label>
+              <label style="display:flex; flex-direction:column; gap:7px; grid-column:1/-1;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fEmail }}</span><input value="{{ form.email }}" onChange="{{ onEmail }}" placeholder="name@email.com" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#F9FBFB; font-size:14px;" /></label>
+            </div>
+
+            <sc-if value="{{ isPharmacy }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; padding:18px; background:#F2F6F6; border-radius:8px;" class="ps-form">
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fArea }}</span><input value="{{ form.area }}" onChange="{{ onArea }}" placeholder="{{ t.fAreaPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fExp }}</span><input value="{{ form.experience }}" onChange="{{ onExperience }}" placeholder="{{ t.fExpPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fTiming }}</span><input value="{{ form.timing }}" onChange="{{ onTiming }}" placeholder="{{ t.fTimingPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fCurrentOp }}</span>
+                  <select onChange="{{ onCurrentPharmacy }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;">
+                    <sc-for list="{{ currentOpOptions }}" as="op" hint-placeholder-count="3">
+                      <option>{{ op }}</option>
+                    </sc-for>
+                  </select>
+                </label>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isBrand }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; padding:18px; background:#F2F6F6; border-radius:8px;" class="ps-form">
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fRole }}</span><input value="{{ form.role }}" onChange="{{ onRole }}" placeholder="{{ t.fRolePH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fCompany }}</span><input value="{{ form.company }}" onChange="{{ onCompany }}" placeholder="{{ t.fCompanyPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px; grid-column:1/-1;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fCategory }}</span><input value="{{ form.category }}" onChange="{{ onCategory }}" placeholder="{{ t.fCategoryPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px; grid-column:1/-1;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fMsg }}</span><textarea onChange="{{ onMessage }}" placeholder="{{ t.fBrandMsgPH }}" rows="3" class="ps-input" style="padding:12px 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px; line-height:1.65; resize:vertical;"></textarea></label>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isStoreDev }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; padding:18px; background:#F2F6F6; border-radius:8px;" class="ps-form">
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fStoreRoleLabel }}</span>
+                  <select onChange="{{ onStoreRole }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;">
+                    <sc-for list="{{ storeRoleOptions }}" as="sr" hint-placeholder-count="4">
+                      <option>{{ sr }}</option>
+                    </sc-for>
+                  </select>
+                </label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fCompanyOrg }}</span><input value="{{ form.company }}" onChange="{{ onCompany }}" placeholder="{{ t.fCompanyOrgPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px; grid-column:1/-1;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fLocation }}</span><input value="{{ form.location }}" onChange="{{ onLocation }}" placeholder="{{ t.fLocationPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px; grid-column:1/-1;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fMsg }}</span><textarea onChange="{{ onMessage }}" placeholder="{{ t.fStoreMsgPH }}" rows="3" class="ps-input" style="padding:12px 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px; line-height:1.65; resize:vertical;"></textarea></label>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isOther }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid; grid-template-columns:1fr; gap:14px; margin-bottom:14px; padding:18px; background:#F2F6F6; border-radius:8px;">
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fMsg }}</span><textarea onChange="{{ onMessage }}" placeholder="{{ t.fOtherMsgPH }}" rows="5" class="ps-input" style="padding:12px 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px; line-height:1.65; resize:vertical;"></textarea></label>
+              </div>
+            </sc-if>
+
+            <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:14px;">
+              <span style="font-size:13px; color:#46585A;">{{ t.fPrivacy }}</span>
+              <div style="display:flex; gap:8px;">
+                <button type="button" onClick="{{ agreeYes }}" style="{{ agreeYesStyle }}">{{ t.fAgreeYes }}</button>
+                <button type="button" onClick="{{ agreeNo }}" style="{{ agreeNoStyle }}">{{ t.fAgreeNo }}</button>
+              </div>
+            </div>
+            <button type="submit" style="height:54px; border-radius:40px; border:none; background:#01C0A4; color:#fff; font-size:16px; font-weight:600; transition:background .25s;" style-hover="background:#00978F;">{{ t.fSubmit }}</button>
+          </form>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 갤러리 -->
+<section id="gallery" style="padding:clamp(60px,8vw,100px) 0 0;">
+  <div style="max-width:1320px; margin:0 auto; padding:0 32px; margin-bottom:clamp(28px,3vw,40px);" class="reveal">
+    <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">GALLERY</span>
+    <h2 style="margin-top:14px; font-size:clamp(24px,3vw,36px); font-weight:600; letter-spacing:-0.02em; line-height:1.2;">{{ t.galleryTitle }}</h2>
+  </div>
+  <div style="position:relative; overflow:hidden;">
+    <div id="ps-gallery-track" style="display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 32px 24px; cursor:grab;" onMouseDown="{{ galleryDragStart }}" onMouseMove="{{ galleryDragMove }}" onMouseUp="{{ galleryDragEnd }}" onMouseLeave="{{ galleryDragEnd }}">
+      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-01.jpg" alt="PHAMA SQUARE 01" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-05.jpg" alt="PHAMA SQUARE 02" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-04.jpg" alt="PHAMA SQUARE 03" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-06.jpg" alt="PHAMA SQUARE 04" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-02.jpg" alt="PHAMA SQUARE 05" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-07.jpg" alt="PHAMA SQUARE 06" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-03.jpg" alt="PHAMA SQUARE 07" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+    </div>
+    <button onClick="{{ galleryPrev }}" style="position:absolute; left:12px; top:50%; transform:translateY(-60%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.92); border:none; box-shadow:0 2px 12px rgba(0,0,0,.12); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s;" style-hover="background:#fff;">‹</button>
+    <button onClick="{{ galleryNext }}" style="position:absolute; right:12px; top:50%; transform:translateY(-60%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.92); border:none; box-shadow:0 2px 12px rgba(0,0,0,.12); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s;" style-hover="background:#fff;">›</button>
+  </div>
+  <div style="display:flex; justify-content:center; gap:6px; padding-bottom:clamp(40px,5vw,64px);">
+    <sc-for list="{{ galleryDots }}" as="gd" hint-placeholder-count="7">
+      <div style="{{ gd.style }}"></div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ============ LOCATION ============ -->
+<section id="location" style="padding:clamp(80px,9vw,130px) 32px; background:#FBFCFC;">
+  <div style="max-width:1320px; margin:0 auto;" class="reveal">
+    <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">LOCATION</span>
+    <h2 style="margin-top:20px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em;">{{ t.locationTitle }}</h2>
+    <div class="ps-loc-tabs" style="margin-top:clamp(20px,2vw,28px); margin-bottom:clamp(28px,3vw,40px); display:flex; flex-wrap:wrap; gap:10px;">
+      <sc-for list="{{ locationTabs }}" as="lt" hint-placeholder-count="4">
+        <button onClick="{{ lt.onClick }}" style="{{ lt.style }}">{{ lt.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr; gap:clamp(28px,3vw,44px);" class="ps-location-grid">
+      <div style="aspect-ratio:16/10; border-radius:10px; overflow:hidden; background:#D9E4E3;">
+        <iframe src="{{ mapSrc }}" style="width:100%; height:100%; border:0; display:block;" loading="lazy"></iframe>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:28px;">
+        <div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.16em; color:#00978F;">{{ locationInfo.tag }}</div>
+          <div style="margin-top:14px; font-size:clamp(20px,2.4vw,28px); font-weight:500; line-height:1.4;">{{ locationInfo.name }}</div>
+          <div style="margin-top:10px; font-size:16px; font-weight:300; color:#5B6B6D; line-height:1.6;">{{ locationInfo.addr }}</div>
+        </div>
+        <sc-if value="{{ locationHasLinks }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="{{ locationInfo.naverUrl }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; height:48px; padding:0 22px; border-radius:40px; background:#fff; border:1px solid #D5E0E0; font-size:14px; font-weight:500; transition:background .25s, border-color .25s;" style-hover="background:#F2F6F6; border-color:#B0C8C8;">{{ t.naverMap }}</a>
+            <a href="{{ locationInfo.kakaoUrl }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; height:48px; padding:0 22px; border-radius:40px; background:#fff; border:1px solid #D5E0E0; font-size:14px; font-weight:500; transition:background .25s, border-color .25s;" style-hover="background:#F2F6F6; border-color:#B0C8C8;">{{ t.kakaoMap }}</a>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer style="background:#10181E; color:#fff; padding:clamp(64px,8vw,100px) 32px 48px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="display:grid; grid-template-columns:1fr; gap:clamp(40px,5vw,64px); padding-bottom:clamp(48px,5vw,64px); border-bottom:1px solid rgba(255,255,255,.12);" class="ps-footer-grid">
+      <div>
+        <img src="./assets/logo-white-wide.png" alt="PHAMA SQUARE" style="height:52px; width:auto; display:block; max-width:280px;" />
+        <p style="margin-top:24px; font-size:14px; font-weight:300; line-height:1.8; color:rgba(255,255,255,.6); max-width:320px;">{{ t.footerDesc }}</p>
+        <div style="margin-top:26px; display:flex; gap:12px;">
+          <a href="https://www.instagram.com/phamasquare_official" target="_blank" rel="noopener" aria-label="Instagram" style="width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; color:#fff; transition:.25s;" style-hover="background:#01C0A4; border-color:#01C0A4;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5.5"></rect><circle cx="12" cy="12" r="5"></circle><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"></circle></svg></a>
+          <a href="https://m.blog.naver.com/phamasquare" target="_blank" rel="noopener" aria-label="Naver Blog" style="width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; color:#fff; transition:.25s;" style-hover="background:#01C0A4; border-color:#01C0A4;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></a>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:18px 24px; align-content:start;" class="ps-footer-info">
+        <div><span style="font-size:12px; color:rgba(255,255,255,.45);">{{ t.footerLegalName }}</span><div style="margin-top:5px; font-size:14px; font-weight:300;">주식회사 파마스퀘어</div></div>
+        <div><span style="font-size:12px; color:rgba(255,255,255,.45);">{{ t.footerCEO }}</span><div style="margin-top:5px; font-size:14px; font-weight:300;">최민우</div></div>
+        <div><span style="font-size:12px; color:rgba(255,255,255,.45);">{{ t.footerBizNum }}</span><div style="margin-top:5px; font-size:14px; font-weight:300;">732-87-03503</div></div>
+        <div><span style="font-size:12px; color:rgba(255,255,255,.45);">{{ t.footerEmail }}</span><div style="margin-top:5px;"><a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#111;&#102;&#102;&#105;&#99;&#105;&#97;&#108;&#64;&#112;&#104;&#97;&#109;&#97;&#115;&#113;&#117;&#97;&#114;&#101;&#46;&#99;&#111;&#109;" style="font-size:14px; font-weight:300; color:#7FE6CF; text-decoration:none; border-bottom:1px solid rgba(127,230,207,.3); transition:border-color .2s;" style-hover="border-color:#7FE6CF;">&#111;&#102;&#102;&#105;&#99;&#105;&#97;&#108;&#64;&#112;&#104;&#97;&#109;&#97;&#115;&#113;&#117;&#97;&#114;&#101;&#46;&#99;&#111;&#109;</a></div></div>
+        <div style="grid-column:1/-1;"><span style="font-size:12px; color:rgba(255,255,255,.45);">{{ t.footerAddr }}</span><div style="margin-top:5px; font-size:14px; font-weight:300;">경기도 하남시 미사대로 410, 1층 (망월동, 미사강변 오벨리스크)</div></div>
+      </div>
+    </div>
+    <div style="margin-top:32px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12px; color:rgba(255,255,255,.4);">
+      <span>{{ t.copyright }}</span>
+      <div style="display:flex; gap:20px; align-items:center;">
+        <a href="./board.dc.html" target="_blank" style="color:rgba(255,255,255,.4); font-size:12px; transition:color .2s;" style-hover="color:#01C0A4;">소식·채용</a>
+        <a href="#" style="color:rgba(255,255,255,.5);">{{ t.privacyPolicy }}</a>
+        <a href="./admin.dc.html" style="color:rgba(255,255,255,.15); font-size:11px; transition:color .2s;" style-hover="color:rgba(255,255,255,.45);">admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ POPUP ============ -->
+<div style="{{ popupOverlay }}">
+  <div style="position:relative; background:#fff; border-radius:14px; width:min(480px,92vw); overflow:hidden; box-shadow:0 32px 80px rgba(0,48,47,.28);">
+    <div style="background:linear-gradient(135deg,#005251,#00302F); padding:28px 28px 24px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+        <div style="display:inline-flex; align-items:center; gap:8px; padding:4px 12px; border-radius:40px; background:rgba(43,202,176,.25); border:1px solid rgba(43,202,176,.4);">
+          <span style="width:6px; height:6px; border-radius:50%; background:#2BCAB0; animation:psPulse 2s ease-in-out infinite;"></span>
+          <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#2BCAB0;">PARTNERSHIP</span>
+        </div>
+        <button onClick="{{ closePopup }}" style="background:none; border:none; color:rgba(255,255,255,.5); font-size:22px; line-height:1; padding:4px; transition:color .2s;" style-hover="color:#fff;">✕</button>
+      </div>
+      <h3 style="font-size:22px; font-weight:600; color:#fff; line-height:1.3; margin-top:14px; white-space:pre-line;">{{ t.popupTitle }}</h3>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:1px; background:#E8EFEF;">
+      <a href="#partnership" onClick="{{ closePopup }}" style="display:flex; align-items:center; justify-content:space-between; padding:20px 28px; background:#fff; transition:background .2s;" style-hover="background:#F2F6F6;">
+        <div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#00978F; margin-bottom:6px;">PHARMACY</div>
+          <div style="font-size:17px; font-weight:600; color:#10181E;">{{ t.popupPharmacyTitle }}</div>
+          <div style="font-size:13px; font-weight:300; color:#5B6B6D; margin-top:4px; line-height:1.5;">{{ t.popupPharmacyDesc }}</div>
+        </div>
+        <span style="font-size:20px; color:#005251; font-weight:300;">→</span>
+      </a>
+      <a href="#partnership" onClick="{{ closePopup }}" style="display:flex; align-items:center; justify-content:space-between; padding:20px 28px; background:#fff; transition:background .2s;" style-hover="background:#F2F6F6;">
+        <div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#00978F; margin-bottom:6px;">STORE DEV</div>
+          <div style="font-size:17px; font-weight:600; color:#10181E;">{{ t.popupStoreTitle }}</div>
+          <div style="font-size:13px; font-weight:300; color:#5B6B6D; margin-top:4px; line-height:1.5;">{{ t.popupStoreDesc }}</div>
+        </div>
+        <span style="font-size:20px; color:#005251; font-weight:300;">→</span>
+      </a>
+    </div>
+    <div style="padding:16px 28px; background:#F8FAFA; display:flex; align-items:center; justify-content:flex-end;">
+      <button onClick="{{ dismissPopupToday }}" style="font-size:12px; font-weight:500; color:#5B6B6D; background:none; border:1px solid #D5E0E0; border-radius:40px; padding:6px 16px; transition:.2s;" style-hover="background:#E3EAEA;">{{ t.popupDismiss }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scroll to top -->
+<button onClick="{{ scrollTop }}" style="{{ scrollTopStyle }}" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<div class="ps-cursor-dot"></div>
+<div class="ps-cursor-ring"></div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+class Component extends DCLogic {
+  state = {
+    lang: 'ko',
+    scrolled: false,
+    menuOpen: false,
+    langDropdownOpen: false,
+    latestNotice: null,
+    galleryIdx: 0,
+    activeSection: '',
+    activeTab: 0,
+    inquiryType: 'brand',
+    selectedStore: 0,
+    formOpen: true,
+    agree: null,
+    submitted: false,
+    popupVisible: false,
+    brandsExpanded: false,
+    form: { name:'', role:'', phone:'', email:'', company:'', message:'', area:'', experience:'', timing:'', currentPharmacy:'', storeRole:'', category:'', location:'' }
+  };
+
+  componentDidMount() {
+    // Restore lang preference
+    try {
+      const saved = localStorage.getItem('ps_lang');
+      if (saved && ['ko','en','zh'].includes(saved)) {
+        this.setState({ lang: saved }, () => this._applyFont(saved));
+      }
+    } catch(e) {}
+    try {
+      const ps = JSON.parse(localStorage.getItem('ps_posts') || '[]');
+      const n = ps.find(p => p.active !== false && p.category === 'notice' && p.pinned);
+      if (n) this.setState({ latestNotice: n });
+    } catch(e) {}
+
+    const navKeys = ['about','gallery','brands','partnership','location'];
+    this._onScroll = () => {
+      const sc = window.scrollY > 60;
+      const y = window.scrollY + 140;
+      let cur = '';
+      for (const k of navKeys) { const el = document.getElementById(k); if (el && el.offsetTop <= y) cur = k; }
+      if (sc !== this.state.scrolled || cur !== this.state.activeSection) this.setState({ scrolled: sc, activeSection: cur });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive:true });
+    this._onScroll();
+
+    const dismissed = localStorage.getItem('ps_popup_dismiss');
+    const today = new Date().toDateString();
+    if (dismissed !== today) {
+      this._popupTimer = setTimeout(() => this.setState({ popupVisible: true }), 1800);
+    }
+
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); this._io.unobserve(e.target); } });
+    }, { threshold:0.1, rootMargin:'0px 0px -7% 0px' });
+    setTimeout(() => { document.querySelectorAll('.reveal').forEach(el => this._io.observe(el)); }, 80);
+    this._revealFallback = setTimeout(() => { document.querySelectorAll('.reveal:not(.in)').forEach(el => el.classList.add('in')); }, 2600);
+
+    const dot = document.querySelector('.ps-cursor-dot');
+    const ring = document.querySelector('.ps-cursor-ring');
+    if (dot && ring) {
+      let mx = window.innerWidth/2, my = window.innerHeight/2, rx = mx, ry = my;
+      this._hovered = false;
+      ring.style.width = '36px'; ring.style.height = '36px';
+      const onMouse = (e) => { mx = e.clientX; my = e.clientY; };
+      window.addEventListener('mousemove', onMouse);
+      const animCursor = () => {
+        rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11;
+        const sz = this._hovered ? 52 : 36;
+        dot.style.transform = `translate(${mx - 4}px,${my - 4}px)`;
+        ring.style.width = sz + 'px'; ring.style.height = sz + 'px';
+        ring.style.transform = `translate(${rx - sz/2}px,${ry - sz/2}px)`;
+        this._cRaf = requestAnimationFrame(animCursor);
+      };
+      animCursor();
+      const enter = () => { this._hovered = true; ring.style.borderColor = 'rgba(1,192,164,.95)'; };
+      const leave = () => { this._hovered = false; ring.style.borderColor = 'rgba(1,192,164,.55)'; };
+      document.querySelectorAll('a,button').forEach(el => { el.addEventListener('mouseenter', enter); el.addEventListener('mouseleave', leave); });
+      this._removeMouse = () => { window.removeEventListener('mousemove', onMouse); cancelAnimationFrame(this._cRaf); };
+    }
+
+    const hero = document.querySelector('.ps-hero');
+    const c1 = document.querySelector('.ps-hero-c1');
+    const c2 = document.querySelector('.ps-hero-c2');
+    if (hero && c1 && c2) {
+      let px = 0, py = 0, t = 0;
+      const heroMouse = (e) => { const r = hero.getBoundingClientRect(); px = (e.clientX - r.left - r.width/2) / r.width * 26; py = (e.clientY - r.top - r.height/2) / r.height * 16; };
+      hero.addEventListener('mousemove', heroMouse);
+      const animHero = () => { t += 0.007; const f1 = Math.sin(t) * 14; const f2 = Math.sin(t * 0.9 + 1) * 10; if (c1) c1.style.transform = `translate(${px}px,${f1 + py}px)`; if (c2) c2.style.transform = `translate(${-px*0.7}px,${f2 - py*0.7}px)`; this._heroRaf = requestAnimationFrame(animHero); };
+      animHero();
+      this._heroCleanup = () => { hero.removeEventListener('mousemove', heroMouse); cancelAnimationFrame(this._heroRaf); };
+    }
+
+    const initStoreDots = () => {
+      const scroll = document.getElementById('ps-store-scroll');
+      const dotsEl = document.getElementById('ps-store-dots');
+      if (!scroll || !dotsEl) return;
+      const updateDots = () => { if (window.innerWidth >= 1024) return; const cards = scroll.querySelectorAll('article'); if (!cards.length) return; const cardW = cards[0].offsetWidth + 14; const idx = Math.round(scroll.scrollLeft / cardW); const dots = dotsEl.querySelectorAll('span'); dots.forEach((d, i) => { d.style.width = i === idx ? '24px' : '8px'; d.style.background = i === idx ? '#005251' : '#D5E0E0'; }); };
+      scroll.addEventListener('scroll', updateDots, { passive: true });
+      updateDots();
+    };
+    setTimeout(initStoreDots, 600);
+
+    const initPtypeDots = () => {
+      const scroll = document.getElementById('ps-ptype-scroll');
+      const dotsEl = document.getElementById('ps-ptype-dots');
+      if (!scroll || !dotsEl) return;
+      const updateDots = () => { if (window.innerWidth >= 1024) return; const cards = scroll.querySelectorAll('article'); if (!cards.length) return; const cardW = cards[0].offsetWidth + 14; const idx = Math.round(scroll.scrollLeft / cardW); const dots = dotsEl.querySelectorAll('span'); dots.forEach((d, i) => { d.style.width = i === idx ? '24px' : '8px'; d.style.background = i === idx ? '#005251' : '#D5E0E0'; }); };
+      scroll.addEventListener('scroll', updateDots, { passive: true });
+      updateDots();
+    };
+    setTimeout(initPtypeDots, 600);
+
+    if (window.innerWidth < 1024) this.setState({ formOpen: false });
+
+    const initMap = () => {
+      const el = document.getElementById('ps-overview-map');
+      if (!el || !window.L || el._leaflet_id) return;
+      const stores = [
+        { name:'파마스퀘어 하남점', tag:'FLAGSHIP', lat:37.5449, lng:127.1943, color:'#005251' },
+        { name:'파마스퀘어 익스프레스 구로점', tag:'EXPRESS', lat:37.4756, lng:126.9028, color:'#01C0A4' },
+        { name:'파마스퀘어 청라점', tag:'STANDARD', lat:37.5363, lng:126.6482, color:'#2BCAB0' },
+        { name:'파마스퀘어 김포점', tag:'STANDARD', lat:37.6148, lng:126.7156, color:'#2BCAB0' }
+      ];
+      const map = window.L.map(el, { zoomControl:true, scrollWheelZoom:false }).setView([37.54, 126.96], 10);
+      window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'&copy; OpenStreetMap contributors', maxZoom:18 }).addTo(map);
+      stores.forEach(s => {
+        const icon = window.L.divIcon({ className:'', html:`<div style="width:36px;height:36px;border-radius:50%;background:${s.color};border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;"><div style="width:8px;height:8px;border-radius:50%;background:#fff;"></div></div>`, iconSize:[36,36], iconAnchor:[18,18], popupAnchor:[0,-20] });
+        window.L.marker([s.lat, s.lng], { icon }).addTo(map).bindPopup(`<div style="font-family:inherit;padding:4px 2px;min-width:160px;"><div style="font-size:10px;font-weight:600;color:${s.color};letter-spacing:.1em;margin-bottom:3px;">${s.tag}</div><div style="font-size:13px;font-weight:600;color:#10181E;">${s.name}</div></div>`);
+      });
+    };
+    if (window.L) { initMap(); } else { const chk = setInterval(() => { if (window.L) { clearInterval(chk); initMap(); } }, 100); setTimeout(() => clearInterval(chk), 5000); }
+  }
+
+  componentWillUnmount() {
+    if (this._popupTimer) clearTimeout(this._popupTimer);
+    window.removeEventListener('scroll', this._onScroll);
+    if (this._io) this._io.disconnect();
+    if (this._revealFallback) clearTimeout(this._revealFallback);
+    if (this._removeMouse) this._removeMouse();
+    if (this._heroCleanup) this._heroCleanup();
+  }
+
+  _applyFont(lang) {
+    document.body.style.fontFamily = lang === 'zh'
+      ? "'Noto Sans SC','SUIT',sans-serif"
+      : "'SUIT','Noto Sans SC',sans-serif";
+    document.body.style.wordBreak = lang === 'zh' ? 'normal' : 'keep-all';
+  }
+
+  setLang = (l) => {
+    this.setState({ lang: l, langDropdownOpen: false });
+    this._applyFont(l);
+    try { localStorage.setItem('ps_lang', l); } catch(e) {}
+  };
+  toggleLangDropdown = () => this.setState(s => ({ langDropdownOpen: !s.langDropdownOpen }));
+
+  toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
+  closeMenu = () => this.setState({ menuOpen: false, langDropdownOpen: false });
+  closePopup = () => this.setState({ popupVisible: false });
+  dismissPopupToday = () => { localStorage.setItem('ps_popup_dismiss', new Date().toDateString()); this.setState({ popupVisible: false }); };
+  expandBrands = () => this.setState({ brandsExpanded: true });
+  setField = (k) => (e) => { const v = e.target.value; this.setState(s => ({ form: { ...s.form, [k]: v } })); };
+  setInquiryType = (type) => {
+    this.setState({ inquiryType: type });
+    const el = document.getElementById('inquiry');
+    if (el) window.scrollTo({ top: el.offsetTop - 88, behavior:'smooth' });
+  };
+  submitForm = (e) => {
+    e.preventDefault();
+    const f = this.state.form;
+    const type = this.state.inquiryType;
+    const T = this._getT(this.state.lang);
+    const typeLabel = type === 'pharmacy' ? T.typePharmacy : type === 'brand' ? T.typeBrand : T.typeStoreDev;
+    let body = T.fName.replace(' *','') + ': ' + f.name + '\n' + T.fPhone.replace(' *','') + ': ' + f.phone + '\n' + T.fEmail + ': ' + f.email + '\n';
+    if (type === 'pharmacy') body += T.fArea + ': ' + f.area + '\n' + T.fExp + ': ' + f.experience + '\n' + T.fTiming + ': ' + f.timing + '\n';
+    if (type === 'brand') body += T.fRole + ': ' + f.role + '\n' + T.fCompany + ': ' + f.company + '\n' + T.fCategory + ': ' + f.category + '\n' + T.fMsg + ': ' + f.message + '\n';
+    if (type === 'other') body += (T.fMsg || '문의 내용') + ': ' + f.message + '\n';
+    if (type === 'storeDev') body += T.fCompanyOrg + ': ' + f.company + '\n' + T.fLocation + ': ' + f.location + '\n' + T.fMsg + ': ' + f.message + '\n';
+    const fd = new FormData();
+    fd.append('type', typeLabel); fd.append('name', f.name); fd.append('phone', f.phone); fd.append('email', f.email); fd.append('body', body);
+    fetch('./mail.php', { method: 'POST', body: fd })
+      .then(r => r.json())
+      .then(() => this.setState({ submitted: true }))
+      .catch(() => {
+        const a = document.createElement('a');
+        a.href = 'mailto:official@phamasquare.com?subject=' + encodeURIComponent('[Phama Square] ' + typeLabel + ' - ' + f.name) + '&body=' + encodeURIComponent(body);
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        this.setState({ submitted: true });
+      });
+  };
+  resetForm = () => this.setState({ submitted: false, agree: null, form:{ name:'', role:'', phone:'', email:'', company:'', message:'', area:'', experience:'', timing:'', currentPharmacy:'', storeRole:'', category:'', location:'' } });
+
+  _getT(lang) {
+    const i18n = {
+      ko: {
+        announceLabel: '파마스퀘어 AI 건강가이드 프로그램', announceLink: 'AI 건강가이드 체험하기 →',
+        healthGuide: '건강가이드', partnershipCTA: '파트너십 문의', partnershipCTAFull: '파트너십 문의하기',
+        heroDesc: '내면의 건강과 미적 가치가 균형을 이루는 공간.\n파마스퀘어가 제안하는 새로운 웰니스 경험.',
+        taglineL1: '건강은 더하고,', taglineL2: '가격은 낮춥니다.', taglineCenter: '건강은 더하고, 가격은 낮춥니다.', taglineSub: '전문가 큐레이션과 대량 직소싱으로 소비자에게 더 나은 선택지를 제공합니다.',
+        aboutTitleL1: '아름다운 균형을', aboutTitleL2: '이루는 공간,', aboutBrand: '파마스퀘어',
+        aboutP1: '파마스퀘어는 건강기능식품, 뷰티, 펫 그리고 독립 입점 약국이 한 공간에 구성된 웰니스 플랫폼으로서, 건강한 내면의 균형과 미적 가치가 조화를 이루는 새로운 웰니스 경험을 제안합니다.',
+        aboutP2: '파마스퀘어 하남 플래그십은 약 500평 규모의 스토어로 2025년 오픈했습니다. 건강기능식품·뷰티·펫·라이프스타일·의약품까지 4,000개 이상의 SKU를 갖춘 대형 웰니스 스토어입니다.',
+        aboutP3: '2026년 하남·구로를 시작으로 청라·김포·홍대·송도·천안까지 연내 7개 매장 운영을 목표로 빠르게 확장 중이며, 향후 전국 주요 도시로 넓혀갈 예정입니다.',
+        pyeong: '평', storeCountSuffix: '개+', stat1Num: '300~500', stat1Unit: '평', stat2Num: '150~200', stat2Unit: '평', stat1Format: '플래그십 · 스탠다드', stat1Desc: '도심 외각 대형 복합매장', stat2Format: '익스프레스', stat2Desc: '도심 접근성 특화 매장', stat3Format: '2026년 목표 매장 수', stat3Desc: '하남·구로·청라·김포·홍대·송도·천안',
+        locTitle: '전국으로 확장하는\n웰니스 플랫폼', locDesc: '하남 플래그십을 시작으로 구로·청라·김포 등 주요 입지에 순차 오픈하며, 송도·홍대·천안 등 전국 주요 도시로 확장합니다.', swipeHint: '옆으로 밀어 더 보기', locMapBtn: '위치 확인 →', storeSizeSuffix: '평 규모',
+        typeOther: '기타 문의', fOtherMsgPH: '문의 내용을 자유롭게 작성해주세요.',
+        philTitle: '조화의 철학', philDesc: '몸과 마음, 건강과 아름다움,\n일상과 감성을 연결하는 균형의 가치,\n그것이 파마스퀘어의 철학입니다.',
+        whyTitle: '입점해야 하는\n분명한 이유', whyCatchphrase: '건강은 더하고, 가격은 낮춥니다.', whyDesc: '파마스퀘어는 소비자에게 더 나은 웰니스를, 파트너 브랜드에게는 더 넓은 시장을 제공합니다.',
+        aiTitleL1: '단순 유통을 넘어,', aiTitleL2: 'AI 웰니스 플랫폼', aiTitleSuffix: '으로.', aiDesc: '파마스퀘어는 매장을 단순 판매 공간이 아닌 고객 건강 데이터의 거점으로 바라봅니다. 피로·수면·면역·피부·다이어트 등 일상의 건강 신호를 읽고, AI가 개인에게 꼭 맞는 웰니스를 추천하는 플랫폼으로 진화합니다.',
+        aiBannerTitle: '파마스퀘어 AI 건강가이드 프로그램', aiBannerDesc: '증상과 건강 고민을 입력하면 AI가 맞춤 웰니스 솔루션을 제안합니다.', aiBannerCTA: '지금 체험하기 →',
+        brandsTitle: '함께하는 브랜드', brandsSub: '— 입점 브랜드 리스트는 순차 업데이트 예정입니다.', brandsUnit: '개 브랜드',
+        tabHealth: '건강식', tabBeauty: '화장품', tabPet: '펫제품', tabLife: '라이프스타일',
+        partnerTitle: '함께 성장할\n파트너를 찾습니다', partnerDesc: '약국 입점, 브랜드사 입점, 점포 개발 협업\n— 각 유형에 맞는 문의를 보내주세요.',
+        inquiryTitle: '문의하기', inquiryDesc: '파트너십 유형을 선택하고 내용을 보내주시면, 내부 검토 후 담당자가 개별 회신드리겠습니다.', inquiryP1: '내부 검토 후 담당자가 개별 회신드리겠습니다.', inquiryP2: '답변이 다소 늦어질 수 있는 점 양해 부탁드립니다.',
+        fTypeLabel: '문의 유형 선택', fName: '성함 *', fPhone: '연락처 *', fEmail: '이메일', fNamePH: '홍길동', fPhonePH: '010-0000-0000',
+        fArea: '희망 지역', fAreaPH: '예: 서울 강남 / 경기 수원', fExp: '약사 업력', fExpPH: '예: 7년', fTiming: '희망 입점 시기', fTimingPH: '예: 2026년 상반기', fCurrentOp: '현 약국 운영 여부',
+        currentOpOptions: ['운영 중', '미운영', '폐업 예정'],
+        fRole: '직책 / 직위', fRolePH: '대표 / 매니저', fCompany: '회사명', fCompanyPH: '주식회사 ○○○', fCategory: '희망 입점 카테고리', fCategoryPH: '뷰티 / 건강기능식품 / 펫 / 라이프스타일', fMsg: '문의 내용', fBrandMsgPH: '브랜드 소개, 희망 입점 내용 등을 자유롭게 작성해주세요.',
+        fStoreRoleLabel: '역할', storeRoleOptions: ['건물주', '임대인', '중개인', '기타'], fCompanyOrg: '회사 / 기관명', fCompanyOrgPH: '주식회사 ○○○ / 개인', fLocation: '제안 입지 (주소 / 상권명)', fLocationPH: '예: 서울 홍대입구역 인근 / 경기 수원 ○○빌딩', fStoreMsgPH: '제안 공간의 특성, 가용 면적, 월 임대료 범위 등을 자유롭게 작성해주세요.',
+        fPrivacy: '개인정보 수집 및 이용에 동의합니다.', fAgreeYes: '동의함', fAgreeNo: '동의 안 함', fSubmit: '문의 전송하기',
+        formOpenLabel: '문의 내용 입력 중', formClosedLabel: '문의 내용 작성하기 →',
+        submittedTitle: '문의가 접수되었습니다', submittedDesc: '내부 검토 후 담당자가 개별 회신드리겠습니다.\n답변이 다소 늦어질 수 있는 점 양해 부탁드립니다.\n감사합니다.', newInquiry: '새 문의 작성',
+        galleryTitle: '파마스퀘어 하남점', locationTitle: '오시는 길', naverMap: '네이버 지도', kakaoMap: '카카오맵',
+        locTabs: ['하남점', '구로점', '청라점', '김포점'],
+        typePharmacy: '약국 입점', typeBrand: '브랜드사 입점', typeStoreDev: '점포 개발 협업',
+        footerDesc: '대한민국 No.1 AI 웰니스 플랫폼으로 성장하여 균형 있는 라이프스타일 문화를 선도합니다.', footerLegalName: '법인명', footerCEO: '대표이사', footerBizNum: '사업자번호', footerEmail: '이메일', footerAddr: '주소',
+        copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: '개인정보취급방침',
+        popupTitle: '파마스퀘어와 함께할\n파트너를 찾습니다', popupPharmacyTitle: '약사 파트너 모집', popupPharmacyDesc: '독립 약국 개설 · 서울 및 경기권 우선 검토', popupStoreTitle: '점포 개발 협업', popupStoreDesc: '파마스퀘어 오픈에 적합한 입지 제안 환영', popupDismiss: '오늘 하루 보지 않기',
+        marqueeTagline: '건강은 더하고, 가격은 낮춥니다', marquee263: '263개 입점 브랜드', marqueePharmacy: '약사 파트너십 상시 모집', marqueeStoreDev: '점포 개발 협업 환영',
+        brandsCountPrefix: '총 ', brandsCountMid: ' · ', expandBtn: '전체 브랜드 보기 (+{n}개) ↓',
+        pillars: [ { n:1, en:'Harmony', desc:'건강과 미(美)의 조화' }, { n:2, en:'Balance', desc:'일상과 감각의 균형' }, { n:3, en:'Trust', desc:'전문가 기반의 신뢰 서비스' }, { n:4, en:'Experience', desc:'체험 기반의 프리미엄 H&B 공간' } ],
+        advantages: [
+          { n:1, kw:'LARGE-FORMAT STORE', title:'대형 복합 웰니스 플랫폼', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['지점별 200~500평 규모의 대형 스토어','브랜드 체험형 존 구성으로 체류 시간 증가','체류 시간 증가 → 구매 전환율 상승'] },
+          { n:2, kw:'FULL LINE-UP + PHARMACY', title:'수천 종 카테고리 풀 라인업 + 독립약국', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['뷰티 · 건강기능식품 · 라이프스타일 · 펫케어','독립약국 입점으로 의약품까지 원스톱 케어','웰니스 전 영역을 아우르는 통합 큐레이션'] },
+          { n:3, kw:'NATIONWIDE EXPANSION', title:'확장 가능한 전국 웰니스 플랫폼', grad:'linear-gradient(150deg,#019e88,#005251)', points:['하남(500평) 플래그십 운영','구로 · 청라 · 김포 순차 오픈','송도 · 홍대 · 천안 등 전국 확장 예정'] }
+        ],
+        aiSteps: [ { n:1, en:'DATA HUB', title:'오프라인 건강 접점', desc:'매장에서 만나는 건강 니즈와 구매 데이터를, 병원 방문 이전 단계의 사전 건강 신호로 구조화합니다.' }, { n:2, en:'AI RECOMMEND', title:'AI 맞춤 추천', desc:'자가진단·구매 이력·재구매 주기를 연결해, 고객 개인에게 꼭 맞는 웰니스 솔루션을 제안합니다.' }, { n:3, en:'PLATFORM', title:'플랫폼으로 확장', desc:'축적된 웰니스 데이터를 기반으로 구독·검진·헬스케어 서비스로 이어지는 플랫폼을 지향합니다.' } ],
+        ptypes: [
+          { tag:'01 · PHARMACY', icon:'+', title:'약국 입점', sub:'약사님의 독립적인 약국 개설 및 운영을 전제로 한 입점 안내입니다. 채용이 아닌 분리된 독립 약국 구조입니다.', points:['검토 지역: 서울 전 지역 및 경기권','기재사항: 성함, 희망지역, 약사 업력, 희망 입점 시기','독립 운영, 전문성과 자율성 보장'], cta:'약국 입점 문의', grad:'linear-gradient(150deg,#007a73 0%,#004a47 100%)', type:'pharmacy' },
+          { tag:'02 · BRAND', icon:'◈', title:'브랜드사 입점', sub:'뷰티, 건강기능식품, 라이프스타일, 펫케어 전 카테고리 브랜드사의 입점을 검토합니다.', points:['200~500평 대형 스토어에서 고객을 직접 만나세요','수천 종 카테고리 풀라인업 구성 환경','라이브커머스 스튜디오 연계 가능'], cta:'브랜드 입점 문의', grad:'linear-gradient(150deg,#009e8a 0%,#006b62 100%)', type:'brand' },
+          { tag:'03 · STORE DEV', icon:'⬡', title:'점포 개발 협업', sub:'파마스퀘어 오픈에 적합한 입지를 제안해주세요. 상권 분석, 부동산 정보, 공간 특성 등 자유롭게 보내주시면 내부 검토 후 연락드립니다.', points:['하남·구로·청라·김포 등 전국 확장 진행 중','대형 유동인구 상권, 대형몰 인접 입지 선호','제안 내용 검토 후 담당자 개별 연락'], cta:'입지 제안하기', grad:'linear-gradient(150deg,#005251 0%,#001f1f 100%)', type:'storeDev' }
+        ],
+        stores: [
+          { en:'HANAM FLAGSHIP', name:'파마스퀘어 하남점', format:'FLAGSHIP', status:'NOW OPEN', addr:'경기도 하남시 미사대로 410, 1F' },
+          { en:'GURO EXPRESS', name:'파마스퀘어 익스프레스 구로점', format:'EXPRESS', status:'COMING SOON', addr:'서울특별시 관악구 시흥대로 554, B1' },
+          { en:'CHEONGNA', name:'파마스퀘어 청라점', format:'STANDARD', status:'COMING SOON', addr:'인천광역시 서구 서곶로 120, B2' },
+          { en:'GIMPO', name:'파마스퀘어 김포점', format:'STANDARD', status:'COMING SOON', addr:'경기도 김포시 (주소 업데이트 예정)' }
+        ],
+        locationInfos: [
+          { tag:'FLAGSHIP', name:'파마스퀘어 하남점', addr:'경기도 하남시 미사대로 410, 1F', naverUrl:'https://naver.me/GEiYUlIZ', kakaoUrl:'https://map.kakao.com/?itemId=136420760' },
+          { tag:'EXPRESS', name:'파마스퀘어 익스프레스 구로점', addr:'서울특별시 관악구 시흥대로 554, B1', naverUrl:'', kakaoUrl:'' },
+          { tag:'STANDARD', name:'파마스퀘어 청라점', addr:'인천광역시 서구 서곶로 120, B2', naverUrl:'', kakaoUrl:'' },
+          { tag:'STANDARD', name:'파마스퀘어 김포점', addr:'경기도 김포시 (주소 업데이트 예정)', naverUrl:'', kakaoUrl:'' }
+        ]
+      },
+      en: {
+        announceLabel: 'Phama Square AI Health Guide Program', announceLink: 'Try AI Health Guide →',
+        healthGuide: 'Health Guide', partnershipCTA: 'Partnership', partnershipCTAFull: 'Contact for Partnership',
+        heroDesc: 'A space where inner wellness and aesthetic values find perfect balance.\nA new wellness experience, proposed by Phama Square.',
+        taglineL1: 'More health,', taglineL2: 'better prices.', taglineCenter: 'More health, better prices.', taglineSub: 'Expert curation and bulk direct sourcing deliver better choices to our customers.',
+        aboutTitleL1: 'A space of', aboutTitleL2: 'beautiful balance,', aboutBrand: 'Phama Square',
+        aboutP1: 'Phama Square is a wellness platform bringing together health foods, beauty, pet care, and independent pharmacies under one roof — offering a new wellness experience that harmonizes inner health with aesthetic values.',
+        aboutP2: 'The Phama Square Hanam Flagship opened in 2025, spanning approximately 500 pyeong (≈1,650m²). It carries 4,000+ SKUs across health foods, beauty, pet, lifestyle, and pharmaceutical products.',
+        aboutP3: 'Starting with Hanam and Guro in 2026, we are rapidly expanding to Cheongna, Gimpo, Hongdae, Songdo, and Cheonan — targeting 7 stores this year — with plans for all major cities nationwide.',
+        pyeong: 'm²', storeCountSuffix: '+', stat1Num: '990~1,650', stat1Unit: 'm²', stat2Num: '495~660', stat2Unit: 'm²', stat1Format: 'Flagship · Standard', stat1Desc: 'Large-format complex stores', stat2Format: 'Express', stat2Desc: 'Urban accessibility-focused stores', stat3Format: '2026 store target', stat3Desc: 'Hanam · Guro · Cheongna · Gimpo · Hongdae · Songdo · Cheonan',
+        locTitle: 'A wellness platform\nexpanding nationwide', locDesc: 'Starting from our Hanam flagship, we are sequentially opening in Guro, Cheongna, and Gimpo, with expansion to Songdo, Hongdae, Cheonan, and all major cities nationwide.', swipeHint: 'Swipe for more', locMapBtn: 'View Location →', storeSizeSuffix: ' m²',
+        typeOther: 'Other Inquiry', fOtherMsgPH: 'Please feel free to write your inquiry.',
+        philTitle: 'Philosophy of Harmony', philDesc: 'Body and mind, health and beauty,\ndaily life and sensibility — the value of balance\nconnecting them all. This is the philosophy of Phama Square.',
+        whyTitle: 'Clear reasons\nto partner with us', whyCatchphrase: 'More health, better prices.', whyDesc: 'Phama Square offers consumers a better wellness experience and brands a wider market.',
+        aiTitleL1: 'Beyond distribution,', aiTitleL2: 'an AI wellness platform', aiTitleSuffix: '.', aiDesc: 'Phama Square sees its stores not just as retail spaces, but as hubs for customer health data. By reading daily health signals — fatigue, sleep, immunity, skin, diet — we are evolving into a platform where AI recommends personalized wellness for each individual.',
+        aiBannerTitle: 'Phama Square AI Health Guide Program', aiBannerDesc: 'Enter your symptoms and health concerns — AI will suggest personalized wellness solutions.', aiBannerCTA: 'Try it now →',
+        brandsTitle: 'Partner Brands', brandsSub: '— Brand list will be updated sequentially.', brandsUnit: ' brands',
+        tabHealth: 'Health', tabBeauty: 'Beauty', tabPet: 'Pet', tabLife: 'Lifestyle',
+        partnerTitle: 'Looking for partners\nto grow with', partnerDesc: 'Pharmacy partnership, brand partnership, store development\n— please send your inquiry by type.',
+        inquiryTitle: 'Contact Us', inquiryDesc: 'Please select your partnership type and send your inquiry. Our team will review it and get back to you individually.', inquiryP1: 'Our team will review and respond individually.', inquiryP2: 'We appreciate your patience for a timely response.',
+        fTypeLabel: 'Select inquiry type', fName: 'Full Name *', fPhone: 'Phone *', fEmail: 'Email', fNamePH: 'Full name', fPhonePH: 'Phone number',
+        fArea: 'Preferred Area', fAreaPH: 'e.g. Seoul Gangnam / Gyeonggi Suwon', fExp: 'Pharmacist Experience', fExpPH: 'e.g. 7 years', fTiming: 'Preferred Opening Time', fTimingPH: 'e.g. First half of 2026', fCurrentOp: 'Current pharmacy status',
+        currentOpOptions: ['Currently operating', 'Not operating', 'Closing soon'],
+        fRole: 'Title / Position', fRolePH: 'CEO / Manager', fCompany: 'Company Name', fCompanyPH: 'Your Company Name', fCategory: 'Preferred Category', fCategoryPH: 'Beauty / Health / Pet / Lifestyle', fMsg: 'Message', fBrandMsgPH: 'Please describe your brand, preferred categories, and other inquiries.',
+        fStoreRoleLabel: 'Your Role', storeRoleOptions: ['Building Owner', 'Lessor', 'Broker', 'Other'], fCompanyOrg: 'Company / Organization', fCompanyOrgPH: 'Company Name', fLocation: 'Proposed Location', fLocationPH: 'e.g. Near Hongdae Station, Seoul / Suwon Building, Gyeonggi', fStoreMsgPH: 'Please describe the space characteristics, available area, rent range, etc.',
+        fPrivacy: 'I agree to the collection and use of personal information.', fAgreeYes: 'Agree', fAgreeNo: 'Disagree', fSubmit: 'Submit Inquiry',
+        formOpenLabel: 'Filling out inquiry', formClosedLabel: 'Fill out inquiry →',
+        submittedTitle: 'Your inquiry has been received.', submittedDesc: 'Our team will review and respond individually.\nWe appreciate your patience.\nThank you.', newInquiry: 'New Inquiry',
+        galleryTitle: 'Phama Square Hanam Store', locationTitle: 'Directions', naverMap: 'Naver Map', kakaoMap: 'Kakao Map',
+        locTabs: ['Hanam', 'Guro', 'Cheongna', 'Gimpo'],
+        typePharmacy: 'Pharmacy Partnership', typeBrand: 'Brand Partnership', typeStoreDev: 'Store Development',
+        footerDesc: "Growing into South Korea's No.1 AI wellness platform, leading a balanced lifestyle culture.", footerLegalName: 'Legal Name', footerCEO: 'CEO', footerBizNum: 'Business Reg. No.', footerEmail: 'Email', footerAddr: 'Address',
+        copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: 'Privacy Policy',
+        popupTitle: 'Looking for partners\nto grow with Phama Square', popupPharmacyTitle: 'Pharmacist Partner Recruitment', popupPharmacyDesc: 'Independent pharmacy setup · Priority review for Seoul & Gyeonggi', popupStoreTitle: 'Store Development Partnership', popupStoreDesc: 'Welcome proposals for locations suitable for Phama Square', popupDismiss: 'Do not show today',
+        marqueeTagline: 'More health, better prices', marquee263: '263 partner brands', marqueePharmacy: 'Recruiting pharmacist partners', marqueeStoreDev: 'Store development welcome',
+        brandsCountPrefix: 'Total ', brandsCountMid: ' · ', expandBtn: 'View all brands (+{n}) ↓',
+        pillars: [ { n:1, en:'Harmony', desc:'Harmony of health & beauty' }, { n:2, en:'Balance', desc:'Balance of daily life & sensibility' }, { n:3, en:'Trust', desc:'Trust through expert-based service' }, { n:4, en:'Experience', desc:'Premium H&B experience space' } ],
+        advantages: [
+          { n:1, kw:'LARGE-FORMAT STORE', title:'Large-Format Wellness Platform', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['200–500 pyeong large-format stores per branch','Brand experience zones increase dwell time','Higher dwell time → improved purchase conversion'] },
+          { n:2, kw:'FULL LINE-UP + PHARMACY', title:'Full Category Lineup + Independent Pharmacy', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['Beauty · Health Foods · Lifestyle · Pet Care','One-stop care including pharmaceuticals via independent pharmacy','Integrated curation across the entire wellness spectrum'] },
+          { n:3, kw:'NATIONWIDE EXPANSION', title:'Expandable Nationwide Wellness Platform', grad:'linear-gradient(150deg,#019e88,#005251)', points:['Hanam (500 pyeong) Flagship in operation','Sequential openings: Guro · Cheongna · Gimpo','Nationwide expansion: Songdo · Hongdae · Cheonan'] }
+        ],
+        aiSteps: [ { n:1, en:'DATA HUB', title:'Offline Health Touchpoint', desc:'Health needs and purchase data gathered in-store are structured as pre-clinical health signals.' }, { n:2, en:'AI RECOMMEND', title:'AI Personalized Recommendations', desc:'By connecting self-diagnostics, purchase history, and repurchase cycles, we recommend personalized wellness solutions.' }, { n:3, en:'PLATFORM', title:'Platform Expansion', desc:'Based on accumulated wellness data, we aim to evolve into a subscription, checkup, and healthcare service platform.' } ],
+        ptypes: [
+          { tag:'01 · PHARMACY', icon:'+', title:'Pharmacy Partnership', sub:'For pharmacists seeking to open and operate an independent pharmacy — not employment, but a separate independent structure.', points:['Review areas: All of Seoul and Gyeonggi Province','Required: Name, preferred area, experience, desired opening time','Independent operation with guaranteed expertise and autonomy'], cta:'Pharmacy Inquiry', grad:'linear-gradient(150deg,#007a73 0%,#004a47 100%)', type:'pharmacy' },
+          { tag:'02 · BRAND', icon:'◈', title:'Brand Partnership', sub:'We welcome partnerships with brands in all categories: beauty, health foods, lifestyle, and pet care.', points:['Reach customers directly in 200–500 pyeong stores','Full-lineup environment with thousands of SKUs','Live commerce studio linkage possible'], cta:'Brand Inquiry', grad:'linear-gradient(150deg,#009e8a 0%,#006b62 100%)', type:'brand' },
+          { tag:'03 · STORE DEV', icon:'⬡', title:'Store Development', sub:"Propose locations suitable for a Phama Square opening. Send market analysis, real estate info, or space characteristics — we'll review and contact you.", points:['Nationwide expansion in progress: Hanam, Guro, Cheongna, Gimpo','Prefer high-traffic areas and locations near large malls','Individual contact after internal review'], cta:'Propose Location', grad:'linear-gradient(150deg,#005251 0%,#001f1f 100%)', type:'storeDev' }
+        ],
+        stores: [
+          { en:'HANAM FLAGSHIP', name:'Phama Square Hanam', format:'FLAGSHIP', status:'NOW OPEN', addr:'410 Misadae-ro, Hanam-si, Gyeonggi-do, 1F' },
+          { en:'GURO EXPRESS', name:'Phama Square Express Guro', format:'EXPRESS', status:'COMING SOON', addr:'554 Siheung-daero, Gwanak-gu, Seoul, B1' },
+          { en:'CHEONGNA', name:'Phama Square Cheongna', format:'STANDARD', status:'COMING SOON', addr:'120 Seogot-ro, Seo-gu, Incheon, B2' },
+          { en:'GIMPO', name:'Phama Square Gimpo', format:'STANDARD', status:'COMING SOON', addr:'Gimpo-si, Gyeonggi-do (address TBA)' }
+        ],
+        locationInfos: [
+          { tag:'FLAGSHIP', name:'Phama Square Hanam', addr:'410 Misadae-ro, Hanam-si, Gyeonggi-do, 1F', naverUrl:'https://naver.me/GEiYUlIZ', kakaoUrl:'https://map.kakao.com/?itemId=136420760' },
+          { tag:'EXPRESS', name:'Phama Square Express Guro', addr:'554 Siheung-daero, Gwanak-gu, Seoul, B1', naverUrl:'', kakaoUrl:'' },
+          { tag:'STANDARD', name:'Phama Square Cheongna', addr:'120 Seogot-ro, Seo-gu, Incheon, B2', naverUrl:'', kakaoUrl:'' },
+          { tag:'STANDARD', name:'Phama Square Gimpo', addr:'Gimpo-si, Gyeonggi-do (address TBA)', naverUrl:'', kakaoUrl:'' }
+        ]
+      },
+      zh: {
+        announceLabel: '파马广场 AI 健康指南计划', announceLink: '体验AI健康指南 →',
+        healthGuide: '健康指南', partnershipCTA: '合作咨询', partnershipCTAFull: '联系合作',
+        heroDesc: '内在健康与美学价值完美平衡的空间。\n파马广场提案的全新健康体验。',
+        taglineL1: '健康加倍，', taglineL2: '价格更低。', taglineCenter: '健康加倍，价格更低。', taglineSub: '通过专家精选和大量直采，为消费者提供更优选择。',
+        aboutTitleL1: '追求美丽均衡', aboutTitleL2: '的空间，', aboutBrand: '파马广场',
+        aboutP1: '파마广场是一个将健康食品、美容、宠物和独立药房融为一体的健康平台，提供内在健康与美学价值和谐统一的全新健康体验。',
+        aboutP2: '파마广场河南旗舰店于2025年开业，约500坪（约1,650㎡），汇聚健康食品、美容、宠物、生活方式及药品，共计4,000余个SKU，是大型综合健康商店。',
+        aboutP3: '从2026年河南、九老起步，逐步开设青罗、金浦、弘大、松岛、天安等门店，目标年内开设7家，并计划向全国主要城市扩展。',
+        pyeong: '坪', storeCountSuffix: '家+', stat1Format: '旗舰店 · 标准店', stat1Desc: '城郊大型综合商场', stat2Format: '快捷店', stat2Desc: '注重都市便利的门店', stat3Format: '2026年目标门店数', stat3Desc: '河南·九老·青罗·金浦·弘大·松岛·天安',
+        locTitle: '向全国扩张的\n健康平台', locDesc: '从河南旗舰店出发，依次在九老、青罗、金浦等核心地段开设门店，并扩展至松岛、弘大、天安等全国主要城市。', swipeHint: '左右滑动查看更多', locMapBtn: '查看位置 →', storeSizeSuffix: '坪规模',
+        philTitle: '和谐哲学', philDesc: '身与心、健康与美丽、\n日常与感性——连接它们的均衡价值，\n这就是파마广场的哲学。',
+        whyTitle: '入驻的\n明确理由', whyCatchphrase: '健康加倍，价格更低。', whyDesc: '파马广场为消费者提供更优质的健康体验，为合作品牌开拓更广阔的市场。',
+        aiTitleL1: '超越零售，', aiTitleL2: 'AI健康平台', aiTitleSuffix: '。', aiDesc: '파马广场将门店视为顾客健康数据的重要节点，通过读取日常健康信号——疲劳、睡眠、免疫、肌肤、减重，由AI向个人推荐最适合的健康方案，进化为真正的健康平台。',
+        aiBannerTitle: '파마广场 AI 健康指南计划', aiBannerDesc: '输入症状和健康烦恼，AI将为您推荐个性化健康解决方案。', aiBannerCTA: '立即体验 →',
+        brandsTitle: '合作品牌', brandsSub: '— 入驻品牌名单将陆续更新。', brandsUnit: '个品牌',
+        tabHealth: '健康食品', tabBeauty: '美容', tabPet: '宠物', tabLife: '生活方式',
+        partnerTitle: '寻找共同\n成长的合作伙伴', partnerDesc: '药局入驻、品牌入驻、门店开发合作\n——请按类型发送咨询。',
+        inquiryTitle: '联系我们', inquiryDesc: '请选择合作类型并发送咨询，我们内部审核后会由负责人单独回复。', inquiryP1: '内部审核后，负责人将单独回复。', inquiryP2: '如回复稍有延迟，敬请谅解。',
+        fTypeLabel: '选择咨询类型', fName: '姓名 *', fPhone: '联系电话 *', fEmail: '电子邮件', fNamePH: '请输入姓名', fPhonePH: '请输入电话号码',
+        fArea: '希望地区', fAreaPH: '例：首尔江南 / 京畿水原', fExp: '药剂师经验', fExpPH: '例：7年', fTiming: '希望入驻时间', fTimingPH: '例：2026年上半年', fCurrentOp: '当前药局状态',
+        currentOpOptions: ['运营中', '未运营', '即将关闭'],
+        fRole: '职务 / 职位', fRolePH: '代表 / 经理', fCompany: '公司名称', fCompanyPH: '××公司', fCategory: '希望入驻品类', fCategoryPH: '美容 / 健康食品 / 宠物 / 生活方式', fMsg: '咨询内容', fBrandMsgPH: '请填写品牌介绍、希望入驻内容等咨询事项。',
+        fStoreRoleLabel: '您的角色', storeRoleOptions: ['楼主', '房东', '中介', '其他'], fCompanyOrg: '公司 / 机构名称', fCompanyOrgPH: '××公司', fLocation: '建议地址（地址 / 商圈名）', fLocationPH: '例：首尔弘大入口站附近 / 京畿水原某大楼', fStoreMsgPH: '请自由填写空间特点、可用面积、月租范围等信息。',
+        fPrivacy: '同意收集和使用个人信息。', fAgreeYes: '同意', fAgreeNo: '不同意', fSubmit: '提交咨询',
+        formOpenLabel: '正在填写咨询', formClosedLabel: '填写咨询内容 →',
+        submittedTitle: '咨询已接收', submittedDesc: '内部审核后，负责人将单独回复。\n如回复稍有延迟，敬请谅解。\n感谢您。', newInquiry: '重新咨询',
+        galleryTitle: '파마广场 河南店', locationTitle: '前往方式', naverMap: 'Naver地图', kakaoMap: 'Kakao地图',
+        locTabs: ['河南店', '九老店', '青罗店', '金浦店'],
+        typePharmacy: '药局入驻', typeBrand: '品牌入驻', typeStoreDev: '门店开发合作',
+        footerDesc: '致力于成为韩国No.1 AI健康平台，引领均衡生活方式文化。', footerLegalName: '法人名称', footerCEO: '代表董事', footerBizNum: '营业执照号', footerEmail: '邮箱', footerAddr: '地址',
+        copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: '隐私政策',
+        popupTitle: '寻找与파马广场\n共同成长的合作伙伴', popupPharmacyTitle: '药剂师合作伙伴招募', popupPharmacyDesc: '独立药局开设 · 优先审核首尔及京畿地区', popupStoreTitle: '门店开发合作', popupStoreDesc: '欢迎提交适合파马广场开设的地址建议', popupDismiss: '今日不再显示',
+        marqueeTagline: '健康加倍，价格更低', marquee263: '263个入驻品牌', marqueePharmacy: '常时招募药剂师合作伙伴', marqueeStoreDev: '欢迎门店开发合作',
+        brandsCountPrefix: '共 ', brandsCountMid: ' · ', expandBtn: '查看所有品牌（+{n}个）↓',
+        pillars: [ { n:1, en:'Harmony', desc:'健康与美丽的调和' }, { n:2, en:'Balance', desc:'日常与感性的平衡' }, { n:3, en:'Trust', desc:'基于专业的可信服务' }, { n:4, en:'Experience', desc:'体验型高端H&B空间' } ],
+        advantages: [
+          { n:1, kw:'LARGE-FORMAT STORE', title:'大型综合健康平台', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['各门店200~500坪的大型综合商场','品牌体验区延长顾客留店时间','留店时间增加 → 购买转化率提升'] },
+          { n:2, kw:'FULL LINE-UP + PHARMACY', title:'全品类商品 + 独立药局', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['美容·健康食品·生活方式·宠物护理','独立药局入驻，提供包括药品的一站式服务','涵盖全健康领域的综合精选'] },
+          { n:3, kw:'NATIONWIDE EXPANSION', title:'可扩展的全国健康平台', grad:'linear-gradient(150deg,#019e88,#005251)', points:['河南（500坪）旗舰店运营中','九老·青罗·金浦依次开业','松岛·弘大·天安等全国扩张计划中'] }
+        ],
+        aiSteps: [ { n:1, en:'DATA HUB', title:'线下健康接触点', desc:'将门店中的健康需求和购买数据结构化为就医前的健康预警信号。' }, { n:2, en:'AI RECOMMEND', title:'AI个性化推荐', desc:'通过整合自我诊断、购买历史和复购周期，向个人推荐最适合的健康解决方案。' }, { n:3, en:'PLATFORM', title:'平台化扩展', desc:'基于积累的健康数据，致力于发展为涵盖订阅、体检、医疗服务的综合平台。' } ],
+        ptypes: [
+          { tag:'01 · PHARMACY', icon:'+', title:'药局入驻', sub:'以药剂师独立开设和运营药局为前提的入驻说明。非雇用关系，为独立分离的药局结构。', points:['审核地区：首尔全域及京畿地区','需填写：姓名、希望地区、药剂师经验、希望入驻时间','独立运营，保障专业性与自主性'], cta:'药局入驻咨询', grad:'linear-gradient(150deg,#007a73 0%,#004a47 100%)', type:'pharmacy' },
+          { tag:'02 · BRAND', icon:'◈', title:'品牌入驻', sub:'我们欢迎美容、健康食品、生活方式、宠物护理等全品类品牌的入驻申请。', points:['在200~500坪大型门店直接接触顾客','数千种SKU的完整品类环境','可联动直播电商工作室'], cta:'品牌入驻咨询', grad:'linear-gradient(150deg,#009e8a 0%,#006b62 100%)', type:'brand' },
+          { tag:'03 · STORE DEV', icon:'⬡', title:'门店开发合作', sub:'欢迎提交适合파마广场开设的地址建议。请自由发送商圈分析、房产信息、空间特性等，内部审核后将联系您。', points:['全国持续扩张中：河南、九老、青罗、金浦','优先考虑高客流商圈及大型商场周边地址','内部审核后负责人单独联系'], cta:'提交地址建议', grad:'linear-gradient(150deg,#005251 0%,#001f1f 100%)', type:'storeDev' }
+        ],
+        stores: [
+          { en:'HANAM FLAGSHIP', name:'파마广场 河南店', format:'FLAGSHIP', status:'NOW OPEN', addr:'京畿道 河南市 弥沙大路 410, 1F' },
+          { en:'GURO EXPRESS', name:'파마广场 九老快捷店', format:'EXPRESS', status:'COMING SOON', addr:'首尔特别市 冠岳区 矢弓大路 554, B1' },
+          { en:'CHEONGNA', name:'파마广场 青罗店', format:'STANDARD', status:'COMING SOON', addr:'仁川广域市 西区 西串路 120, B2' },
+          { en:'GIMPO', name:'파마广场 金浦店', format:'STANDARD', status:'COMING SOON', addr:'京畿道 金浦市（地址待更新）' }
+        ],
+        locationInfos: [
+          { tag:'FLAGSHIP', name:'파마广场 河南店', addr:'京畿道 河南市 弥沙大路 410, 1F', naverUrl:'https://naver.me/GEiYUlIZ', kakaoUrl:'https://map.kakao.com/?itemId=136420760' },
+          { tag:'EXPRESS', name:'파마广场 九老快捷店', addr:'首尔特别市 冠岳区 矢弓大路 554, B1', naverUrl:'', kakaoUrl:'' },
+          { tag:'STANDARD', name:'파마广场 青罗店', addr:'仁川广域市 西区 西串路 120, B2', naverUrl:'', kakaoUrl:'' },
+          { tag:'STANDARD', name:'파마广场 金浦店', addr:'京畿道 金浦市（地址待更新）', naverUrl:'', kakaoUrl:'' }
+        ]
+      }
+    };
+    return i18n[lang] || i18n.ko;
+  }
+
+  renderVals() {
+    const lang = this.state.lang;
+    let T = this._getT(lang);
+    if (lang === 'zh') {
+      const B = 'PHAMA SQUARE';
+      T.announceLabel = B + ' AI 健康指南计划';
+      T.heroDesc = '内在健康与美学价值完美平衡的空间。\n' + B + '提案的全新健康体验。';
+      T.aboutBrand = B;
+      T.aboutP1 = B + '是一个将健康食品、美容、宠物和独立药房融为一体的健康平台，提供内在健康与美学价值和谐统一的全新健康体验。';
+      T.aboutP2 = B + '河南旗舰店于2025年开业，约1,650m²，汇聚健康食品、美容、宠物、生活方式及药品，共计4,000余个SKU，是大型综合健康商店。';
+      T.philDesc = '身与心、健康与美丽、\n日常与感性——连接它们的均衡价值，\n这就是' + B + '的哲学。';
+      T.whyDesc = B + '为消费者提供更优质的健康体验，为合作品牌开拓更广阔的市场。';
+      T.aiDesc = B + '将门店视为顾客健康数据的重要节点，通过读取日常健康信号——疲劳、睡眠、免疫、肌肤、减重，由AI向个人推荐最适合的健康方案，进化为真正的健康平台。';
+      T.aiBannerTitle = B + ' AI 健康指南计划';
+      T.galleryTitle = B + ' 河南店';
+      T.popupTitle = '寻找与' + B + '\n共同成长的合作伙伴';
+      T.popupStoreDesc = '欢迎提交适合' + B + '开设的地址建议';
+      T.partnerTitle = '寻找共同\n成长的合作伙伴';
+      T.partnerDesc = '药局入驻、品牌入驻、门店开发合作\n——请按类型发送咨询。';
+      T.footerDesc = '致力于成为韩国No.1 AI健康平台，引领均衡生活方式文化。';
+      T.tabLife = '生活方式';
+      T.stat1Num = '990~1,650'; T.stat1Unit = 'm²';
+      T.stat2Num = '495~660';   T.stat2Unit = 'm²';
+      T.pyeong = 'm²'; T.storeSizeSuffix = ' m²';
+      T.pillars = [
+        { n:1, en:'Harmony', desc:'健康与美丽的调和' },
+        { n:2, en:'Balance', desc:'日常与感性的平衡' },
+        { n:3, en:'Trust', desc:'基于专业的可信服务' },
+        { n:4, en:'Experience', desc:'体验型高端H&B空间' }
+      ];
+      T.aiSteps = [
+        { n:1, en:'DATA HUB', title:'线下健康接触点', desc:'将门店中的健康需求和购买数据结构化为就医前的健康预警信号。' },
+        { n:2, en:'AI RECOMMEND', title:'AI个性化推荐', desc:'通过整合自我诊断、购买历史和复购周期，向个人推荐最适合的健康解决方案。' },
+        { n:3, en:'PLATFORM', title:'平台化扩展', desc:'基于积累的健康数据，致力于发展为涵盖订阅、体检、医疗服务的综合平台。' }
+      ];
+      T.advantages = [
+        { n:1, kw:'LARGE-FORMAT STORE', title:'大型综合健康平台', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['各门店660~1,650m²的大型综合商场','品牌体验区延长顾客留店时间','留店时间增加 → 购买转化率提升'] },
+        { n:2, kw:'FULL LINE-UP + PHARMACY', title:'全品类商品 + 独立药局', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['美容·健康食品·生活方式·宠物护理','独立药局入驻，提供包括药品的一站式服务','涵盖全健康领域的综合精选'] },
+        { n:3, kw:'NATIONWIDE EXPANSION', title:'可扩展的全国健康平台', grad:'linear-gradient(150deg,#019e88,#005251)', points:['河南（~1,650m²）旗舰店运营中','九老·青罗·金浦依次开业','松岛·弘大·天安等全国扩张计划中'] }
+      ];
+      T.stores = [
+        { en:'HANAM FLAGSHIP', name: B + ' 河南店', format:'FLAGSHIP', status:'NOW OPEN', addr:'京畿道 河南市 弥沙大路 410, 1F' },
+        { en:'GURO EXPRESS', name: B + ' 九老快捷店', format:'EXPRESS', status:'COMING SOON', addr:'首尔特别市 冠岳区 矢弓大路 554, B1' },
+        { en:'CHEONGNA', name: B + ' 青罗店', format:'STANDARD', status:'COMING SOON', addr:'仁川广域市 西区 西串路 120, B2' },
+        { en:'GIMPO', name: B + ' 金浦店', format:'STANDARD', status:'COMING SOON', addr:'京畿道 金浦市（地址待更新）' }
+      ];
+      T.locationInfos = [
+        { tag:'FLAGSHIP', name: B + ' 河南店', addr:'京畿道 河南市 弥沙大路 410, 1F', naverUrl:'https://naver.me/GEiYUlIZ', kakaoUrl:'https://map.kakao.com/?itemId=136420760' },
+        { tag:'EXPRESS', name: B + ' 九老快捷店', addr:'首尔特别市 冠岳区 矢弓大路 554, B1', naverUrl:'', kakaoUrl:'' },
+        { tag:'STANDARD', name: B + ' 青罗店', addr:'仁川广域市 西区 西串路 120, B2', naverUrl:'', kakaoUrl:'' },
+        { tag:'STANDARD', name: B + ' 金浦店', addr:'京畿道 金浦市（地址待更新）', naverUrl:'', kakaoUrl:'' }
+      ];
+      if (T.ptypes && T.ptypes[2]) T.ptypes[2].sub = '欢迎提交适合' + B + '开设的地址建议。请自由发送商圈分析、房产信息、空间特性等，内部审核后将联系您。';
+      T.typeOther = '其他咨询'; T.fOtherMsgPH = '请自由填写您的咨询内容。';
+    }
+
+    const brands = {
+      health: ['가희담','경남제약','경동제약','광동','농협홍삼','뉴오리진','뉴케어','뉴트리가든','뉴트리가든핏','뉴핏','닥터루템','대원헬스','더팜','동국','레모나','리얼닥터','마미앤대디','마이핏','맥널티커피','메디트리','모비타','바디랩','보고신약','보령컨슈머헬스케어','상쾌환','셀렉트','셀바인','스웨디시뉴트라','아만','아이얌','아임얼라이브','아주','안국약품','알디콤','어뉴엠','엘리나','영진약품','오가닉가든','오라틱스','올레아','올키','유니파마','유한건강생활','익스트림','일양','정관장','정원삼','종근당','참다움','컨디션','코오롱제약','팔레오','풀무원녹즙','하이뮨','하이키드','한국생활건강','한삼인','한손한끼','함소아제약','헬씨허그','현대약품','홍기천','홍삼정','HLB','HY','MBP','MPRO','NMN','NUTRIFINE','RU21','YB','YM'],
+      beauty: ['고티','뉴뷰티케어','뉴트리셔스','다모다','닥터말콤','닥터시드','닥터틸즈','더록시','더마펌','더코코','데싱디바','데이셀','데일리위클리','데트클리어','듀엠','듀오','드로에뚜','디비지노','디퍼','디퍼앤디퍼','딥트3일','라망지우','라뮤셀','럭스골드','로지엘','루트리','르메티크','리브이셀','리엔장','리즈케이','마움','말콤','모클리','몬퓨리엘','무스텔라','미인실록','믹순','밀크바오밥','바디네이처','바디판타지','바루랩','바를','바바코','백년약방','벨보이스튜디오','봉봉','뷰카','브이티','블루반','비긴스바이정샘물','비로체','비비','비알워터풀','빛클','세로랩스','세타필','셀라신스','솔트레인','수디','슈엘로','스노우톡스','스킨푸드','썸머스이브','쏘큐','쓰리페이지','아꼬제','아브카','아임낫어베이비','아임쏘리포마이스킨','아줄렌','앙또미뇽','어나더페이스','어테이션','얼리언스','에보카론','에이바자르','엑소메라','엘리샤코이','오드벨','오로라','오밸라','온도','와티포스킨','이너수','이엘뷰티앤바이오','인투스킨','인포디플러스','제론셀베인','제이숲','제이준','조마드','지노큐어','카밀','코코스타','큐빅','탐뷰티','토니모리','트리셀','티트리','팜스테이','팬틴','퍼플리쉬','포렌코즈','피에이치포','피오다르','하라즈','헤드앤숄더','헤어플러스','헬세','ASNO','CELL29','NAAP','SNP','TS','YYY'],
+      pet: ['건강백서','고로고로','나인케어','내품애','네츄럴코어','뉴내품애','더텐','도톤','리틀포우','메디록스','메디코펫','베르디캣','샤랩바이오','아임닭','엘릿','웜지스','이뮨실드','자이언트독','작품패드','청담닥터스랩','코쿤펫','키위키친','패리스독','펫레터','펫크린','퓨어블펫','플러쉬퍼피','피콜로카네','픽키도기클럽','하이하우','ANF','DCBS','DMR','DQD','DTA','DUC','ITI'],
+      life: ['아임오','깨끗한나라','누븐','다우니','닥터숄','닥터탱글','닥터핸즈','듀라셀','라이프홀릭','로케트','리얼테크닉스','밀포드','바디파인','바른생각','바이오프리즈','버터만다린','스파알','에이치투오미','에이카랩스','에코툴즈','오랄비','오카모토','와이즐리','질레트','초록샘','콜게이트','쿨리타','탱글티저','페브리즈','풀리오','프로쉬','플랙커스','하르르','혼바디','하우스보이']
+    };
+    const tabDefs = [
+      { key:'health', label: T.tabHealth, list: brands.health },
+      { key:'beauty', label: T.tabBeauty, list: brands.beauty },
+      { key:'pet',    label: T.tabPet,    list: brands.pet },
+      { key:'life',   label: T.tabLife,   list: brands.life }
+    ];
+    const active = tabDefs[this.state.activeTab];
+    const tabPill = (on) => 'height:46px; padding:0 24px; border-radius:40px; border:1px solid ' + (on ? '#005251' : '#D5E0E0') + '; background:' + (on ? '#005251' : '#fff') + '; color:' + (on ? '#fff' : '#46585A') + '; font-size:15px; font-weight:' + (on ? '600' : '400') + '; transition:.25s; display:inline-flex; align-items:center;';
+
+    const navInk = this.state.scrolled ? '#10181E' : '#ffffff';
+    const barStyle = 'position:fixed; top:0; left:0; right:0; z-index:100; background:#10181E; transition:opacity .35s, transform .35s; ' + (this.state.scrolled ? 'opacity:0; transform:translateY(-100%); pointer-events:none;' : 'opacity:1; transform:translateY(0);');
+    const navTop = this.state.scrolled ? '0px' : '44px';
+    const navStyle = 'position:fixed; top:' + navTop + '; left:0; right:0; z-index:90; transition:all .4s; ' + (this.state.scrolled ? 'background:rgba(251,252,252,.86); backdrop-filter:blur(14px); border-bottom:1px solid rgba(0,82,81,.08);' : 'background:transparent;');
+    const drawerStyle = 'position:fixed; top:0; right:0; bottom:0; z-index:80; width:min(72vw,320px); background:linear-gradient(160deg,#005251,#00302F); box-shadow:-8px 0 40px rgba(0,0,0,.35); transition:opacity .4s, transform .4s; ' + (this.state.menuOpen ? 'opacity:1; transform:translateX(0); pointer-events:auto;' : 'opacity:0; transform:translateX(100%); pointer-events:none;');
+
+    const navDefs = [
+      { href:'#top',         key:'top',         label:'HOME',        target:'' },
+      { href:'#about',       key:'about',        label:'ABOUT',       target:'' },
+      { href:'#brands',      key:'brands',       label:'BRAND',       target:'' },
+      { href:'#partnership', key:'partnership',  label:'PARTNERSHIP', target:'' },
+      { href:'#gallery',     key:'gallery',      label:'GALLERY',     target:'' },
+      { href:'#location',    key:'location',     label:'LOCATION',    target:'' }
+    ];
+    const newsLabelMap = { ko:'소식', en:'NEWS', zh:'消息' };
+    const newsDropMap = [
+      { label:'공지사항', href:'./board.dc.html#notice' },
+      { label:'언론보도', href:'./board.dc.html#press' },
+      { label:'채용공고', href:'./board.dc.html#hr' }
+    ];
+    const navItems = navDefs.map(d => {
+      const isActive = this.state.activeSection === d.key;
+      const op = this.state.scrolled ? (isActive ? '1' : '0.6') : (isActive ? '1' : '0.82');
+      return {
+        href: d.href, label: d.label, target: d.target||'',
+        style: 'font-size:13px; font-weight:' + (isActive ? '700' : '500') + '; letter-spacing:0.14em; color:' + navInk + '; opacity:' + op + '; transition:color .4s, opacity .3s;'
+      };
+    });
+
+    const langOptions = [
+      { id:'ko', label:'KO', flag:'🇰🇷' },
+      { id:'en', label:'EN', flag:'🇺🇸' },
+      { id:'zh', label:'中', flag:'🇨🇳' }
+    ];
+    const isScrolled = this.state.scrolled;
+    const codeMap = { ko:'KO', en:'EN', zh:'ZH' };
+    const labelMap = { ko:'한국어', en:'English', zh:'中文' };
+    const currentLangCode = codeMap[lang];
+    const isDropOpen = this.state.langDropdownOpen;
+    const toggleLangDropdown = this.toggleLangDropdown;
+    const langDropItems = Object.keys(codeMap).map(id => ({
+      label: labelMap[id],
+      onClick: () => this.setLang(id),
+      dotStyle: 'width:6px; height:6px; border-radius:50%; background:' + (lang === id ? '#01C0A4' : 'transparent') + '; border:1.5px solid ' + (lang === id ? '#01C0A4' : '#C8D4D4') + '; flex:none; transition:.2s;',
+      itemStyle: 'display:flex; align-items:center; gap:10px; width:100%; padding:13px 18px; background:' + (lang === id ? 'rgba(1,192,164,.07)' : 'transparent') + '; border:none; cursor:pointer; transition:background .15s; border-bottom:1px solid rgba(0,0,0,.05); -webkit-tap-highlight-color:transparent;',
+      weight: lang === id ? '600' : '400',
+      color: lang === id ? '#005251' : '#46585A'
+    }));
+    const langTriggerStyle = 'height:34px; padding:0 10px 0 9px; border-radius:40px; background:' + (isScrolled ? 'rgba(0,82,81,.08)' : 'rgba(255,255,255,.16)') + '; border:1px solid ' + (isScrolled ? 'rgba(0,82,81,.14)' : 'rgba(255,255,255,.3)') + '; display:flex; align-items:center; gap:5px; cursor:pointer; transition:.2s;';
+    const langCodeStyle = 'font-size:11px; font-weight:700; letter-spacing:0.1em; color:' + navInk + '; opacity:.85; line-height:1;';
+    const langDropdownStyle = isDropOpen
+      ? 'position:absolute; top:calc(100% + 10px); right:0; min-width:148px; background:rgba(255,255,255,.97); backdrop-filter:blur(24px); border-radius:16px; box-shadow:0 12px 40px rgba(0,48,47,.22); overflow:hidden; z-index:200; border:1px solid rgba(0,82,81,.1);'
+      : 'display:none;';
+    const langButtons = langOptions.map(o => ({
+      label: o.label,
+      flag: o.flag,
+      onClick: () => this.setLang(o.id),
+      style: 'font-size:12px; font-weight:' + (lang === o.id ? '700' : '400') + '; color:' + navInk + '; opacity:' + (lang === o.id ? '1' : '0.5') + '; background:none; border:none; padding:4px 5px; transition:opacity .2s; letter-spacing:0.04em; line-height:1;',
+      mobileStyle: 'height:30px; padding:0 12px; border-radius:40px; border:1px solid ' + (lang === o.id ? 'rgba(255,255,255,.8)' : 'rgba(255,255,255,.22)') + '; background:' + (lang === o.id ? 'rgba(255,255,255,.14)' : 'transparent') + '; color:#fff; font-size:12px; font-weight:' + (lang === o.id ? '700' : '400') + '; letter-spacing:0.1em; transition:.25s;',
+      mobileNavStyle: 'width:34px; height:34px; border-radius:50%; background:' + (lang === o.id ? (isScrolled ? 'rgba(1,192,164,.12)' : 'rgba(255,255,255,.18)') : 'transparent') + '; border:1.5px solid ' + (lang === o.id ? (isScrolled ? '#01C0A4' : 'rgba(255,255,255,.65)') : 'transparent') + '; display:flex; align-items:center; justify-content:center; font-size:19px; padding:0; transition:.2s; line-height:1;'
+    }));
+
+    const agreeBtn = (on) => 'height:38px; padding:0 18px; border-radius:40px; border:1px solid ' + (on ? '#01C0A4' : '#D5E0E0') + '; background:' + (on ? '#01C0A4' : '#fff') + '; color:' + (on ? '#fff' : '#46585A') + '; font-size:13px; font-weight:500; transition:.2s;';
+
+    const typeKeys = ['pharmacy', 'brand', 'storeDev', 'other'];
+    const typeLabels = [T.typePharmacy, T.typeBrand, T.typeStoreDev, T.typeOther || '기타 문의'];
+    const typePillStyle = (on) => 'flex:none; height:36px; padding:0 12px; white-space:nowrap; border-radius:40px; border:1.5px solid ' + (on ? '#005251' : '#D5E0E0') + '; background:' + (on ? '#005251' : '#fff') + '; color:' + (on ? '#fff' : '#46585A') + '; font-size:13px; font-weight:' + (on ? '600' : '400') + '; transition:.25s;';
+    const typePills = typeKeys.map((k, i) => ({ label: typeLabels[i], style: typePillStyle(k === this.state.inquiryType), onClick: () => this.setState({ inquiryType: k }) }));
+
+    const hidden = Math.max(0, active.list.length - 24);
+    const expandBrandsText = T.expandBtn.replace('{n}', hidden);
+
+    const storeData = T.stores.map((s, i) => ({
+      ...s,
+      size: lang === 'ko' ? ['500','200','450','400'][i] : ['~1,650','~660','~1,490','~1,320'][i],
+      dot: i === 0 ? '#7FE6CF' : 'rgba(255,255,255,.45)',
+      grad: ['linear-gradient(150deg,#00978F 0%,#004f4e 100%)','linear-gradient(150deg,#019e88 0%,#00605a 100%)','linear-gradient(150deg,#007a73 0%,#00302f 100%)','linear-gradient(150deg,#00857d 0%,#013f3e 100%)'][i],
+      onMap: (() => { const idx = i; return () => { this.setState({selectedStore:idx}); const el=document.getElementById('location'); if(el) window.scrollTo({top:el.offsetTop-88,behavior:'smooth'}); }; })()
+    }));
+
+    const ptypesData = T.ptypes.map(pt => ({
+      ...pt,
+      onInquiry: () => this.setInquiryType(pt.type)
+    }));
+
+    const toggleFormOpen = () => this.setState(s => ({ formOpen: !s.formOpen }));
+
+    const totalBrands = brands.health.length + brands.beauty.length + brands.pet.length + brands.life.length;
+    const brandsCountInfo = T.brandsCountPrefix + active.list.length + T.brandsUnit + T.brandsCountMid + active.label;
+
+    return {
+      t: T,
+      hasNotice: !!this.state.latestNotice,
+      noticeTitle: this.state.latestNotice ? ((this.state.latestNotice.title && (this.state.latestNotice.title[lang] || this.state.latestNotice.title.ko)) || '') : '',
+      newsLabel: newsLabelMap[lang] || 'NEWS',
+      newsDropItems: newsDropMap,
+      newsNavBtnStyle: 'display:flex; align-items:center; gap:2px; font-size:13px; font-weight:500; letter-spacing:0.14em; color:' + navInk + '; opacity:.82; background:none; border:none; cursor:pointer; padding:4px 0; transition:color .4s, opacity .3s;',
+      currentLangCode, langCodeStyle, langDropItems, langTriggerStyle, langDropdownStyle, toggleLangDropdown,
+      barStyle, navStyle, navInk, drawerStyle, navItems, langButtons,
+      logoImgStyle: 'height:100%; width:auto; transition:filter .5s ease; filter:' + (this.state.scrolled ? 'none' : 'brightness(0) invert(1)') + '; max-width:none;',
+      toggleMenu: this.toggleMenu, closeMenu: this.closeMenu,
+
+      stores: storeData,
+      pillars: T.pillars,
+      advantages: T.advantages,
+      aiSteps: T.aiSteps,
+      ptypes: ptypesData,
+
+      brandTabs: tabDefs.map((td, i) => ({ label: td.label, count: td.list.length, style: tabPill(i === this.state.activeTab), onClick: () => this.setState({ activeTab: i, brandsExpanded: false }) })),
+      visibleBrands: this.state.brandsExpanded ? active.list : active.list.slice(0, window.innerWidth < 768 ? 12 : 24),
+      brandsCollapsed: !this.state.brandsExpanded && active.list.length > 24,
+      brandsCountInfo,
+      expandBrandsText,
+      totalBrandsLabel: totalBrands + T.brandsUnit,
+
+      typePills, toggleFormOpen,
+      formBorderColor: this.state.formOpen ? '#005251' : '#D5E0E0',
+      formBg: this.state.formOpen ? '#F2F8F7' : '#FAFAFA',
+      chevronRotate: this.state.formOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+      formButtonLabel: this.state.formOpen ? T.formOpenLabel : T.formClosedLabel,
+      formButtonIcon: this.state.formOpen ? '−' : '+',
+      formMarginBottom: this.state.formOpen ? '16px' : '0',
+      formDisplayStyle: this.state.formOpen ? 'block' : 'none',
+      isPharmacy: this.state.inquiryType === 'pharmacy',
+      isBrand: this.state.inquiryType === 'brand',
+      isStoreDev: this.state.inquiryType === 'storeDev',
+      isOther: this.state.inquiryType === 'other',
+      currentOpOptions: T.currentOpOptions,
+      storeRoleOptions: T.storeRoleOptions,
+      form: this.state.form,
+      onName: this.setField('name'), onRole: this.setField('role'), onPhone: this.setField('phone'),
+      onEmail: this.setField('email'), onCompany: this.setField('company'), onMessage: this.setField('message'),
+      onArea: this.setField('area'), onExperience: this.setField('experience'), onTiming: this.setField('timing'),
+      onCurrentPharmacy: this.setField('currentPharmacy'), onStoreRole: this.setField('storeRole'),
+      onCategory: this.setField('category'), onLocation: this.setField('location'),
+      submitForm: this.submitForm, resetForm: this.resetForm,
+      submitted: this.state.submitted, notSubmitted: !this.state.submitted,
+      agreeYes: () => this.setState({ agree:true }), agreeNo: () => this.setState({ agree:false }),
+      agreeYesStyle: agreeBtn(this.state.agree === true), agreeNoStyle: agreeBtn(this.state.agree === false),
+
+      mapSrc: ['https://maps.google.com/maps?q=경기도+하남시+미사대로+410&output=embed&hl=ko','https://maps.google.com/maps?q=서울특별시+관악구+시흥대로+554&output=embed&hl=ko','https://maps.google.com/maps?q=인천광역시+서구+서곶로+120&output=embed&hl=ko','https://maps.google.com/maps?q=경기도+김포시&output=embed&hl=ko'][this.state.selectedStore],
+      locationInfo: T.locationInfos[this.state.selectedStore],
+      locationHasLinks: this.state.selectedStore === 0,
+      locationTabs: T.locTabs.map((label, i) => ({
+        label,
+        onClick: () => this.setState({ selectedStore: i }),
+        style: 'height:42px; padding:0 20px; border-radius:40px; border:1.5px solid ' + (this.state.selectedStore === i ? '#005251' : '#D5E0E0') + '; background:' + (this.state.selectedStore === i ? '#005251' : '#fff') + '; color:' + (this.state.selectedStore === i ? '#fff' : '#46585A') + '; font-size:14px; font-weight:' + (this.state.selectedStore === i ? '600' : '400') + '; transition:.25s; white-space:nowrap;'
+      })),
+
+      noop: () => {},
+      galleryDots: [0,1,2,3,4,5,6].map(i => ({ style: 'width:' + (i===this.state.galleryIdx?'22px':'7px') + '; height:7px; border-radius:40px; background:' + (i===this.state.galleryIdx?'#01C0A4':'#D5E0E0') + '; transition:all .3s;' })),
+      galleryPrev: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const w = card.offsetWidth + 12; const newIdx = Math.max(0, this.state.galleryIdx - 1); track.scrollBy({ left: -w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
+      galleryNext: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const w = card.offsetWidth + 12; const newIdx = Math.min(6, this.state.galleryIdx + 1); track.scrollBy({ left: w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
+      galleryDragStart: (e) => { this._dragX = e.clientX; this._dragging = true; const t = document.getElementById('ps-gallery-track'); if (t) { t.style.cursor = 'grabbing'; this._dragSX = t.scrollLeft; } },
+      galleryDragMove: (e) => { if (!this._dragging) return; const t = document.getElementById('ps-gallery-track'); if (t) t.scrollLeft = this._dragSX - (e.clientX - this._dragX); },
+      galleryDragEnd: () => { this._dragging = false; const t = document.getElementById('ps-gallery-track'); if (t) { t.style.cursor = 'grab'; const card = t.querySelector('div'); if (card) this.setState({ galleryIdx: Math.round(t.scrollLeft / (card.offsetWidth + 12)) }); } },
+
+      popupOverlay: this.state.popupVisible ? 'position:fixed; inset:0; z-index:200; background:rgba(10,24,22,.6); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:20px;' : 'display:none;',
+      backdropStyle: (this.state.menuOpen || this.state.langDropdownOpen)
+        ? 'position:fixed; inset:0; z-index:' + (this.state.menuOpen ? '79' : '88') + '; background:' + (this.state.menuOpen ? 'rgba(0,20,18,.45)' : 'transparent') + '; cursor:pointer;'
+        : 'display:none;',
+      closePopup: this.closePopup, dismissPopupToday: this.dismissPopupToday,
+      scrollTop: () => window.scrollTo({ top:0, behavior:'smooth' }),
+      scrollTopStyle: 'position:fixed; bottom:28px; right:28px; z-index:150; width:46px; height:46px; border-radius:50%; background:#005251; border:none; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 24px rgba(0,82,81,.35); transition:opacity .35s, transform .35s; cursor:pointer;' + (this.state.scrolled ? 'opacity:1; transform:translateY(0);' : 'opacity:0; transform:translateY(12px); pointer-events:none;'),
+      expandBrands: this.expandBrands
+    };
+  }
+}
+
+</script>
+</body>
+</html>

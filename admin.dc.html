@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<title>관리자 | PHAMA SQUARE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="./assets/favicon.png">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/sun-typeface/SUIT/fonts/static/woff2/SUIT.css');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'SUIT',sans-serif;-webkit-font-smoothing:antialiased;background:#F0F2F4;color:#10181E;}
+input,textarea,select,button{font-family:inherit;}
+.ai{width:100%;height:44px;padding:0 14px;border:1.5px solid #D5E0E0;border-radius:8px;font-size:14px;background:#FAFCFC;transition:.2s;outline:none;box-sizing:border-box;}
+.ai:focus{border-color:#01C0A4;box-shadow:0 0 0 3px rgba(1,192,164,.12);}
+.at{width:100%;padding:12px 14px;border:1.5px solid #D5E0E0;border-radius:8px;font-size:14px;background:#FAFCFC;line-height:1.65;resize:vertical;transition:.2s;outline:none;box-sizing:border-box;}
+.at:focus{border-color:#01C0A4;box-shadow:0 0 0 3px rgba(1,192,164,.12);}
+.asel{width:100%;height:44px;padding:0 14px;border:1.5px solid #D5E0E0;border-radius:8px;font-size:14px;background:#FAFCFC;outline:none;}
+.ab{display:inline-flex;align-items:center;gap:6px;height:42px;padding:0 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;border:none;}
+.ar{background:#fff;border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.04);transition:box-shadow .2s;}
+.ar:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.ac{background:#fff;border-radius:12px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:16px;}
+.fl{display:flex;flex-direction:column;gap:7px;}
+.fl > .lbl{font-size:12px;font-weight:500;color:#46585A;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:680px){.g3{grid-template-columns:1fr !important;}.g2{grid-template-columns:1fr !important;}.g4{grid-template-columns:1fr 1fr !important;}.ar{flex-wrap:wrap;}.ar-actions{flex-wrap:wrap;}}
+@media(max-width:440px){.g4{grid-template-columns:1fr !important;}}
+</style>
+</helmet>
+
+<div style="min-height:100vh; display:flex; flex-direction:column; background:#F0F2F4;">
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; background:radial-gradient(120% 120% at 50% 0%, #00978F 0%, #005251 50%, #00302F 100%); padding:24px;">
+    <div style="width:min(400px,100%); background:#fff; border-radius:20px; padding:clamp(36px,5vw,52px) clamp(28px,5vw,44px); box-shadow:0 32px 80px rgba(0,48,47,.4);">
+      <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="height:32px; width:auto; display:block; margin-bottom:32px;" />
+      <h2 style="font-size:20px; font-weight:700; color:#10181E; margin-bottom:6px;">관리자 로그인</h2>
+      <p style="font-size:13px; color:#8B9A9C; margin-bottom:28px;">파마스퀘어 게시판 관리 시스템</p>
+      <form onSubmit="{{ doLogin }}" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="fl"><span class="lbl">비밀번호</span><input class="ai" type="password" value="{{ loginPw }}" onChange="{{ onPw }}" placeholder="관리자 비밀번호 입력" /></div>
+        <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+          <p style="font-size:13px; color:#E53935; margin-top:-4px;">비밀번호가 올바르지 않습니다.</p>
+        </sc-if>
+        <button type="submit" style="height:50px; border-radius:10px; background:#01C0A4; color:#fff; font-size:15px; font-weight:600; border:none; cursor:pointer; margin-top:4px; transition:background .2s;" style-hover="background:#00978F;">로그인</button>
+      </form>
+      <p style="margin-top:20px; font-size:11px; color:#C8D4D4; text-align:center; line-height:1.6;">기본 비밀번호: phama2026!<br>admin.dc.html의 ADMIN_PW를 변경하세요.</p>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
+
+  <div style="position:sticky; top:0; z-index:100; background:#005251; box-shadow:0 2px 12px rgba(0,0,0,.18);">
+    <div style="max-width:1200px; margin:0 auto; padding:0 clamp(16px,3vw,28px); height:56px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <img src="./assets/logo-h-white.png" alt="PHAMA SQUARE" style="height:26px; width:auto;" />
+        <span style="font-size:11px; font-weight:700; letter-spacing:0.14em; color:rgba(255,255,255,.5); border-left:1px solid rgba(255,255,255,.18); padding-left:14px;">ADMIN</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:clamp(10px,2vw,18px);">
+        <a href="./board.dc.html" target="_blank" style="font-size:12px; color:rgba(255,255,255,.6); white-space:nowrap; transition:color .2s;" style-hover="color:#fff;">게시판 ↗</a>
+        <a href="./index.html" style="font-size:12px; color:rgba(255,255,255,.6); white-space:nowrap; transition:color .2s;" style-hover="color:#fff;">메인 ↗</a>
+        <button onClick="{{ doLogout }}" style="height:32px; padding:0 14px; border-radius:40px; border:1px solid rgba(255,255,255,.28); background:transparent; color:rgba(255,255,255,.7); font-size:12px; font-weight:500; cursor:pointer; white-space:nowrap; transition:.2s;" style-hover="background:rgba(255,255,255,.12); color:#fff;">로그아웃</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px; margin:0 auto; width:100%; padding:32px clamp(16px,3vw,28px) 80px;">
+
+    <sc-if value="{{ isListView }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:22px;">
+        <h1 style="font-size:20px; font-weight:700; color:#10181E;">게시글 관리</h1>
+        <button onClick="{{ goCreate }}" class="ab" style="background:#01C0A4; color:#fff; height:40px;" style-hover="background:#00978F;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>새 글 작성
+        </button>
+      </div>
+      <div style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+        <sc-for list="{{ adminCatTabs }}" as="tab" hint-placeholder-count="4">
+          <button onClick="{{ tab.onClick }}" style="{{ tab.style }}">{{ tab.label }}<span style="margin-left:5px; opacity:.6; font-weight:400;">{{ tab.count }}</span></button>
+        </sc-for>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:24px;" class="g4">
+        <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+          <div style="background:#fff; border-radius:10px; padding:16px 18px; box-shadow:0 1px 4px rgba(0,0,0,.04);">
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.1em; color:#8B9A9C; margin-bottom:6px;">{{ st.label }}</div>
+            <div style="font-size:24px; font-weight:700; color:#005251;">{{ st.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <sc-for list="{{ adminPosts }}" as="p" hint-placeholder-count="4">
+          <div class="ar">
+            <span style="{{ p.catBadge }}">{{ p.catLabel }}</span>
+            <sc-if value="{{ p.pinned }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:13px; flex:none;" title="상단 고정">📌</span>
+            </sc-if>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:14px; font-weight:600; color:#10181E; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ p.title }}</div>
+              <div style="font-size:12px; color:#8B9A9C; margin-top:2px;">{{ p.date }}</div>
+            </div>
+            <div class="ar-actions" style="display:flex; align-items:center; gap:6px; flex:none;">
+              <sc-if value="{{ p.inactive }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:10px; font-weight:700; letter-spacing:.06em; color:#8B9A9C; background:#F0F2F4; padding:3px 8px; border-radius:4px; white-space:nowrap;">비공개</span>
+              </sc-if>
+              <button onClick="{{ p.onEdit }}" class="ab" style="height:32px; padding:0 12px; background:#F0F2F4; color:#46585A; font-size:12px; font-weight:500;" style-hover="background:#E3EAEA; color:#005251;">수정</button>
+              <button onClick="{{ p.onToggle }}" class="ab" style="height:32px; padding:0 12px; background:{{ p.toggleBg }}; color:{{ p.toggleColor }}; font-size:12px; font-weight:500;">{{ p.toggleLabel }}</button>
+              <button onClick="{{ p.onDelete }}" class="ab" style="height:32px; padding:0 12px; background:#FEF2F2; color:#E53935; font-size:12px; font-weight:500;" style-hover="background:#FECACA;">삭제</button>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ isAdminEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff; border-radius:10px; padding:48px; text-align:center; color:#8B9A9C; font-size:15px; font-weight:300; box-shadow:0 1px 4px rgba(0,0,0,.04);">게시글이 없습니다.</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isFormView }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; align-items:center; gap:14px; margin-bottom:24px;">
+        <button onClick="{{ goList }}" style="display:inline-flex; align-items:center; gap:5px; height:36px; padding:0 14px; border-radius:8px; border:1px solid #D5E0E0; background:#fff; color:#46585A; font-size:13px; font-weight:500; cursor:pointer; transition:.2s;" style-hover="background:#F2F6F6;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>목록으로
+        </button>
+        <h1 style="font-size:18px; font-weight:700; color:#10181E;">{{ formTitle }}</h1>
+      </div>
+
+      <form onSubmit="{{ savePost }}" style="display:flex; flex-direction:column; gap:16px;">
+
+        <div class="ac">
+          <h3 style="font-size:13px; font-weight:700; color:#10181E; letter-spacing:0.04em; padding-bottom:12px; border-bottom:1px solid #E8F0F0;">기본 정보</h3>
+          <div class="g2">
+            <div class="fl">
+              <span class="lbl">카테고리</span>
+              <select class="asel" value="{{ form.category }}" onChange="{{ onFormCat }}">
+                <option value="notice">공지사항</option>
+                <option value="press">언론보도</option>
+                <option value="hr">채용공고</option>
+              </select>
+            </div>
+            <div class="fl"><span class="lbl">날짜</span><input class="ai" type="date" value="{{ form.date }}" onChange="{{ onFormDate }}" /></div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="button" onClick="{{ togglePinned }}" style="{{ pinnedBtnStyle }}">📌 상단 고정 {{ pinnedLabel }}</button>
+            <button type="button" onClick="{{ toggleActive }}" style="{{ activeBtnStyle }}">{{ activeLabel }}</button>
+          </div>
+        </div>
+
+        <div class="ac">
+          <h3 style="font-size:13px; font-weight:700; color:#10181E; letter-spacing:0.04em; padding-bottom:12px; border-bottom:1px solid #E8F0F0;">제목</h3>
+          <div class="fl"><span class="lbl">제목 <span style="color:#E53935;">*</span></span><input class="ai" type="text" value="{{ form.titleKo }}" onChange="{{ onTitleKo }}" placeholder="제목 입력 (필수)" required /></div>
+        </div>
+
+        <div class="ac">
+          <h3 style="font-size:13px; font-weight:700; color:#10181E; letter-spacing:0.04em; padding-bottom:12px; border-bottom:1px solid #E8F0F0;">본문 내용</h3>
+          <div class="fl"><span class="lbl">본문 <span style="color:#E53935;">*</span></span><textarea class="at" value="{{ form.contentKo }}" onChange="{{ onContentKo }}" placeholder="본문 내용 입력 (필수). 줄바꿈은 그대로 표시됩니다." rows="8"></textarea></div>
+        </div>
+
+        <div class="ac">
+          <h3 style="font-size:13px; font-weight:700; color:#10181E; letter-spacing:0.04em; padding-bottom:12px; border-bottom:1px solid #E8F0F0;">외부 링크 <span style="font-size:11px; font-weight:400; color:#8B9A9C;">(선택)</span></h3>
+          <div class="fl"><span class="lbl">링크 URL</span><input class="ai" type="text" value="{{ form.link }}" onChange="{{ onLink }}" placeholder="https://... 또는 mailto:..." /></div>
+          <div class="fl"><span class="lbl">버튼 라벨</span><input class="ai" type="text" value="{{ form.linkLabelKo }}" onChange="{{ onLinkLabelKo }}" placeholder="링크 보기" /></div>
+        </div>
+
+        <sc-if value="{{ isHrForm }}" hint-placeholder-val="{{ false }}">
+          <div class="ac">
+            <h3 style="font-size:13px; font-weight:700; color:#10181E; letter-spacing:0.04em; padding-bottom:12px; border-bottom:1px solid #E8F0F0;">채용 정보 <span style="font-size:11px; font-weight:400; color:#01C0A4;">(채용공고 전용)</span></h3>
+            <div class="g3">
+              <div class="fl"><span class="lbl">부서</span><input class="ai" type="text" value="{{ form.department }}" onChange="{{ onDept }}" placeholder="마케팅팀" /></div>
+              <div class="fl">
+                <span class="lbl">고용형태</span>
+                <select class="asel" value="{{ form.jobType }}" onChange="{{ onJobType }}">
+                  <option value="">선택 없음</option>
+                  <option value="정규직">정규직</option>
+                  <option value="계약직">계약직</option>
+                  <option value="인턴">인턴</option>
+                  <option value="파트타임">파트타임</option>
+                </select>
+              </div>
+              <div class="fl"><span class="lbl">마감일</span><input class="ai" type="text" value="{{ form.deadline }}" onChange="{{ onDeadline }}" placeholder="2026-12-31 또는 상시채용" /></div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end; padding-top:4px;">
+          <button type="button" onClick="{{ goList }}" class="ab" style="background:#F0F2F4; color:#46585A; height:44px;" style-hover="background:#E3EAEA;">취소</button>
+          <button type="submit" class="ab" style="background:#01C0A4; color:#fff; padding:0 36px; height:44px;" style-hover="background:#00978F;">{{ saveLabel }}</button>
+        </div>
+
+      </form>
+    </sc-if>
+
+  </div>
+</sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+class Component extends DCLogic {
+  // ⚠️ 관리자 비밀번호 — 필요 시 변경하세요
+  ADMIN_PW = 'phama2026!';
+
+  state = {
+    loggedIn: false,
+    loginPw: '',
+    loginError: false,
+    posts: [],
+    view: 'list',
+    editId: null,
+    adminCategory: 'all',
+    form: {
+      category: 'notice', date: '', pinned: false, active: true,
+      titleKo: '', titleEn: '', titleZh: '',
+      contentKo: '', contentEn: '', contentZh: '',
+      link: '', linkLabelKo: '', linkLabelEn: '', linkLabelZh: '',
+      department: '', jobType: '', deadline: ''
+    }
+  };
+
+  componentDidMount() {
+    const loggedIn = sessionStorage.getItem('ps_admin') === '1';
+    this.setState({ loggedIn });
+    fetch('./posts.php?t=' + Date.now())
+      .then(r => r.json())
+      .then(serverPosts => {
+        const posts = Array.isArray(serverPosts) ? serverPosts : this._load();
+        try { localStorage.setItem('ps_posts', JSON.stringify(posts)); } catch(e) {}
+        this.setState({ posts });
+      })
+      .catch(() => this.setState({ posts: this._load() }));
+  }
+
+  _load() {
+    try { return JSON.parse(localStorage.getItem('ps_posts') || '[]'); } catch(e) { return []; }
+  }
+  _save(posts) {
+    // 서버에 저장 (기기 간 동기화)
+    fetch('./posts.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(posts)
+    }).catch(e => {});
+    // 로컬 캐시도 업데이트
+    try { localStorage.setItem('ps_posts', JSON.stringify(posts)); } catch(e) {}
+  }
+
+  doLogin = (e) => {
+    e.preventDefault();
+    if (this.state.loginPw === this.ADMIN_PW) {
+      sessionStorage.setItem('ps_admin', '1');
+      this.setState({ loggedIn: true, loginError: false });
+    } else {
+      this.setState({ loginError: true });
+    }
+  };
+
+  doLogout = () => {
+    sessionStorage.removeItem('ps_admin');
+    this.setState({ loggedIn: false, loginPw: '', loginError: false });
+  };
+
+  goCreate = () => {
+    const today = new Date().toISOString().split('T')[0];
+    this.setState({
+      view: 'form', editId: null,
+      form: { category: 'notice', date: today, pinned: false, active: true, titleKo: '', titleEn: '', titleZh: '', contentKo: '', contentEn: '', contentZh: '', link: '', linkLabelKo: '', linkLabelEn: '', linkLabelZh: '', department: '', jobType: '', deadline: '' }
+    });
+  };
+
+  goList = () => this.setState({ view: 'list', editId: null });
+
+  goEdit = (post) => {
+    this.setState({
+      view: 'form', editId: post.id,
+      form: {
+        category: post.category || 'notice',
+        date: post.date || '',
+        pinned: !!post.pinned,
+        active: post.active !== false,
+        titleKo: (post.title && post.title.ko) || '',
+        titleEn: (post.title && post.title.en) || '',
+        titleZh: (post.title && post.title.zh) || '',
+        contentKo: (post.content && post.content.ko) || '',
+        contentEn: (post.content && post.content.en) || '',
+        contentZh: (post.content && post.content.zh) || '',
+        link: post.link || '',
+        linkLabelKo: (post.linkLabel && post.linkLabel.ko) || '',
+        linkLabelEn: (post.linkLabel && post.linkLabel.en) || '',
+        linkLabelZh: (post.linkLabel && post.linkLabel.zh) || '',
+        department: post.department || '',
+        jobType: post.jobType || '',
+        deadline: post.deadline || ''
+      }
+    });
+  };
+
+  savePost = (e) => {
+    e.preventDefault();
+    const f = this.state.form;
+    const posts = this.state.posts.map(p => ({ ...p })); // state 기준으로 수정
+    const data = {
+      category: f.category || 'notice',
+      date: f.date,
+      pinned: !!f.pinned,
+      active: f.active !== false,
+      title: { ko: f.titleKo || '', en: f.titleEn || '', zh: f.titleZh || '' },
+      content: { ko: f.contentKo || '', en: f.contentEn || '', zh: f.contentZh || '' },
+      link: f.link || '',
+      linkLabel: { ko: f.linkLabelKo || '', en: f.linkLabelEn || '', zh: f.linkLabelZh || '' },
+      department: f.department || '',
+      jobType: f.jobType || '',
+      deadline: f.deadline || ''
+    };
+    if (this.state.editId) {
+      const idx = posts.findIndex(p => p.id === this.state.editId);
+      if (idx >= 0) {
+        posts[idx] = { ...posts[idx], ...data };
+      }
+    } else {
+      posts.unshift({ id: 'post-' + Date.now(), ...data });
+    }
+    this._save(posts);
+    this.setState({ posts, view: 'list', editId: null });
+  };
+
+  togglePost = (id) => {
+    const posts = this.state.posts.map(p => p.id === id ? { ...p, active: !p.active } : p);
+    this._save(posts);
+    this.setState({ posts });
+  };
+
+  deletePost = (id) => {
+    if (!window.confirm('정말 삭제하시겠습니까?')) return;
+    const posts = this.state.posts.filter(p => p.id !== id);
+    this._save(posts);
+    this.setState({ posts });
+  };
+
+  setField = (key) => (e) => {
+    const val = e.target.value;
+    this.setState(s => ({ form: { ...s.form, [key]: val } }));
+  };
+  togglePinned = () => this.setState(s => ({ form: { ...s.form, pinned: !s.form.pinned } }));
+  toggleActive = () => this.setState(s => ({ form: { ...s.form, active: !s.form.active } }));
+
+  renderVals() {
+    const { loggedIn, posts, view, form, adminCategory, loginError, loginPw } = this.state;
+    const catLabel = { notice: '공지사항', press: '언론보도', hr: '채용공고' };
+    const catColor = { notice: '#005251', press: '#007a73', hr: '#01C0A4' };
+
+    const adminFiltered = adminCategory === 'all' ? posts : posts.filter(p => p.category === adminCategory);
+    const counts = { all: posts.length, notice: posts.filter(p=>p.category==='notice').length, press: posts.filter(p=>p.category==='press').length, hr: posts.filter(p=>p.category==='hr').length };
+
+    const tabStyle = (key) => {
+      const on = adminCategory === key;
+      return 'height:36px; padding:0 16px; border-radius:40px; border:1px solid ' + (on?'#005251':'#D5E0E0') + '; background:' + (on?'#005251':'#fff') + '; color:' + (on?'#fff':'#46585A') + '; font-size:13px; font-weight:' + (on?'600':'400') + '; cursor:pointer; transition:.2s; white-space:nowrap;';
+    };
+    const toggleBtn = (on) => 'height:36px; padding:0 16px; border-radius:40px; border:1.5px solid ' + (on?'#01C0A4':'#D5E0E0') + '; background:' + (on?'rgba(1,192,164,.1)':'#fff') + '; color:' + (on?'#005251':'#46585A') + '; font-size:13px; font-weight:500; cursor:pointer; transition:.2s;';
+
+    return {
+      isLogin: !loggedIn,
+      isDashboard: loggedIn,
+      isListView: loggedIn && view === 'list',
+      isFormView: loggedIn && view === 'form',
+      loginPw, loginError,
+      onPw: (e) => this.setState({ loginPw: e.target.value }),
+      doLogin: this.doLogin, doLogout: this.doLogout,
+      goCreate: this.goCreate, goList: this.goList,
+      formTitle: this.state.editId ? '게시글 수정' : '새 글 작성',
+      saveLabel: this.state.editId ? '수정 완료' : '저장하기',
+      isHrForm: form.category === 'hr',
+      form,
+      pinnedBtnStyle: toggleBtn(form.pinned),
+      activeBtnStyle: toggleBtn(form.active),
+      pinnedLabel: form.pinned ? '(ON)' : '(OFF)',
+      activeLabel: form.active ? '✅ 게시 중' : '⏸ 비공개',
+      onFormCat: this.setField('category'),
+      onFormDate: this.setField('date'),
+      onTitleKo: this.setField('titleKo'), onTitleEn: this.setField('titleEn'), onTitleZh: this.setField('titleZh'),
+      onContentKo: this.setField('contentKo'), onContentEn: this.setField('contentEn'), onContentZh: this.setField('contentZh'),
+      onLink: this.setField('link'),
+      onLinkLabelKo: this.setField('linkLabelKo'), onLinkLabelEn: this.setField('linkLabelEn'), onLinkLabelZh: this.setField('linkLabelZh'),
+      onDept: this.setField('department'), onJobType: this.setField('jobType'), onDeadline: this.setField('deadline'),
+      togglePinned: this.togglePinned, toggleActive: this.toggleActive,
+      savePost: this.savePost,
+      adminCatTabs: [
+        { key:'all', label:'전체', count: counts.all },
+        { key:'notice', label:'공지사항', count: counts.notice },
+        { key:'press', label:'언론보도', count: counts.press },
+        { key:'hr', label:'채용공고', count: counts.hr }
+      ].map(d => ({ label: d.label, count: d.count, onClick: () => this.setState({ adminCategory: d.key }), style: tabStyle(d.key) })),
+      adminPosts: adminFiltered.map(p => ({
+        title: (p.title && p.title.ko) || '(제목 없음)',
+        date: p.date, pinned: !!p.pinned,
+        inactive: p.active === false,
+        catLabel: catLabel[p.category] || p.category,
+        catBadge: 'flex:none; height:22px; padding:0 9px; border-radius:4px; background:' + (catColor[p.category]||'#8B9A9C') + '22; color:' + (catColor[p.category]||'#8B9A9C') + '; font-size:10px; font-weight:700; letter-spacing:0.06em; display:inline-flex; align-items:center; white-space:nowrap;',
+        toggleBg: p.active !== false ? '#FEF3C7' : '#F2F6F6',
+        toggleColor: p.active !== false ? '#D97706' : '#46585A',
+        toggleLabel: p.active !== false ? '비공개로' : '공개로',
+        onEdit: () => this.goEdit(p),
+        onToggle: () => this.togglePost(p.id),
+        onDelete: () => this.deletePost(p.id)
+      })),
+      isAdminEmpty: adminFiltered.length === 0,
+      stats: [
+        { label: '전체', value: counts.all },
+        { label: '공지사항', value: counts.notice },
+        { label: '언론보도', value: counts.press },
+        { label: '채용공고', value: counts.hr }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
