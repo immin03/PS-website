@@ -70,18 +70,15 @@ input, textarea, button, select { font-family:inherit; }
   background:#007a73 !important;
   border-bottom:1px solid transparent !important;
   box-shadow:none !important;
-  transition:top .4s cubic-bezier(.22,.8,.28,1), height .4s cubic-bezier(.22,.8,.28,1), box-shadow .4s ease, background .4s ease;
+  transition:top .35s ease, height .35s ease, box-shadow .35s ease;
 }
-.ps-site-nav[data-compact="1"] {
+body.ps-nav-compact .ps-site-nav {
   top:0 !important;
-  height:60px;
-  background:rgba(0,122,115,.94) !important;
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  box-shadow:0 8px 28px rgba(0,20,18,.16) !important;
-  border-bottom:1px solid rgba(255,255,255,.1) !important;
+  height:58px;
+  box-shadow:0 10px 30px rgba(0,20,18,.2) !important;
+  border-bottom:1px solid rgba(255,255,255,.14) !important;
 }
-#ps-announce-bar[data-hidden="1"] {
+body.ps-nav-compact #ps-announce-bar {
   opacity:0 !important;
   transform:translateY(-100%) !important;
   pointer-events:none !important;
@@ -92,28 +89,24 @@ input, textarea, button, select { font-family:inherit; }
   align-items:center;
   gap:22px;
 }
-.ps-nav-ink {
-  position:absolute;
-  left:0;
-  bottom:-2px;
+.ps-nav-ink-fixed {
+  position:fixed;
+  z-index:95;
   height:2px;
-  width:24px;
   border-radius:2px;
   background:#7FE6CF;
-  box-shadow:0 0 12px rgba(127,230,207,.45);
-  transform:translateX(0);
-  opacity:0;
+  box-shadow:0 0 10px rgba(127,230,207,.5);
   pointer-events:none;
-  transition:transform .45s cubic-bezier(.22,.8,.28,1), width .45s cubic-bezier(.22,.8,.28,1), opacity .3s ease;
-  will-change:transform, width;
+  opacity:0;
+  transition:left .35s cubic-bezier(.22,.8,.28,1), width .35s cubic-bezier(.22,.8,.28,1), top .35s ease, opacity .25s ease;
 }
-.ps-nav-ink.is-on { opacity:1; }
+.ps-nav-ink-fixed.is-on { opacity:1; }
 .ps-site-nav .ps-nav-link,
 .ps-site-nav .ps-news-nav-btn {
   color:rgba(255,255,255,.62) !important;
   opacity:1 !important;
   font-weight:500 !important;
-  transition:color .3s ease;
+  transition:color .25s ease;
 }
 .ps-site-nav .ps-nav-link:hover,
 .ps-site-nav .ps-news-nav-btn:hover {
@@ -122,9 +115,7 @@ input, textarea, button, select { font-family:inherit; }
 .ps-site-nav .ps-nav-link.is-active,
 .ps-site-nav .ps-news-nav-btn.is-active {
   color:#ffffff !important;
-  font-weight:600 !important;
-  background:transparent !important;
-  box-shadow:none !important;
+  font-weight:700 !important;
 }
 #ps-announce-bar {
   transition:opacity .35s, transform .35s !important;
@@ -138,12 +129,11 @@ input, textarea, button, select { font-family:inherit; }
 .ps-site-nav .ps-lang-trigger svg { stroke:#ffffff !important; }
 .ps-site-nav .ps-logo img {
   filter:brightness(0) invert(1);
-  transition:filter .35s ease;
 }
 .ps-site-nav .ps-burger span {
   background:#ffffff !important;
 }
-.ps-scroll-top[data-show="1"] {
+body.ps-nav-compact .ps-scroll-top {
   opacity:1 !important;
   transform:translateY(0) !important;
   pointer-events:auto !important;
@@ -155,7 +145,7 @@ input, textarea, button, select { font-family:inherit; }
   transition:opacity .35s, transform .35s;
 }
 @media(max-width:1023px){
-  .ps-nav-ink { display:none !important; }
+  .ps-nav-ink-fixed { display:none !important; }
 }
 .ps-news-dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border-radius:12px; box-shadow:0 12px 36px rgba(0,82,81,.18); border:1px solid rgba(0,82,81,.08); min-width:160px; overflow:hidden; z-index:300; transition:opacity .2s, transform .2s, visibility .2s; pointer-events:none; }
 .ps-news-nav:hover .ps-news-dropdown { visibility:visible; opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
@@ -276,13 +266,12 @@ input, textarea, button, select { font-family:inherit; }
 </div>
 
 <!-- ============ NAV ============ -->
-<nav class="ps-site-nav" id="ps-site-nav" style="{{ navStyle }}" data-compact="0">
+<nav class="ps-site-nav" id="ps-site-nav" style="{{ navStyle }}">
   <div style="max-width:1440px; margin:0 auto; padding:0 40px; height:100%; display:flex; align-items:center; justify-content:space-between;">
     <a href="#top" class="ps-logo" aria-label="PHAMA SQUARE">
       <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="height:100%; width:auto; max-width:none;" />
     </a>
     <div class="ps-desktop-nav ps-nav-track" id="ps-nav-track" style="margin-left:clamp(32px,4vw,64px);">
-      <span class="ps-nav-ink" id="ps-nav-ink" aria-hidden="true"></span>
       <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
         <a href="{{ item.href }}" target="{{ item.target }}" data-nav-key="{{ item.key }}" class="ps-nav-link{{ item.activeClass }}" style="{{ item.style }}">{{ item.label }}</a>
       </sc-for>
@@ -1934,48 +1923,54 @@ class Component extends DCLogic {
 (function () {
   var SECTION_IDS = ['top', 'gallery', 'about', 'brands', 'partnership', 'news', 'location'];
   var activeId = '';
-  var compact = false;
+  var compact = null;
+  var clickLockUntil = 0;
 
-  function navEl() { return document.getElementById('ps-site-nav'); }
-  function barEl() { return document.getElementById('ps-announce-bar'); }
-  function topBtn() { return document.querySelector('.ps-scroll-top'); }
-  function trackEl() { return document.getElementById('ps-nav-track'); }
-  function inkEl() { return document.getElementById('ps-nav-ink'); }
+  function ensureInk() {
+    var ink = document.getElementById('ps-nav-ink-fixed');
+    if (!ink) {
+      ink = document.createElement('div');
+      ink.id = 'ps-nav-ink-fixed';
+      ink.className = 'ps-nav-ink-fixed';
+      ink.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(ink);
+    }
+    return ink;
+  }
 
   function setCompact(on) {
     if (compact === on) return;
     compact = on;
-    var nav = navEl();
-    var bar = barEl();
-    var btn = topBtn();
-    if (nav) nav.setAttribute('data-compact', on ? '1' : '0');
-    if (bar) bar.setAttribute('data-hidden', on ? '1' : '0');
-    if (btn) btn.setAttribute('data-show', on ? '1' : '0');
-    // height change shifts link positions — remeasure ink
+    document.body.classList.toggle('ps-nav-compact', !!on);
     requestAnimationFrame(moveInk);
   }
 
   function moveInk() {
-    var track = trackEl();
-    var ink = inkEl();
-    if (!track || !ink) return;
-    var target = track.querySelector('[data-nav-key="' + (activeId || 'top') + '"]');
-    if (!target || window.innerWidth < 1024) {
+    var ink = ensureInk();
+    if (window.innerWidth < 1024) {
       ink.classList.remove('is-on');
       return;
     }
-    var tr = track.getBoundingClientRect();
+    var track = document.getElementById('ps-nav-track');
+    var target = track && track.querySelector('[data-nav-key="' + (activeId || 'top') + '"]');
+    if (!target) {
+      ink.classList.remove('is-on');
+      return;
+    }
     var r = target.getBoundingClientRect();
-    var x = r.left - tr.left;
-    var w = Math.max(18, r.width);
-    ink.style.width = w + 'px';
-    ink.style.transform = 'translateX(' + x + 'px)';
+    if (r.width < 2) {
+      ink.classList.remove('is-on');
+      return;
+    }
+    ink.style.left = Math.round(r.left) + 'px';
+    ink.style.width = Math.round(r.width) + 'px';
+    ink.style.top = Math.round(r.bottom + 6) + 'px';
     ink.classList.add('is-on');
   }
 
-  function setActive(id) {
+  function setActive(id, fromClick) {
     if (!id) id = 'top';
-    var changed = activeId !== id;
+    if (fromClick) clickLockUntil = Date.now() + 900;
     activeId = id;
     var nodes = document.querySelectorAll('[data-nav-key]');
     for (var i = 0; i < nodes.length; i++) {
@@ -1983,26 +1978,30 @@ class Component extends DCLogic {
       if (n.getAttribute('data-nav-key') === id) n.classList.add('is-active');
       else n.classList.remove('is-active');
     }
-    if (changed) moveInk();
-    else requestAnimationFrame(moveInk);
+    moveInk();
   }
 
-  function syncActiveNow() {
-    var y = (window.pageYOffset || document.documentElement.scrollTop || 0) + 120;
+  // Viewport-based detection (offsetTop is wrong inside position:relative wrappers)
+  function syncActiveFromScroll() {
+    if (Date.now() < clickLockUntil) {
+      moveInk();
+      return;
+    }
+    var marker = 140;
     var cur = 'top';
     for (var i = 0; i < SECTION_IDS.length; i++) {
       var id = SECTION_IDS[i];
-      if (id === 'top') continue;
       var el = document.getElementById(id);
       if (!el) continue;
-      if (el.offsetTop <= y) cur = id;
+      var top = el.getBoundingClientRect().top;
+      if (top <= marker) cur = id;
     }
-    setActive(cur);
+    setActive(cur, false);
   }
 
-  function onScrollCompact() {
-    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    setCompact(y > 48);
+  function syncCompact() {
+    var y = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    setCompact(y > 40);
   }
 
   var ticking = false;
@@ -2011,50 +2010,72 @@ class Component extends DCLogic {
     ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
-      onScrollCompact();
-      syncActiveNow();
+      syncCompact();
+      syncActiveFromScroll();
     });
   }
 
+  function onNavClick(e) {
+    var el = e.target;
+    if (!el || !el.closest) return;
+    var hit = el.closest('[data-nav-key]');
+    if (!hit) {
+      var a = el.closest('a[href^="#"]');
+      if (!a) return;
+      var href = a.getAttribute('href') || '';
+      var key = href.replace(/^#/, '');
+      if (SECTION_IDS.indexOf(key) >= 0) setActive(key, true);
+      return;
+    }
+    var id = hit.getAttribute('data-nav-key');
+    if (id) setActive(id, true);
+  }
+
   function boot() {
+    ensureInk();
     activeId = '';
-    compact = false;
-    onScrollCompact();
-    syncActiveNow();
+    compact = null;
+    syncCompact();
+    syncActiveFromScroll();
     moveInk();
+
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', function () {
-      syncActiveNow();
-      onScrollCompact();
+      syncCompact();
+      syncActiveFromScroll();
       moveInk();
     });
+    document.addEventListener('click', onNavClick, true);
+
     window.addEventListener('hashchange', function () {
-      setTimeout(function () { syncActiveNow(); onScrollCompact(); moveInk(); }, 50);
-    });
-    window.addEventListener('ps-nav-boot', function () {
-      setTimeout(function () { syncActiveNow(); onScrollCompact(); moveInk(); }, 60);
-      setTimeout(moveInk, 400);
-    });
-    window.addEventListener('ps-nav-refresh', function () {
-      activeId = '';
-      syncActiveNow();
-      onScrollCompact();
-      moveInk();
+      var key = (location.hash || '').replace(/^#/, '');
+      if (SECTION_IDS.indexOf(key) >= 0) setActive(key, true);
+      setTimeout(function () { syncCompact(); syncActiveFromScroll(); }, 950);
     });
 
-    var nav = navEl();
-    if (nav && 'MutationObserver' in window) {
+    window.addEventListener('ps-nav-boot', function () {
+      setTimeout(function () { syncCompact(); syncActiveFromScroll(); moveInk(); }, 80);
+      setTimeout(moveInk, 500);
+    });
+    window.addEventListener('ps-nav-refresh', function () {
+      var keep = activeId || 'top';
+      activeId = '';
+      setActive(keep, false);
+      syncCompact();
+    });
+
+    // Re-apply after React rebuilds nav nodes
+    var nav = document.getElementById('ps-site-nav');
+    if (nav && window.MutationObserver) {
       var t = null;
-      var mo = new MutationObserver(function () {
+      new MutationObserver(function () {
         if (t) clearTimeout(t);
         t = setTimeout(function () {
-          var keep = activeId;
+          var keep = activeId || 'top';
           activeId = '';
-          setActive(keep || 'top');
-          moveInk();
-        }, 40);
-      });
-      mo.observe(nav, { childList: true, subtree: true });
+          setActive(keep, false);
+        }, 50);
+      }).observe(nav, { childList: true, subtree: true });
     }
   }
 
