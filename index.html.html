@@ -64,61 +64,26 @@ input, textarea, button, select { font-family:inherit; }
 .ps-nav-link { position:relative; padding:4px 2px; }
 .ps-news-nav-btn { padding:4px 2px; }
 .ps-site-nav {
-  position:fixed !important; left:0; right:0; z-index:90;
-  top:44px;
+  position:fixed !important; left:0; right:0; top:44px; z-index:90;
   height:70px;
   background:#007a73 !important;
-  border-bottom:1px solid transparent !important;
-  box-shadow:none !important;
-  transition:top .35s ease, height .35s ease, box-shadow .35s ease;
-}
-body.ps-nav-compact .ps-site-nav {
-  top:0 !important;
-  height:58px;
-  box-shadow:0 10px 30px rgba(0,20,18,.2) !important;
-  border-bottom:1px solid rgba(255,255,255,.14) !important;
-}
-body.ps-nav-compact #ps-announce-bar {
-  opacity:0 !important;
-  transform:translateY(-100%) !important;
-  pointer-events:none !important;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  box-shadow:0 4px 18px rgba(0,32,28,.1);
 }
 .ps-nav-track {
-  position:relative;
   display:flex;
   align-items:center;
   gap:22px;
 }
-.ps-nav-ink-fixed {
-  position:fixed;
-  z-index:95;
-  height:2px;
-  border-radius:2px;
-  background:#7FE6CF;
-  box-shadow:0 0 10px rgba(127,230,207,.5);
-  pointer-events:none;
-  opacity:0;
-  transition:left .35s cubic-bezier(.22,.8,.28,1), width .35s cubic-bezier(.22,.8,.28,1), top .35s ease, opacity .25s ease;
-}
-.ps-nav-ink-fixed.is-on { opacity:1; }
 .ps-site-nav .ps-nav-link,
 .ps-site-nav .ps-news-nav-btn {
-  color:rgba(255,255,255,.62) !important;
-  opacity:1 !important;
+  color:rgba(255,255,255,.72) !important;
   font-weight:500 !important;
-  transition:color .25s ease;
+  transition:color .2s ease;
 }
 .ps-site-nav .ps-nav-link:hover,
 .ps-site-nav .ps-news-nav-btn:hover {
-  color:rgba(255,255,255,.92) !important;
-}
-.ps-site-nav .ps-nav-link.is-active,
-.ps-site-nav .ps-news-nav-btn.is-active {
   color:#ffffff !important;
-  font-weight:700 !important;
-}
-#ps-announce-bar {
-  transition:opacity .35s, transform .35s !important;
 }
 .ps-site-nav .ps-lang-btn { color:#ffffff !important; }
 .ps-site-nav .ps-lang-trigger {
@@ -133,19 +98,16 @@ body.ps-nav-compact #ps-announce-bar {
 .ps-site-nav .ps-burger span {
   background:#ffffff !important;
 }
-body.ps-nav-compact .ps-scroll-top {
-  opacity:1 !important;
-  transform:translateY(0) !important;
-  pointer-events:auto !important;
-}
 .ps-scroll-top {
   opacity:0;
   transform:translateY(12px);
   pointer-events:none;
   transition:opacity .35s, transform .35s;
 }
-@media(max-width:1023px){
-  .ps-nav-ink-fixed { display:none !important; }
+.ps-scroll-top.is-on {
+  opacity:1 !important;
+  transform:translateY(0) !important;
+  pointer-events:auto !important;
 }
 .ps-news-dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border-radius:12px; box-shadow:0 12px 36px rgba(0,82,81,.18); border:1px solid rgba(0,82,81,.08); min-width:160px; overflow:hidden; z-index:300; transition:opacity .2s, transform .2s, visibility .2s; pointer-events:none; }
 .ps-news-nav:hover .ps-news-dropdown { visibility:visible; opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
@@ -271,14 +233,14 @@ body.ps-nav-compact .ps-scroll-top {
     <a href="#top" class="ps-logo" aria-label="PHAMA SQUARE">
       <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="height:100%; width:auto; max-width:none;" />
     </a>
-    <div class="ps-desktop-nav ps-nav-track" id="ps-nav-track" style="margin-left:clamp(32px,4vw,64px);">
+    <div class="ps-desktop-nav ps-nav-track" style="margin-left:clamp(32px,4vw,64px);">
       <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
-        <a href="{{ item.href }}" target="{{ item.target }}" data-nav-key="{{ item.key }}" class="ps-nav-link{{ item.activeClass }}" style="{{ item.style }}">{{ item.label }}</a>
+        <a href="{{ item.href }}" target="{{ item.target }}" class="ps-nav-link" style="{{ item.style }}">{{ item.label }}</a>
       </sc-for>
     </div>
     <div style="display:flex; align-items:center; gap:10px; margin-left:20px;" class="ps-desktop-nav">
       <div class="ps-news-nav" style="display:flex; align-items:center;">
-        <button class="ps-news-nav-btn{{ newsActiveClass }}" data-nav-key="news" style="{{ newsNavBtnStyle }}">{{ newsLabel }}<span style="font-size:8px; opacity:.5; margin-left:3px; line-height:1;">▾</span></button>
+        <button class="ps-news-nav-btn" style="{{ newsNavBtnStyle }}">{{ newsLabel }}<span style="font-size:8px; opacity:.5; margin-left:3px; line-height:1;">▾</span></button>
         <div class="ps-news-dropdown">
           <sc-for list="{{ newsDropItems }}" as="ni" hint-placeholder-count="3">
             <a href="{{ ni.href }}" target="_blank" style="display:flex; align-items:center; justify-content:center; padding:13px 24px; font-size:13px; font-weight:500; color:#2B3A3C; border-bottom:1px solid #EEF3F3; white-space:nowrap; text-decoration:none; transition:background .15s;" style-hover="background:#F4F8F8; color:#005251;">{{ ni.label }}</a>
@@ -739,11 +701,20 @@ body.ps-nav-compact .ps-scroll-top {
     </div>
     <div id="ps-ptype-scroll" style="display:grid; gap:clamp(12px,1.6vw,18px);" class="ps-ptypes-grid reveal">
       <sc-for list="{{ ptypes }}" as="pt" hint-placeholder-count="3">
-        <article class="ps-pcard" style="border-radius:10px; background:#fff; border:1px solid #D5E0E0; padding:clamp(22px,2.4vw,28px); min-height:0; display:flex; flex-direction:column; justify-content:space-between; color:#10181E;">
+        <article class="ps-pcard" style="border-radius:10px; background:#fff; border:1px solid #D5E0E0; padding:clamp(22px,2.4vw,28px); min-height:0; display:flex; flex-direction:column; justify-content:space-between; color:#10181E; box-shadow:0 8px 28px rgba(0,48,47,.05);">
           <div>
-            <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#00978F;">{{ pt.tag }}</span>
-            <h3 style="margin-top:12px; font-size:clamp(18px,2vw,22px); font-weight:600; letter-spacing:-0.01em; line-height:1.25;">{{ pt.title }}</h3>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+              <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#00978F;">{{ pt.tag }}</span>
+              <span style="font-size:10px; font-weight:600; letter-spacing:0.08em; color:#8B9A9C; padding:3px 8px; border-radius:40px; background:#F2F6F6;">{{ pt.badge }}</span>
+            </div>
+            <h3 style="margin-top:14px; font-size:clamp(18px,2vw,22px); font-weight:600; letter-spacing:-0.01em; line-height:1.25;">{{ pt.title }}</h3>
             <p style="margin-top:10px; font-size:13px; font-weight:300; line-height:1.65; color:#5B6B6D;">{{ pt.sub }}</p>
+            <ul style="margin-top:16px; list-style:none; padding:0; display:flex; flex-direction:column; gap:8px;">
+              <li style="display:flex; gap:8px; font-size:12px; font-weight:300; line-height:1.5; color:#46585A;"><span style="color:#01C0A4; flex:none;">·</span><span>{{ pt.p1 }}</span></li>
+              <li style="display:flex; gap:8px; font-size:12px; font-weight:300; line-height:1.5; color:#46585A;"><span style="color:#01C0A4; flex:none;">·</span><span>{{ pt.p2 }}</span></li>
+              <li style="display:flex; gap:8px; font-size:12px; font-weight:300; line-height:1.5; color:#46585A;"><span style="color:#01C0A4; flex:none;">·</span><span>{{ pt.p3 }}</span></li>
+            </ul>
+            <p style="margin-top:14px; padding-top:12px; border-top:1px solid #E8F0F0; font-size:11px; font-weight:500; color:#00978F; letter-spacing:0.02em;">{{ pt.note }}</p>
           </div>
           <div style="margin-top:20px;">
             <button onClick="{{ pt.onInquiry }}" style="display:inline-flex; align-items:center; height:40px; padding:0 16px; border-radius:40px; border:1.5px solid #005251; background:transparent; color:#005251; font-size:13px; font-weight:600; letter-spacing:0.02em; transition:background .25s, color .25s;" style-hover="background:#005251; color:#fff;">{{ pt.cta }} →</button>
@@ -1064,8 +1035,7 @@ class Component extends DCLogic {
     } catch(e) {}
     this._loadNewsPosts();
 
-    // Nav scroll UI handled entirely by vanilla IO script below (not React).
-    try { window.dispatchEvent(new Event('ps-nav-boot')); } catch (e) {}
+    // Nav is fixed only — no section tracking.
 
     const dismissed = localStorage.getItem('ps_event_popup_dismiss');
     const now = Date.now();
@@ -1171,9 +1141,7 @@ class Component extends DCLogic {
   }
 
   setLang = (l) => {
-    this.setState({ lang: l, langDropdownOpen: false }, () => {
-      try { window.dispatchEvent(new Event('ps-nav-refresh')); } catch (e) {}
-    });
+    this.setState({ lang: l, langDropdownOpen: false });
     this._applyFont(l);
     try { localStorage.setItem('ps_lang', l); } catch(e) {}
   };
@@ -1342,9 +1310,33 @@ class Component extends DCLogic {
         ],
         aiSteps: [ { n:1, en:'DATA HUB', title:'오프라인 건강 접점', desc:'매장에서 만나는 건강 니즈와 구매 데이터를, 병원 방문 이전 단계의 사전 건강 신호로 구조화합니다.' }, { n:2, en:'AI RECOMMEND', title:'AI 맞춤 추천', desc:'자가진단·구매 이력·재구매 주기를 연결해, 고객 개인에게 꼭 맞는 웰니스 솔루션을 제안합니다.' }, { n:3, en:'PLATFORM', title:'플랫폼으로 확장', desc:'축적된 웰니스 데이터를 기반으로 구독·검진·헬스케어 서비스로 이어지는 플랫폼을 지향합니다.' } ],
         ptypes: [
-          { tag:'PHARMACY', title:'약국 입점', sub:'독립 약국 개설·운영을 전제로 한 입점 안내입니다.', cta:'약국 문의', type:'pharmacy' },
-          { tag:'BRAND', title:'브랜드사 입점', sub:'뷰티·건기식·펫·라이프스타일 브랜드 입점을 검토합니다.', cta:'브랜드 문의', type:'brand' },
-          { tag:'LOCATION', title:'입지 제안', sub:'파마스퀘어 오픈에 적합한 상권·공간을 제안해주세요.', cta:'입지 제안', type:'storeDev' }
+          {
+            tag:'PHARMACY', badge:'약사 대상', title:'약국 입점',
+            sub:'독립 약국 개설·운영을 전제로 한 입점 안내입니다.',
+            p1:'서울·경기 우선 검토, 면허·개설 요건 확인',
+            p2:'매장 내 약국 공간·동선·운영 가이드 제공',
+            p3:'입점 후 본사 MD·브랜딩·운영 지원 연계',
+            note:'희망 지역·개설 시기·경력을 함께 남겨주세요.',
+            cta:'약국 문의', type:'pharmacy'
+          },
+          {
+            tag:'BRAND', badge:'브랜드사', title:'브랜드사 입점',
+            sub:'뷰티·건기식·펫·라이프스타일 브랜드 입점을 검토합니다.',
+            p1:'200~500평 매장 노출 · 체험존 구성 가능',
+            p2:'카테고리 핏·시즌 MD·프로모션 협의',
+            p3:'하남·구로 운영 매장 기준 입점 심의',
+            note:'브랜드 소개서·주력 SKU·희망 조건을 보내주세요.',
+            cta:'브랜드 문의', type:'brand'
+          },
+          {
+            tag:'LOCATION', badge:'입지·부동산', title:'입지 제안',
+            sub:'파마스퀘어 오픈에 적합한 상권·공간을 제안해주세요.',
+            p1:'익스프레스·창고형 포맷에 맞는 면적·층고',
+            p2:'유동인구·접근성·주차·임대 조건 검토',
+            p3:'내부 심사 후 담당자가 회신',
+            note:'상권 분석·물건 개요·연락처를 자유롭게 남겨주세요.',
+            cta:'입지 제안', type:'storeDev'
+          }
         ],
         stores: [
           { en:'HANAM FLAGSHIP', name:'파마스퀘어 하남점', format:'FLAGSHIP', status:'NOW OPEN', addr:'경기도 하남시 미사대로 410, 1F' },
@@ -1448,9 +1440,33 @@ class Component extends DCLogic {
         ],
         aiSteps: [ { n:1, en:'DATA HUB', title:'Offline Health Touchpoint', desc:'Health needs and purchase data gathered in-store are structured as pre-clinical health signals.' }, { n:2, en:'AI RECOMMEND', title:'AI Personalized Recommendations', desc:'By connecting self-diagnostics, purchase history, and repurchase cycles, we recommend personalized wellness solutions.' }, { n:3, en:'PLATFORM', title:'Platform Expansion', desc:'Based on accumulated wellness data, we aim to evolve into a subscription, checkup, and healthcare service platform.' } ],
         ptypes: [
-          { tag:'PHARMACY', title:'Pharmacy', sub:'Independent pharmacy setup and operation inside our stores.', cta:'Pharmacy inquiry', type:'pharmacy' },
-          { tag:'BRAND', title:'Brand', sub:'Beauty, health, pet, and lifestyle brands welcome.', cta:'Brand inquiry', type:'brand' },
-          { tag:'LOCATION', title:'Location', sub:'Propose sites suited for a Phama Square opening.', cta:'Propose site', type:'storeDev' }
+          {
+            tag:'PHARMACY', badge:'Pharmacists', title:'Pharmacy',
+            sub:'Independent pharmacy setup and operation inside our stores.',
+            p1:'Priority review for Seoul & Gyeonggi · license check',
+            p2:'In-store pharmacy space, flow, and ops guidance',
+            p3:'HQ support for MD, branding, and operations',
+            note:'Share preferred area, timeline, and experience.',
+            cta:'Pharmacy inquiry', type:'pharmacy'
+          },
+          {
+            tag:'BRAND', badge:'Brands', title:'Brand',
+            sub:'Beauty, health, pet, and lifestyle brands welcome.',
+            p1:'200–500 pyeong exposure · experience zones available',
+            p2:'Category fit, seasonal MD, and promo alignment',
+            p3:'Reviewed against Hanam & Guro operating stores',
+            note:'Send brand deck, hero SKUs, and desired terms.',
+            cta:'Brand inquiry', type:'brand'
+          },
+          {
+            tag:'LOCATION', badge:'Sites', title:'Location',
+            sub:'Propose sites suited for a Phama Square opening.',
+            p1:'Area and ceiling height for Express / Warehouse',
+            p2:'Foot traffic, access, parking, lease terms',
+            p3:'Internal review, then a specialist will reply',
+            note:'Share trade-area notes, listing summary, and contact.',
+            cta:'Propose site', type:'storeDev'
+          }
         ],
         stores: [
           { en:'HANAM FLAGSHIP', name:'Phama Square Hanam', format:'FLAGSHIP', status:'NOW OPEN', addr:'410 Misadae-ro, Hanam-si, Gyeonggi-do, 1F' },
@@ -1553,9 +1569,33 @@ class Component extends DCLogic {
         ],
         aiSteps: [ { n:1, en:'DATA HUB', title:'线下健康接触点', desc:'将门店中的健康需求和购买数据结构化为就医前的健康预警信号。' }, { n:2, en:'AI RECOMMEND', title:'AI个性化推荐', desc:'通过整合自我诊断、购买历史和复购周期，向个人推荐最适合的健康解决方案。' }, { n:3, en:'PLATFORM', title:'平台化扩展', desc:'基于积累的健康数据，致力于发展为涵盖订阅、体检、医疗服务的综合平台。' } ],
         ptypes: [
-          { tag:'PHARMACY', title:'药局入驻', sub:'以独立开设与运营药局为前提的入驻咨询。', cta:'药局咨询', type:'pharmacy' },
-          { tag:'BRAND', title:'品牌入驻', sub:'欢迎美容、健康食品、宠物、生活方式品牌。', cta:'品牌咨询', type:'brand' },
-          { tag:'LOCATION', title:'选址提案', sub:'欢迎提交适合开店的商圈与空间建议。', cta:'提交选址', type:'storeDev' }
+          {
+            tag:'PHARMACY', badge:'药剂师', title:'药局入驻',
+            sub:'以独立开设与运营药局为前提的入驻咨询。',
+            p1:'优先审核首尔·京畿 · 确认执照与开设条件',
+            p2:'提供门店内药局空间、动线与运营指引',
+            p3:'入驻后联动总部MD、品牌与运营支持',
+            note:'请一并留下希望区域、开设时间与经历。',
+            cta:'药局咨询', type:'pharmacy'
+          },
+          {
+            tag:'BRAND', badge:'品牌方', title:'品牌入驻',
+            sub:'欢迎美容、健康食品、宠物、生活方式品牌。',
+            p1:'200~500坪门店曝光 · 可配置体验区',
+            p2:'品类匹配、季节MD与促销协商',
+            p3:'以河南·九老运营门店为基准审核',
+            note:'请发送品牌介绍、主力SKU与希望条件。',
+            cta:'品牌咨询', type:'brand'
+          },
+          {
+            tag:'LOCATION', badge:'选址', title:'选址提案',
+            sub:'欢迎提交适合开店的商圈与空间建议。',
+            p1:'符合快捷店/仓储型的面积与层高',
+            p2:'客流、可达性、停车与租赁条件评估',
+            p3:'内部审核后由负责人回复',
+            note:'请自由留下商圈分析、物业概况与联系方式。',
+            cta:'提交选址', type:'storeDev'
+          }
         ],
         stores: [
           { en:'HANAM FLAGSHIP', name:'파마广场 河南店', format:'FLAGSHIP', status:'NOW OPEN', addr:'京畿道 河南市 弥沙大路 410, 1F' },
@@ -1636,7 +1676,10 @@ class Component extends DCLogic {
         { tag:'STANDARD', name: B + ' 青罗店', addr:'仁川广域市 西区 西串路 120, B2', naverUrl:'', kakaoUrl:'' },
         { tag:'STANDARD', name: B + ' 金浦店', addr:'京畿道 金浦市（地址待更新）', naverUrl:'', kakaoUrl:'' }
       ];
-      if (T.ptypes && T.ptypes[2]) T.ptypes[2].sub = '欢迎提交适合' + B + '开设的地址建议。请自由发送商圈分析、房产信息、空间特性等，内部审核后将联系您。';
+      if (T.ptypes && T.ptypes[2]) {
+        T.ptypes[2].sub = '欢迎提交适合' + B + '开设的地址建议。';
+        T.ptypes[2].note = '请自由发送商圈分析、房产信息、空间特性等，内部审核后将联系您。';
+      }
       T.typeOther = '其他咨询'; T.fOtherMsgPH = '请自由填写您的咨询内容。';
     }
 
@@ -1674,20 +1717,15 @@ class Component extends DCLogic {
       label,
       href: './board.dc.html#' + newsCatKeys[i]
     }));
-    const navItems = navDefs.map(d => {
-      return {
-        key: d.key,
-        href: d.href, label: d.label, target: d.target||'',
-        activeClass: '',
-        style: 'font-size:13px; letter-spacing:0.14em; transition:color .3s, opacity .3s;',
-        drawerStyle: 'display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); text-decoration:none;',
-        drawerWeight: '500',
-        drawerColor: '#fff',
-        drawerChevron: 'rgba(255,255,255,.3)'
-      };
-    });
-    const newsActiveClass = '';
-    const newsNavBtnStyle = 'display:flex; align-items:center; gap:2px; font-size:13px; letter-spacing:0.14em; background:none; border:none; cursor:pointer; padding:4px 0; transition:color .3s, opacity .3s;';
+    const navItems = navDefs.map(d => ({
+      href: d.href, label: d.label, target: d.target||'',
+      style: 'font-size:13px; letter-spacing:0.14em; transition:color .2s;',
+      drawerStyle: 'display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); text-decoration:none;',
+      drawerWeight: '500',
+      drawerColor: '#fff',
+      drawerChevron: 'rgba(255,255,255,.3)'
+    }));
+    const newsNavBtnStyle = 'display:flex; align-items:center; gap:2px; font-size:13px; letter-spacing:0.14em; background:none; border:none; cursor:pointer; padding:4px 0; transition:color .2s;';
 
     const langOptions = [
       { id:'ko', label:'KO', flag:'🇰🇷' },
@@ -1753,7 +1791,6 @@ class Component extends DCLogic {
       noticeTitle: this.state.latestNotice ? ((this.state.latestNotice.title && (this.state.latestNotice.title[lang] || this.state.latestNotice.title.ko)) || '') : '',
       newsLabel: newsLabelMap[lang] || 'NEWS',
       newsDropItems: newsDropMap,
-      newsActiveClass,
       newsNavBtnStyle,
       currentLangCode, langDropItems, langDropdownStyle, toggleLangDropdown,
       barStyle, navStyle, drawerStyle, navItems, langButtons,
@@ -1921,168 +1958,18 @@ class Component extends DCLogic {
 </script>
 <script>
 (function () {
-  var SECTION_IDS = ['top', 'gallery', 'about', 'brands', 'partnership', 'news', 'location'];
-  var activeId = '';
-  var compact = null;
-  var clickLockUntil = 0;
-
-  function ensureInk() {
-    var ink = document.getElementById('ps-nav-ink-fixed');
-    if (!ink) {
-      ink = document.createElement('div');
-      ink.id = 'ps-nav-ink-fixed';
-      ink.className = 'ps-nav-ink-fixed';
-      ink.setAttribute('aria-hidden', 'true');
-      document.body.appendChild(ink);
-    }
-    return ink;
+  function syncTopBtn() {
+    var btn = document.querySelector('.ps-scroll-top');
+    if (!btn) return;
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    if (y > 40) btn.classList.add('is-on');
+    else btn.classList.remove('is-on');
   }
-
-  function setCompact(on) {
-    if (compact === on) return;
-    compact = on;
-    document.body.classList.toggle('ps-nav-compact', !!on);
-    requestAnimationFrame(moveInk);
-  }
-
-  function moveInk() {
-    var ink = ensureInk();
-    if (window.innerWidth < 1024) {
-      ink.classList.remove('is-on');
-      return;
-    }
-    var track = document.getElementById('ps-nav-track');
-    var target = track && track.querySelector('[data-nav-key="' + (activeId || 'top') + '"]');
-    if (!target) {
-      ink.classList.remove('is-on');
-      return;
-    }
-    var r = target.getBoundingClientRect();
-    if (r.width < 2) {
-      ink.classList.remove('is-on');
-      return;
-    }
-    ink.style.left = Math.round(r.left) + 'px';
-    ink.style.width = Math.round(r.width) + 'px';
-    ink.style.top = Math.round(r.bottom + 6) + 'px';
-    ink.classList.add('is-on');
-  }
-
-  function setActive(id, fromClick) {
-    if (!id) id = 'top';
-    if (fromClick) clickLockUntil = Date.now() + 900;
-    activeId = id;
-    var nodes = document.querySelectorAll('[data-nav-key]');
-    for (var i = 0; i < nodes.length; i++) {
-      var n = nodes[i];
-      if (n.getAttribute('data-nav-key') === id) n.classList.add('is-active');
-      else n.classList.remove('is-active');
-    }
-    moveInk();
-  }
-
-  // Viewport-based detection (offsetTop is wrong inside position:relative wrappers)
-  function syncActiveFromScroll() {
-    if (Date.now() < clickLockUntil) {
-      moveInk();
-      return;
-    }
-    var marker = 140;
-    var cur = 'top';
-    for (var i = 0; i < SECTION_IDS.length; i++) {
-      var id = SECTION_IDS[i];
-      var el = document.getElementById(id);
-      if (!el) continue;
-      var top = el.getBoundingClientRect().top;
-      if (top <= marker) cur = id;
-    }
-    setActive(cur, false);
-  }
-
-  function syncCompact() {
-    var y = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    setCompact(y > 40);
-  }
-
-  var ticking = false;
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function () {
-      ticking = false;
-      syncCompact();
-      syncActiveFromScroll();
-    });
-  }
-
-  function onNavClick(e) {
-    var el = e.target;
-    if (!el || !el.closest) return;
-    var hit = el.closest('[data-nav-key]');
-    if (!hit) {
-      var a = el.closest('a[href^="#"]');
-      if (!a) return;
-      var href = a.getAttribute('href') || '';
-      var key = href.replace(/^#/, '');
-      if (SECTION_IDS.indexOf(key) >= 0) setActive(key, true);
-      return;
-    }
-    var id = hit.getAttribute('data-nav-key');
-    if (id) setActive(id, true);
-  }
-
-  function boot() {
-    ensureInk();
-    activeId = '';
-    compact = null;
-    syncCompact();
-    syncActiveFromScroll();
-    moveInk();
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function () {
-      syncCompact();
-      syncActiveFromScroll();
-      moveInk();
-    });
-    document.addEventListener('click', onNavClick, true);
-
-    window.addEventListener('hashchange', function () {
-      var key = (location.hash || '').replace(/^#/, '');
-      if (SECTION_IDS.indexOf(key) >= 0) setActive(key, true);
-      setTimeout(function () { syncCompact(); syncActiveFromScroll(); }, 950);
-    });
-
-    window.addEventListener('ps-nav-boot', function () {
-      setTimeout(function () { syncCompact(); syncActiveFromScroll(); moveInk(); }, 80);
-      setTimeout(moveInk, 500);
-    });
-    window.addEventListener('ps-nav-refresh', function () {
-      var keep = activeId || 'top';
-      activeId = '';
-      setActive(keep, false);
-      syncCompact();
-    });
-
-    // Re-apply after React rebuilds nav nodes
-    var nav = document.getElementById('ps-site-nav');
-    if (nav && window.MutationObserver) {
-      var t = null;
-      new MutationObserver(function () {
-        if (t) clearTimeout(t);
-        t = setTimeout(function () {
-          var keep = activeId || 'top';
-          activeId = '';
-          setActive(keep, false);
-        }, 50);
-      }).observe(nav, { childList: true, subtree: true });
-    }
-  }
-
+  window.addEventListener('scroll', syncTopBtn, { passive: true });
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 0); });
+    document.addEventListener('DOMContentLoaded', syncTopBtn);
   } else {
-    setTimeout(boot, 0);
+    syncTopBtn();
   }
 })();
 </script>
