@@ -61,40 +61,48 @@ input, textarea, button, select { font-family:inherit; }
 @media(hover:hover){ .ps-cursor-dot, .ps-cursor-ring { display:block; } }
 .ps-cursor-dot { position:fixed; width:8px; height:8px; border-radius:50%; background:#01C0A4; pointer-events:none; z-index:9999; top:0; left:0; will-change:transform; }
 .ps-cursor-ring { position:fixed; border-radius:50%; border:1.5px solid rgba(1,192,164,.55); pointer-events:none; z-index:9998; top:0; left:0; will-change:transform; transition:width .22s, height .22s, border-color .22s; }
-.ps-nav-link { position:relative; }
-.ps-nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px; background:#01C0A4; transition:width .35s cubic-bezier(.16,.84,.44,1); }
-.ps-nav-link:hover::after, .ps-nav-link.is-active::after { width:100%; }
+.ps-nav-link { position:relative; padding:6px 10px; border-radius:40px; }
+.ps-nav-link::after { display:none; }
+.ps-news-nav-btn { padding:6px 10px; border-radius:40px; }
 .ps-site-nav {
   position:fixed !important; left:0; right:0; z-index:90;
   top:44px;
+  height:70px;
   background:#007a73 !important;
   border-bottom:1px solid transparent !important;
   box-shadow:none !important;
-  transition:top .35s, box-shadow .35s, border-color .35s;
+  transition:top .35s ease, height .35s ease, box-shadow .35s ease;
 }
-html.ps-scrolled .ps-site-nav {
+.ps-site-nav[data-compact="1"] {
   top:0 !important;
-  background:#007a73 !important;
-  border-bottom:1px solid rgba(0,0,0,.08) !important;
-  box-shadow:0 4px 18px rgba(0,32,28,.12) !important;
+  height:58px;
+  box-shadow:0 10px 32px rgba(0,20,18,.22) !important;
+  border-bottom:1px solid rgba(255,255,255,.12) !important;
 }
-html.ps-scrolled #ps-announce-bar {
+.ps-site-nav[data-compact="1"]::after {
+  content:'';
+  position:absolute; left:0; right:0; bottom:0; height:3px;
+  background:linear-gradient(90deg, #01C0A4, #7FE6CF, #01C0A4);
+  pointer-events:none;
+}
+#ps-announce-bar[data-hidden="1"] {
   opacity:0 !important;
   transform:translateY(-100%) !important;
   pointer-events:none !important;
 }
 .ps-site-nav .ps-nav-link,
 .ps-site-nav .ps-news-nav-btn {
-  color:#ffffff !important;
-  opacity:0.75 !important;
+  color:rgba(255,255,255,.72) !important;
+  opacity:1 !important;
   font-weight:500 !important;
-  transition:color .25s, opacity .25s;
+  transition:color .25s, background .25s, box-shadow .25s;
 }
 .ps-site-nav .ps-nav-link.is-active,
 .ps-site-nav .ps-news-nav-btn.is-active {
-  color:#7FE6CF !important;
-  opacity:1 !important;
+  color:#ffffff !important;
   font-weight:700 !important;
+  background:rgba(255,255,255,.2) !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
 }
 #ps-announce-bar {
   transition:opacity .35s, transform .35s !important;
@@ -113,7 +121,7 @@ html.ps-scrolled #ps-announce-bar {
 .ps-site-nav .ps-burger span {
   background:#ffffff !important;
 }
-html.ps-scrolled .ps-scroll-top {
+.ps-scroll-top[data-show="1"] {
   opacity:1 !important;
   transform:translateY(0) !important;
   pointer-events:auto !important;
@@ -243,8 +251,8 @@ html.ps-scrolled .ps-scroll-top {
 </div>
 
 <!-- ============ NAV ============ -->
-<nav class="ps-site-nav" id="ps-site-nav" style="{{ navStyle }}">
-  <div style="max-width:1440px; margin:0 auto; padding:0 40px; height:70px; display:flex; align-items:center; justify-content:space-between;">
+<nav class="ps-site-nav" id="ps-site-nav" style="{{ navStyle }}" data-compact="0">
+  <div style="max-width:1440px; margin:0 auto; padding:0 40px; height:100%; display:flex; align-items:center; justify-content:space-between;">
     <a href="#top" class="ps-logo" aria-label="PHAMA SQUARE">
       <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="height:100%; width:auto; max-width:none;" />
     </a>
@@ -1041,12 +1049,8 @@ class Component extends DCLogic {
     } catch(e) {}
     this._loadNewsPosts();
 
-    // Scroll UI (ps-scrolled / active nav) is owned by the standalone script — avoid React re-render fights.
-    this._onScroll = () => {};
-    window.addEventListener('hashchange', () => {
-      try { window.dispatchEvent(new Event('ps-nav-refresh')); } catch (e) {}
-    });
-    try { window.dispatchEvent(new Event('ps-nav-refresh')); } catch (e) {}
+    // Nav scroll UI handled entirely by vanilla IO script below (not React).
+    try { window.dispatchEvent(new Event('ps-nav-boot')); } catch (e) {}
 
     const dismissed = localStorage.getItem('ps_event_popup_dismiss');
     const now = Date.now();
@@ -1902,80 +1906,147 @@ class Component extends DCLogic {
 </script>
 <script>
 (function () {
-  var KEYS = ['gallery', 'about', 'brands', 'partnership', 'news', 'location'];
-  var lastCur = '';
-  var lastSc = null;
-  var ticking = false;
+  var SECTION_IDS = ['top', 'gallery', 'about', 'brands', 'partnership', 'news', 'location'];
+  var activeId = '';
+  var compact = false;
+  var io = null;
 
-  function yPos() {
-    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  function navEl() { return document.getElementById('ps-site-nav'); }
+  function barEl() { return document.getElementById('ps-announce-bar'); }
+  function topBtn() { return document.querySelector('.ps-scroll-top'); }
+
+  function setCompact(on) {
+    if (compact === on) return;
+    compact = on;
+    var nav = navEl();
+    var bar = barEl();
+    var btn = topBtn();
+    if (nav) nav.setAttribute('data-compact', on ? '1' : '0');
+    if (bar) bar.setAttribute('data-hidden', on ? '1' : '0');
+    if (btn) btn.setAttribute('data-show', on ? '1' : '0');
   }
 
-  function applyNavSpy(force) {
-    if (force) {
-      lastCur = '';
-      lastSc = null;
+  function setActive(id) {
+    if (!id) id = 'top';
+    if (activeId === id) return;
+    activeId = id;
+    var nodes = document.querySelectorAll('[data-nav-key]');
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      var on = n.getAttribute('data-nav-key') === id;
+      if (on) n.classList.add('is-active');
+      else n.classList.remove('is-active');
     }
-    var y = yPos();
-    var sc = y > 40;
-    var marker = y + 120;
-    var cur = 'top';
-    for (var i = 0; i < KEYS.length; i++) {
-      var el = document.getElementById(KEYS[i]);
+  }
+
+  function pickActiveFromIO(entries) {
+    // Prefer the section closest to the upper third of the viewport
+    var best = null;
+    var bestDist = Infinity;
+    var marker = window.innerHeight * 0.28;
+    for (var i = 0; i < SECTION_IDS.length; i++) {
+      var el = document.getElementById(SECTION_IDS[i]);
       if (!el) continue;
-      if (el.getBoundingClientRect().top + y <= marker) cur = KEYS[i];
-    }
-
-    if (sc !== lastSc) {
-      document.documentElement.classList.toggle('ps-scrolled', sc);
-      lastSc = sc;
-    }
-
-    if (cur !== lastCur || force) {
-      var nodes = document.querySelectorAll('[data-nav-key]');
-      for (var j = 0; j < nodes.length; j++) {
-        var n = nodes[j];
-        n.classList.toggle('is-active', n.getAttribute('data-nav-key') === cur);
+      var r = el.getBoundingClientRect();
+      if (r.bottom < 80 || r.top > window.innerHeight) continue;
+      var dist = Math.abs(r.top - marker);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = SECTION_IDS[i];
       }
-      lastCur = cur;
     }
+    if (best) setActive(best);
   }
 
+  function onScrollCompact() {
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    setCompact(y > 48);
+  }
+
+  function syncActiveNow() {
+    var y = (window.pageYOffset || document.documentElement.scrollTop || 0) + 130;
+    var cur = 'top';
+    for (var i = 0; i < SECTION_IDS.length; i++) {
+      var id = SECTION_IDS[i];
+      if (id === 'top') continue;
+      var el = document.getElementById(id);
+      if (!el) continue;
+      if (el.offsetTop <= y) cur = id;
+    }
+    setActive(cur);
+  }
+
+  function wireIO() {
+    if (io) { try { io.disconnect(); } catch (e) {} }
+    if (!('IntersectionObserver' in window)) {
+      syncActiveNow();
+      return;
+    }
+    io = new IntersectionObserver(function () {
+      pickActiveFromIO();
+    }, {
+      root: null,
+      rootMargin: '-18% 0px -55% 0px',
+      threshold: [0, 0.15, 0.35, 0.55, 0.8]
+    });
+    for (var i = 0; i < SECTION_IDS.length; i++) {
+      var el = document.getElementById(SECTION_IDS[i]);
+      if (el) io.observe(el);
+    }
+    syncActiveNow();
+  }
+
+  var ticking = false;
   function onScroll() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
-      applyNavSpy(false);
+      onScrollCompact();
+      syncActiveNow();
     });
   }
 
   function boot() {
-    applyNavSpy(true);
+    activeId = '';
+    compact = false;
+    onScrollCompact();
+    wireIO();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('hashchange', function () { applyNavSpy(true); });
-    window.addEventListener('resize', function () { applyNavSpy(true); });
-    window.addEventListener('ps-nav-refresh', function () { applyNavSpy(true); });
+    window.addEventListener('resize', function () { wireIO(); onScrollCompact(); });
+    window.addEventListener('hashchange', function () {
+      setTimeout(function () { syncActiveNow(); onScrollCompact(); }, 40);
+    });
+    window.addEventListener('ps-nav-boot', function () {
+      setTimeout(function () { wireIO(); onScrollCompact(); }, 50);
+      setTimeout(function () { syncActiveNow(); }, 400);
+    });
+    window.addEventListener('ps-nav-refresh', function () {
+      activeId = '';
+      syncActiveNow();
+      onScrollCompact();
+    });
 
-    var nav = document.getElementById('ps-site-nav');
-    if (nav) {
-      try {
-        var mo = new MutationObserver(function () { applyNavSpy(true); });
-        mo.observe(nav, { childList: true, subtree: true });
-      } catch (e) {}
+    // If React rebuilds nav links, re-stamp active after DOM settles
+    var nav = navEl();
+    if (nav && 'MutationObserver' in window) {
+      var t = null;
+      var mo = new MutationObserver(function () {
+        if (t) clearTimeout(t);
+        t = setTimeout(function () {
+          var keep = activeId;
+          activeId = '';
+          setActive(keep || 'top');
+        }, 30);
+      });
+      mo.observe(nav, { childList: true, subtree: true });
     }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      setTimeout(boot, 0);
-      setTimeout(function () { applyNavSpy(true); }, 400);
-      setTimeout(function () { applyNavSpy(true); }, 1200);
-    });
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 0); });
   } else {
     setTimeout(boot, 0);
-    setTimeout(function () { applyNavSpy(true); }, 400);
-    setTimeout(function () { applyNavSpy(true); }, 1200);
   }
 })();
 </script>
