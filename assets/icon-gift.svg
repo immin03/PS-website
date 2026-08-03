@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3FE0C5"></stop><stop offset="1" stop-color="#12C4A6"></stop>
+    </linearGradient>
+    <linearGradient id="box" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16CBAC"></stop><stop offset="1" stop-color="#04A588"></stop>
+    </linearGradient>
+    <linearGradient id="rib" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE7A0"></stop><stop offset="1" stop-color="#FBC94A"></stop>
+    </linearGradient>
+    <radialGradient id="sh" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#00463A" stop-opacity="0.28"></stop><stop offset="1" stop-color="#00463A" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+  <ellipse cx="120" cy="210" rx="78" ry="16" fill="url(#sh)"></ellipse>
+  
+  <rect x="52" y="104" width="136" height="98" rx="12" fill="url(#box)"></rect>
+  
+  <rect x="104" y="104" width="32" height="98" fill="url(#rib)"></rect>
+  
+  <rect x="42" y="78" width="156" height="40" rx="12" fill="url(#lid)"></rect>
+  
+  <rect x="52" y="84" width="136" height="10" rx="5" fill="#FFFFFF" opacity="0.28"></rect>
+  
+  <rect x="104" y="78" width="32" height="40" fill="url(#rib)"></rect>
+  
+  <path d="M120 78 C104 78 92 62 100 50 C108 40 120 52 120 66 C120 52 132 40 140 50 C148 62 136 78 120 78 Z" fill="url(#rib)"></path>
+  <circle cx="120" cy="70" r="9" fill="#F6B93B"></circle>
+  <circle cx="115" cy="66" r="3" fill="#FFFFFF" opacity="0.7"></circle>
+</svg>
