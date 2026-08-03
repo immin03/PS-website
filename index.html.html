@@ -199,6 +199,7 @@ input, textarea, button, select { font-family:inherit; }
   #why li span { font-size:14px !important; line-height:1.75 !important; }
   #why li { font-size:14px !important; }
   .ps-hero p { font-size:14px !important; line-height:1.7 !important; }
+  .ps-hero-desc { max-width:100% !important; font-size:14px !important; line-height:1.65 !important; letter-spacing:-0.01em; }
   [style*="letter-spacing:0.22em"] { font-size:10px !important; }
 }
 </style>
@@ -321,7 +322,7 @@ input, textarea, button, select { font-family:inherit; }
     <p class="ps-hero-copy" style="color:#fff; font-weight:600; font-size:clamp(42px,8.4vw,108px); line-height:0.95; letter-spacing:-0.03em; text-shadow:0 2px 28px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.35);">PHAMA SQUARE</p>
     <h1 class="ps-hero-copy-delay" style="margin-top:clamp(18px,2.4vw,28px); color:#fff; font-weight:400; font-size:clamp(26px,4.2vw,48px); line-height:1.2; letter-spacing:-0.02em; text-shadow:0 2px 20px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.4);">{{ t.heroTitle }}</h1>
     <p class="ps-hero-copy-delay" style="margin-top:18px; color:rgba(255,255,255,.92); font-size:12px; font-weight:500; letter-spacing:0.08em; line-height:1.6; text-shadow:0 1px 12px rgba(0,0,0,.55);">{{ t.heroMetaFormat }} · {{ t.heroMetaAddr }}</p>
-    <p class="ps-hero-copy-delay" style="margin-top:14px; color:rgba(255,255,255,.95); font-size:clamp(15px,1.8vw,19px); font-weight:400; line-height:1.8; max-width:520px; white-space:pre-line; text-shadow:0 1px 14px rgba(0,0,0,.55);">{{ t.heroDesc }}</p>
+    <p class="ps-hero-copy-delay ps-hero-desc" style="margin-top:14px; color:rgba(255,255,255,.95); font-size:clamp(15px,1.8vw,19px); font-weight:400; line-height:1.8; max-width:560px; white-space:pre-line; text-shadow:0 1px 14px rgba(0,0,0,.55);">{{ t.heroDesc }}</p>
     <div class="ps-hero-btns ps-hero-copy-delay" style="margin-top:40px; display:flex; flex-wrap:wrap; gap:14px;">
       <a href="#gallery" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; background:rgba(43,202,176,.28); border:1px solid rgba(43,202,176,.55); color:#fff; font-size:15px; font-weight:500; transition:background .25s;" style-hover="background:rgba(43,202,176,.42);">{{ t.heroGalleryCTA }}</a>
       <a href="#location" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; border:1px solid rgba(255,255,255,.4); color:#fff; font-size:15px; font-weight:500; transition:background .25s, border-color .25s;" style-hover="background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.7);">{{ t.heroLocationCTA }}</a>
@@ -1225,7 +1226,7 @@ class Component extends DCLogic {
         announceLabel: '파마스퀘어 AI 건강가이드 프로그램', announceLink: 'AI 건강가이드 체험하기 →',
         healthGuide: '건강가이드', partnershipCTA: '파트너 매장 문의', partnershipCTAFull: '파트너 매장 문의하기',
         heroTitle: '익스프레스 구로점 오픈',
-        heroDesc: '2026년 8월 1일 오픈.\n도심형 웰니스 스토어에서 건강기능식품·뷰티·펫케어를 한곳에서.',
+        heroDesc: '2026년 8월 1일 오픈.\n도심형 웰니스 스토어에서\n건강기능식품·뷰티·펫케어·독립약국을 한곳에서.',
         heroGalleryCTA: '매장 갤러리 보기', heroLocationCTA: '오시는 길',
         heroMetaFormat: 'EXPRESS', heroMetaAddr: '서울 관악구 시흥대로 554, B1', heroMetaNote: '도심형 웰니스 스토어',
         guroOpenLabel: 'NOW OPEN', guroOpenTitle: '파마스퀘어 익스프레스 구로점',
@@ -1355,7 +1356,7 @@ class Component extends DCLogic {
         announceLabel: 'Phama Square AI Health Guide Program', announceLink: 'Try AI Health Guide →',
         healthGuide: 'Health Guide', partnershipCTA: 'Partner Store', partnershipCTAFull: 'Inquire about Partner Store',
         heroTitle: 'Express Guro Now Open',
-        heroDesc: 'Opened August 1, 2026.\nHealth foods, beauty, and pet care in one urban wellness store.',
+        heroDesc: 'Opened August 1, 2026.\nUrban wellness store with\nhealth foods, beauty, pet care & pharmacy in one.',
         heroGalleryCTA: 'View Gallery', heroLocationCTA: 'Directions',
         heroMetaFormat: 'EXPRESS', heroMetaAddr: '554 Siheung-daero, Gwanak-gu, Seoul, B1', heroMetaNote: 'Urban wellness store',
         guroOpenLabel: 'NOW OPEN', guroOpenTitle: 'Phama Square Express Guro',
@@ -1485,7 +1486,7 @@ class Component extends DCLogic {
         announceLabel: '파马广场 AI 健康指南计划', announceLink: '体验AI健康指南 →',
         healthGuide: '健康指南', partnershipCTA: '合作门店咨询', partnershipCTAFull: '合作门店咨询',
         heroTitle: '九老快捷店开业',
-        heroDesc: '2026年8月1日开业。\n都市型健康门店，健康食品、美容与宠物护理一站式体验。',
+        heroDesc: '2026年8月1日开业。\n都市型健康门店，\n健康食品·美容·宠物护理·独立药局一站式。',
         heroGalleryCTA: '查看门店相册', heroLocationCTA: '前往方式',
         heroMetaFormat: 'EXPRESS', heroMetaAddr: '首尔 冠岳区 矢弓大路 554, B1', heroMetaNote: '都市型健康门店',
         guroOpenLabel: 'NOW OPEN', guroOpenTitle: '파马广场 九老快捷店',
@@ -1621,7 +1622,7 @@ class Component extends DCLogic {
       const B = 'PHAMA SQUARE';
       T.announceLabel = B + ' AI 健康指南计划';
       T.heroTitle = '九老快捷店开业';
-      T.heroDesc = '2026年8月1日开业。\n都市型健康门店，健康食品、美容与宠物护理一站式体验。';
+      T.heroDesc = '2026年8月1日开业。\n都市型健康门店，\n健康食品·美容·宠物护理·独立药局一站式。';
       T.aboutBrand = B;
       T.aboutP1 = B + '是一个将健康食品、美容、宠物和独立药房融为一体的健康平台，提供内在健康与美学价值和谐统一的全新健康体验。';
       T.aboutP2 = B + '河南旗舰店于2025年开业，约1,650m²，汇聚健康食品、美容、宠物、生活方式及药品，共计4,000余个SKU，是大型综合健康商店。随后于2026年8月1日开设九老快捷店。';
