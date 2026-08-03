@@ -47,6 +47,11 @@ body { font-family:'SUIT','Noto Sans SC',sans-serif; -webkit-font-smoothing:anti
 @keyframes psScroll { 0%{ transform:translateY(0); opacity:0; } 30%{ opacity:1; } 70%{ opacity:1; } 100%{ transform:translateY(14px); opacity:0; } }
 @keyframes psSpin { from{ transform:rotate(0); } to{ transform:rotate(360deg); } }
 @keyframes psPulse { 0%,100%{ opacity:.45; transform:scale(1); } 50%{ opacity:.9; transform:scale(1.08); } }
+@keyframes psHeroIn { from{ opacity:0; transform:translateY(22px); } to{ opacity:1; transform:translateY(0); } }
+.ps-hero-slide { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; visibility:hidden; pointer-events:none; }
+.ps-hero-slide.is-active { opacity:1; visibility:visible; }
+.ps-hero-copy { animation:psHeroIn .9s cubic-bezier(.16,.84,.44,1) both; }
+.ps-hero-copy-delay { animation:psHeroIn 1s .18s cubic-bezier(.16,.84,.44,1) both; }
 a { color:inherit; text-decoration:none; }
 input, textarea, button, select { font-family:inherit; }
 .ps-cursor-dot, .ps-cursor-ring { display:none; }
@@ -55,7 +60,70 @@ input, textarea, button, select { font-family:inherit; }
 .ps-cursor-ring { position:fixed; border-radius:50%; border:1.5px solid rgba(1,192,164,.55); pointer-events:none; z-index:9998; top:0; left:0; will-change:transform; transition:width .22s, height .22s, border-color .22s; }
 .ps-nav-link { position:relative; }
 .ps-nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1.5px; background:#01C0A4; transition:width .35s cubic-bezier(.16,.84,.44,1); }
-.ps-nav-link:hover::after { width:100%; }
+.ps-nav-link:hover::after, .ps-nav-link.is-active::after { width:100%; }
+.ps-site-nav {
+  position:fixed !important; left:0; right:0; z-index:90;
+  top:44px;
+  background:#00302F !important;
+  transition:top .35s, background .35s, box-shadow .35s, border-color .35s;
+}
+html.ps-scrolled .ps-site-nav {
+  top:0 !important;
+  background:#FBFCFC !important;
+  border-bottom:1px solid rgba(0,82,81,.12) !important;
+  box-shadow:0 4px 18px rgba(0,32,28,.08) !important;
+}
+html.ps-scrolled #ps-announce-bar {
+  opacity:0 !important;
+  transform:translateY(-100%) !important;
+  pointer-events:none !important;
+}
+.ps-site-nav .ps-nav-link,
+.ps-site-nav .ps-news-nav-btn {
+  color:#ffffff !important;
+  opacity:0.75;
+  transition:color .25s, opacity .25s;
+}
+.ps-site-nav .ps-nav-link.is-active,
+.ps-site-nav .ps-news-nav-btn.is-active {
+  color:#7FE6CF !important;
+  opacity:1 !important;
+  font-weight:700 !important;
+}
+html.ps-scrolled .ps-site-nav .ps-nav-link,
+html.ps-scrolled .ps-site-nav .ps-news-nav-btn {
+  color:#10181E !important;
+  opacity:0.55;
+}
+html.ps-scrolled .ps-site-nav .ps-nav-link.is-active,
+html.ps-scrolled .ps-site-nav .ps-news-nav-btn.is-active {
+  color:#00978F !important;
+  opacity:1 !important;
+}
+html.ps-scrolled .ps-site-nav .ps-logo img {
+  filter:none !important;
+}
+.ps-site-nav .ps-logo img {
+  filter:brightness(0) invert(1);
+  transition:filter .35s ease;
+}
+html.ps-scrolled .ps-site-nav .ps-burger span {
+  background:#10181E !important;
+}
+.ps-site-nav .ps-burger span {
+  background:#ffffff;
+}
+html.ps-scrolled .ps-scroll-top {
+  opacity:1 !important;
+  transform:translateY(0) !important;
+  pointer-events:auto !important;
+}
+.ps-scroll-top {
+  opacity:0;
+  transform:translateY(12px);
+  pointer-events:none;
+  transition:opacity .35s, transform .35s;
+}
 .ps-news-dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border-radius:12px; box-shadow:0 12px 36px rgba(0,82,81,.18); border:1px solid rgba(0,82,81,.08); min-width:160px; overflow:hidden; z-index:300; transition:opacity .2s, transform .2s, visibility .2s; pointer-events:none; }
 .ps-news-nav:hover .ps-news-dropdown { visibility:visible; opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
 .ps-news-nav { position:relative; display:flex; align-items:center; }
@@ -83,19 +151,22 @@ input, textarea, button, select { font-family:inherit; }
   .ps-form-toggle { display:none !important; }
   .ps-form-body { display:block !important; }
   .ps-about-grid { grid-template-columns:0.85fr 1.15fr !important; }
-  .ps-why-row { grid-template-columns:1.15fr 1fr !important; }
   .ps-inquiry-grid { grid-template-columns:0.9fr 1.1fr !important; }
   .ps-location-grid { grid-template-columns:1.2fr 1fr !important; }
   .ps-footer-grid { grid-template-columns:1.1fr 1fr !important; }
   .ps-loc-grid { grid-template-columns:repeat(4,1fr) !important; }
   .ps-ai-steps { grid-template-columns:repeat(3,1fr) !important; }
   .ps-ptypes-grid { grid-template-columns:repeat(3,1fr) !important; }
+  .ps-partner-hero { grid-template-columns:1.35fr 0.85fr !important; }
 }
 @media(max-width:767px){ p, h1, h2, h3, li { overflow-wrap:anywhere; word-break:break-all; } }
 @media(max-width:1023px){ .ps-desktop-nav { display:none !important; } .ps-burger { display:flex !important; } .ps-mobile-lang { display:flex !important; } .ps-logo { height:36px; width:110px; } }
 @media(max-width:760px){ .ps-pillar-grid { grid-template-columns:repeat(2,1fr) !important; } .ps-form { grid-template-columns:1fr !important; } }
 @media(max-width:600px){ .ps-loc-grid { grid-template-columns:1fr !important; } }
 @media(max-width:440px){ .ps-pillar-grid { grid-template-columns:1fr !important; } }
+@media(min-width:1024px){
+  .ps-why-grid { grid-template-columns:repeat(3,1fr) !important; }
+}
 @media(max-width:767px){
   section, footer { padding-left:22px !important; padding-right:22px !important; }
   section[id] { padding-top:56px !important; padding-bottom:56px !important; }
@@ -103,12 +174,9 @@ input, textarea, button, select { font-family:inherit; }
   .ps-hero > div:not([style*="absolute"]) { padding:120px 22px 100px !important; }
   .ps-hero-btns { flex-direction:column !important; gap:10px !important; }
   .ps-hero-btns > a { width:100% !important; justify-content:center !important; height:52px !important; font-size:15px !important; }
+  .ps-format-grid { grid-template-columns:1fr !important; }
   .ps-scroll-ind { bottom:24px !important; }
-  .ps-why-row { grid-template-columns:1fr !important; gap:0 !important; border-bottom:1px solid #E3EAEA; padding-bottom:clamp(24px,3vw,36px) !important; }
-  .ps-why-deco { order:-1 !important; aspect-ratio:auto !important; min-height:auto !important; height:72px !important; border-radius:8px 8px 0 0 !important; flex-direction:row !important; justify-content:flex-start !important; padding:0 20px !important; gap:16px !important; }
-  .ps-why-deco > div { display:flex !important; flex-direction:row !important; align-items:center !important; gap:14px !important; text-align:left !important; }
-  .ps-why-deco > div > div:first-child { font-size:28px !important; line-height:1 !important; }
-  .ps-why-deco > div > div:last-child { font-size:11px !important; letter-spacing:0.14em !important; }
+  .ps-why-grid { grid-template-columns:1fr !important; }
   .ps-ai-steps { grid-template-columns:1fr !important; gap:12px !important; }
   .ps-ai-steps > div { min-height:auto !important; padding:24px 22px !important; }
   .ps-loc-tabs { overflow-x:auto !important; flex-wrap:nowrap !important; -webkit-overflow-scrolling:touch; padding-bottom:4px; scrollbar-width:none; }
@@ -120,7 +188,6 @@ input, textarea, button, select { font-family:inherit; }
   .ps-pillar-grid > div > span { font-size:10px !important; }
   .ps-pillar-grid > div > div > h3 { font-size:17px !important; }
   .ps-pillar-grid > div > div > p { font-size:13px !important; margin-top:6px !important; }
-  .ps-why-row > div:last-child { background:#FAFCFB; border-radius:0 0 8px 8px; padding:16px 20px 20px !important; margin-top:0 !important; }
   .ps-pcard h3 { font-size:clamp(22px,5.5vw,28px) !important; font-weight:700 !important; }
   .ps-ptypes-grid { display:flex !important; flex-wrap:nowrap !important; overflow-x:auto !important; scroll-snap-type:x mandatory !important; -webkit-overflow-scrolling:touch !important; scrollbar-width:none !important; gap:14px !important; padding-bottom:8px !important; }
   .ps-ptypes-grid::-webkit-scrollbar { display:none !important; }
@@ -150,6 +217,10 @@ input, textarea, button, select { font-family:inherit; }
   [style*="letter-spacing:0.22em"] { font-size:10px !important; }
 }
 </style>
+<meta name="ext-resource-dependency" content="assets/guro-hero-01.jpg">
+<meta name="ext-resource-dependency" content="assets/guro-hero-02.jpg">
+<meta name="ext-resource-dependency" content="assets/guro-01.jpg">
+<meta name="ext-resource-dependency" content="assets/guro-02.jpg">
 <meta name="ext-resource-dependency" content="assets/c-gallery-01.jpg">
 <meta name="ext-resource-dependency" content="assets/c-gallery-02.jpg">
 <meta name="ext-resource-dependency" content="assets/c-gallery-03.jpg">
@@ -163,7 +234,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="position:relative; width:100%; overflow-x:hidden;">
 
 <!-- ============ ANNOUNCEMENT BAR ============ -->
-<div style="{{ barStyle }}">
+<div id="ps-announce-bar" style="{{ barStyle }}">
   <div style="max-width:1320px; margin:0 auto; padding:0 32px; height:44px; display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:nowrap;">
     <span class="ps-announce-label" style="font-size:11px; font-weight:500; letter-spacing:0.12em; color:rgba(255,255,255,.7); white-space:nowrap;">{{ t.announceLabel }}</span>
     <span style="display:inline-flex; align-items:center; padding:2px 8px; border-radius:40px; background:#2BCAB0; color:#fff; font-size:10px; font-weight:700; letter-spacing:0.1em; flex:none;">BETA</span>
@@ -172,19 +243,19 @@ input, textarea, button, select { font-family:inherit; }
 </div>
 
 <!-- ============ NAV ============ -->
-<nav style="{{ navStyle }}">
+<nav class="ps-site-nav" id="ps-site-nav" style="{{ navStyle }}">
   <div style="max-width:1440px; margin:0 auto; padding:0 40px; height:70px; display:flex; align-items:center; justify-content:space-between;">
     <a href="#top" class="ps-logo" aria-label="PHAMA SQUARE">
       <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="{{ logoImgStyle }}" />
     </a>
     <div style="display:flex; align-items:center; gap:22px; margin-left:clamp(32px,4vw,64px);" class="ps-desktop-nav">
       <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
-        <a href="{{ item.href }}" target="{{ item.target }}" class="ps-nav-link" style="{{ item.style }}">{{ item.label }}</a>
+        <a href="{{ item.href }}" target="{{ item.target }}" data-nav-key="{{ item.key }}" class="ps-nav-link{{ item.activeClass }}" style="{{ item.style }}">{{ item.label }}</a>
       </sc-for>
     </div>
     <div style="display:flex; align-items:center; gap:10px; margin-left:20px;" class="ps-desktop-nav">
       <div class="ps-news-nav" style="display:flex; align-items:center;">
-        <button style="{{ newsNavBtnStyle }}">{{ newsLabel }}<span style="font-size:8px; opacity:.5; margin-left:3px; line-height:1;">▾</span></button>
+        <button class="ps-news-nav-btn{{ newsActiveClass }}" data-nav-key="news" style="{{ newsNavBtnStyle }}">{{ newsLabel }}<span style="font-size:8px; opacity:.5; margin-left:3px; line-height:1;">▾</span></button>
         <div class="ps-news-dropdown">
           <sc-for list="{{ newsDropItems }}" as="ni" hint-placeholder-count="3">
             <a href="{{ ni.href }}" target="_blank" style="display:flex; align-items:center; justify-content:center; padding:13px 24px; font-size:13px; font-weight:500; color:#2B3A3C; border-bottom:1px solid #EEF3F3; white-space:nowrap; text-decoration:none; transition:background .15s;" style-hover="background:#F4F8F8; color:#005251;">{{ ni.label }}</a>
@@ -192,7 +263,7 @@ input, textarea, button, select { font-family:inherit; }
         </div>
       </div>
       <div style="width:1px; height:16px; background:rgba(128,180,180,.28); flex:none;"></div>
-      <a href="#inquiry" style="display:inline-flex; align-items:center; height:38px; padding:0 20px; border-radius:40px; background:#01C0A4; color:#fff; font-size:13px; font-weight:600; letter-spacing:0.04em; transition:background .25s;" style-hover="background:#00978F;">{{ t.partnershipCTA }}</a>
+      <a href="#inquiry" onClick="{{ inquirePartnerStore }}" style="display:inline-flex; align-items:center; height:38px; padding:0 20px; border-radius:40px; background:#01C0A4; color:#fff; font-size:13px; font-weight:600; letter-spacing:0.04em; transition:background .25s;" style-hover="background:#00978F;">{{ t.partnershipCTA }}</a>
       <!-- 언어 선택 -->
       <div style="display:flex; align-items:center; gap:2px; border-left:1px solid rgba(128,180,180,.28); padding-left:10px;">
         <sc-for list="{{ langButtons }}" as="lb" hint-placeholder-count="3">
@@ -229,22 +300,22 @@ input, textarea, button, select { font-family:inherit; }
   <div style="display:flex; flex-direction:column; height:100%; padding:76px 24px 32px; overflow-y:auto;">
     <div style="flex:1; display:flex; flex-direction:column;">
       <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="4">
-        <a href="{{ item.href }}" target="{{ item.target }}" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff; text-decoration:none;">
-          <span style="font-size:15px; font-weight:500; letter-spacing:0.1em;">{{ item.label }}</span>
-          <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
+        <a href="{{ item.href }}" target="{{ item.target }}" onClick="{{ closeMenu }}" style="{{ item.drawerStyle }}">
+          <span style="font-size:15px; font-weight:{{ item.drawerWeight }}; letter-spacing:0.1em; color:{{ item.drawerColor }};">{{ item.label }}</span>
+          <span style="font-size:14px; color:{{ item.drawerChevron }};">›</span>
         </a>
       </sc-for>
       <a href="https://steady-zabaione-c7993b.netlify.app/index.html" target="_blank" rel="noopener" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
         <span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:0.1em;">{{ t.healthGuide }}<span style="padding:2px 7px; border-radius:40px; background:#01C0A4; font-size:9px; font-weight:700; letter-spacing:0.1em;">BETA</span></span>
         <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
       </a>
-      <a href="./board.dc.html" target="_blank" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
-        <span style="font-size:15px; font-weight:500; letter-spacing:0.1em;">소식</span>
+      <a href="#news" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
+        <span style="font-size:15px; font-weight:500; letter-spacing:0.1em;">{{ t.newsTitle }}</span>
         <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
       </a>
     </div>
     <div style="display:flex; flex-direction:column; gap:8px;">
-      <a href="#inquiry" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:center; height:50px; border-radius:40px; background:#01C0A4; color:#fff; font-size:15px; font-weight:600; letter-spacing:0.02em;">{{ t.partnershipCTAFull }}</a>
+      <a href="#inquiry" onClick="{{ inquirePartnerStoreMobile }}" style="display:flex; align-items:center; justify-content:center; height:50px; border-radius:40px; background:#01C0A4; color:#fff; font-size:15px; font-weight:600; letter-spacing:0.02em;">{{ t.partnershipCTAFull }}</a>
       <div style="text-align:center; font-size:11px; color:rgba(255,255,255,.3); letter-spacing:0.04em;">official&#64;phamasquare&#46;com</div>
       <a href="./admin.dc.html" onClick="{{ closeMenu }}" style="display:block; text-align:center; font-size:11px; color:rgba(255,255,255,.18); letter-spacing:0.06em; padding-top:6px; transition:color .2s;" style-hover="color:rgba(255,255,255,.5);">관리자 로그인</a>
     </div>
@@ -255,20 +326,20 @@ input, textarea, button, select { font-family:inherit; }
 <div onClick="{{ closeMenu }}" style="{{ backdropStyle }}"></div>
 
 <!-- ============ HERO ============ -->
-<header id="top" class="ps-hero" style="position:relative; min-height:100vh; display:flex; align-items:center; background:radial-gradient(120% 120% at 78% 18%, #00978F 0%, #006666 42%, #00302F 100%); overflow:hidden;">
-  <div class="ps-hero-c1" style="position:absolute; top:-12%; right:-8%; width:min(58vw,760px); height:min(58vw,760px); border-radius:50%; border:1px solid rgba(255,255,255,.16);"></div>
-  <div class="ps-hero-c2" style="position:absolute; top:6%; right:6%; width:min(40vw,520px); height:min(40vw,520px); border-radius:50%; background:radial-gradient(circle at 38% 34%, rgba(43,202,176,.55), rgba(1,192,164,0) 68%); filter:blur(8px);"></div>
-  <div style="position:absolute; bottom:-26%; left:-14%; width:min(46vw,640px); height:min(46vw,640px); border-radius:50%; border:1px solid rgba(255,255,255,.07); animation:psSpin 90s linear infinite;"></div>
+<header id="top" class="ps-hero" style="position:relative; min-height:100vh; display:flex; align-items:flex-end; background:#00302F; overflow:hidden;">
+  <div style="position:absolute; inset:0;" aria-hidden="true">
+    <img class="ps-hero-slide is-active" src="./assets/guro-hero-01.jpg" alt="" decoding="async" fetchpriority="high" />
+    <img class="ps-hero-slide" src="./assets/guro-hero-02.jpg" alt="" decoding="async" />
+  </div>
+  <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,24,22,.12) 0%, rgba(0,28,26,.05) 42%, rgba(0,18,16,.48) 100%);"></div>
   <div style="position:relative; max-width:1320px; margin:0 auto; padding:148px 32px 120px; width:100%;">
-    <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 13px; border:1px solid rgba(255,255,255,.28); border-radius:40px; margin-bottom:36px;">
-      <span style="width:6px; height:6px; border-radius:50%; background:#2BCAB0; box-shadow:0 0 10px #2BCAB0; animation:psPulse 2.4s ease-in-out infinite; flex:none;"></span>
-      <span style="color:rgba(255,255,255,.85); font-size:10px; font-weight:600; letter-spacing:0.18em;">AI WELLNESS PLATFORM</span>
-    </div>
-    <h1 style="color:#fff; font-weight:200; font-size:clamp(58px,10vw,136px); line-height:0.96; letter-spacing:-0.02em;">Balance,<br><span style="font-weight:500; font-style:italic;">Beautifully.</span></h1>
-    <p style="margin-top:32px; color:rgba(255,255,255,.78); font-size:clamp(15px,1.8vw,20px); font-weight:300; line-height:1.8; max-width:520px; white-space:pre-line;">{{ t.heroDesc }}</p>
-    <div class="ps-hero-btns" style="margin-top:44px; display:flex; flex-wrap:wrap; gap:14px;">
-      <a href="#partnership" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; border:1px solid rgba(255,255,255,.4); color:#fff; font-size:15px; font-weight:500; transition:background .25s, border-color .25s;" style-hover="background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.7);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87"></path><path d="M16 3.13a4 4 0 010 7.75"></path></svg>{{ t.partnershipCTA }}</a>
-      <a href="https://steady-zabaione-c7993b.netlify.app/index.html" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; background:rgba(43,202,176,.25); border:1px solid rgba(43,202,176,.5); color:#fff; font-size:15px; font-weight:500; transition:background .25s;" style-hover="background:rgba(43,202,176,.4);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 110 20 10 10 0 010-20z"></path><path d="M12 6v6l4 2"></path></svg>{{ t.healthGuide }}<span style="padding:2px 7px; border-radius:40px; background:#2BCAB0; font-size:10px; font-weight:700; letter-spacing:0.08em;">BETA</span></a>
+    <p class="ps-hero-copy" style="color:#fff; font-weight:600; font-size:clamp(42px,8.4vw,108px); line-height:0.95; letter-spacing:-0.03em;">PHAMA SQUARE</p>
+    <h1 class="ps-hero-copy-delay" style="margin-top:clamp(18px,2.4vw,28px); color:#fff; font-weight:300; font-size:clamp(26px,4.2vw,48px); line-height:1.2; letter-spacing:-0.02em;">{{ t.heroTitle }}</h1>
+    <p class="ps-hero-copy-delay" style="margin-top:18px; color:rgba(255,255,255,.55); font-size:12px; font-weight:500; letter-spacing:0.08em; line-height:1.6;">{{ t.heroMetaFormat }} · {{ t.heroMetaAddr }}</p>
+    <p class="ps-hero-copy-delay" style="margin-top:14px; color:rgba(255,255,255,.78); font-size:clamp(15px,1.8vw,19px); font-weight:300; line-height:1.8; max-width:520px; white-space:pre-line;">{{ t.heroDesc }}</p>
+    <div class="ps-hero-btns ps-hero-copy-delay" style="margin-top:40px; display:flex; flex-wrap:wrap; gap:14px;">
+      <a href="#gallery" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; background:rgba(43,202,176,.28); border:1px solid rgba(43,202,176,.55); color:#fff; font-size:15px; font-weight:500; transition:background .25s;" style-hover="background:rgba(43,202,176,.42);">{{ t.heroGalleryCTA }}</a>
+      <a href="#location" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 28px; border-radius:40px; border:1px solid rgba(255,255,255,.4); color:#fff; font-size:15px; font-weight:500; transition:background .25s, border-color .25s;" style-hover="background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.7);">{{ t.heroLocationCTA }}</a>
     </div>
   </div>
   <div class="ps-scroll-ind" style="position:absolute; bottom:52px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:12px;">
@@ -289,7 +360,7 @@ input, textarea, button, select { font-family:inherit; }
       <span style="font-weight:300; color:rgba(255,255,255,.75);">4,000+ SKU</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span>HANAM FLAGSHIP NOW OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marquee263 }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
-      <span>GURO EXPRESS 26.3Q OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>GURO EXPRESS NOW OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueePharmacy }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueeStoreDev }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
     </span>
@@ -300,12 +371,116 @@ input, textarea, button, select { font-family:inherit; }
       <span style="font-weight:300; color:rgba(255,255,255,.75);">4,000+ SKU</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span>HANAM FLAGSHIP NOW OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marquee263 }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
-      <span>GURO EXPRESS 26.3Q OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
+      <span>GURO EXPRESS NOW OPEN</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueePharmacy }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
       <span style="font-weight:300; color:rgba(255,255,255,.75);">{{ t.marqueeStoreDev }}</span><span style="color:#01C0A4; font-size:0.6em;">◆</span>
     </span>
   </div>
 </div>
+
+<!-- ============ STORES (포맷 + 전국) ============ -->
+<section id="stores" style="padding:clamp(64px,8vw,100px) 32px; background:#F2F6F6;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div class="reveal" style="max-width:640px; margin-bottom:clamp(36px,4vw,52px);">
+      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">STORE FORMAT</span>
+      <h2 style="margin-top:14px; font-size:clamp(28px,3.8vw,44px); font-weight:600; letter-spacing:-0.02em; line-height:1.15;">{{ t.formatTitle }}</h2>
+      <p style="margin-top:14px; font-size:15px; font-weight:300; line-height:1.8; color:#46585A;">{{ t.formatDesc }}</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(14px,1.8vw,24px); margin-bottom:clamp(48px,5vw,72px);" class="ps-format-grid reveal">
+      <sc-for list="{{ formatCards }}" as="fc" hint-placeholder-count="2">
+        <article style="padding:clamp(26px,3vw,36px); background:{{ fc.bg }}; color:{{ fc.ink }}; border:1px solid {{ fc.border }};">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <span style="font-size:11px; font-weight:700; letter-spacing:0.16em; color:{{ fc.accent }};">{{ fc.tag }}</span>
+            <span style="font-size:12px; color:{{ fc.muted }};">{{ fc.size }}</span>
+          </div>
+          <h3 style="margin-top:14px; font-size:clamp(22px,2.6vw,30px); font-weight:600; letter-spacing:-0.02em;">{{ fc.title }}</h3>
+          <p style="margin-top:10px; font-size:15px; font-weight:300; line-height:1.75; color:{{ fc.muted }};">{{ fc.desc }}</p>
+          <ul style="margin-top:22px; list-style:none; display:flex; flex-direction:column; gap:12px; padding:0;">
+            <li style="display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.55;">
+              <span style="width:6px; height:6px; border-radius:50%; background:{{ fc.accent }}; margin-top:7px; flex:none;"></span>
+              <span>{{ fc.p1 }}</span>
+            </li>
+            <li style="display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.55;">
+              <span style="width:6px; height:6px; border-radius:50%; background:{{ fc.accent }}; margin-top:7px; flex:none;"></span>
+              <span>{{ fc.p2 }}</span>
+            </li>
+            <li style="display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.55;">
+              <span style="width:6px; height:6px; border-radius:50%; background:{{ fc.accent }}; margin-top:7px; flex:none;"></span>
+              <span>{{ fc.p3 }}</span>
+            </li>
+          </ul>
+          <p style="margin-top:22px; padding-top:16px; border-top:1px solid {{ fc.line }}; font-size:13px; font-weight:500; color:{{ fc.accent }};">{{ fc.example }}</p>
+        </article>
+      </sc-for>
+    </div>
+
+    <div class="reveal" style="margin-bottom:clamp(28px,3vw,40px);">
+      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">NATIONWIDE</span>
+      <h3 style="margin-top:12px; font-size:clamp(24px,3.2vw,36px); font-weight:600; letter-spacing:-0.02em; line-height:1.2; white-space:pre-line;">{{ t.locTitle }}</h3>
+      <p style="margin-top:12px; font-size:15px; font-weight:300; line-height:1.8; color:#46585A;">{{ t.locDesc }}</p>
+    </div>
+
+    <div class="ps-store-swipe-hint" style="display:none; align-items:center; gap:8px; margin-bottom:14px; color:#8B9A9C; font-size:13px;">
+      <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M2 7h16M13 2l5 5-5 5" stroke="#01C0A4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>{{ t.swipeHint }}</span>
+    </div>
+    <div id="ps-store-scroll" style="display:grid; gap:clamp(16px,1.8vw,24px);" class="ps-loc-grid reveal">
+      <sc-for list="{{ stores }}" as="store" hint-placeholder-count="4">
+        <article class="ps-lift" style="position:relative; min-height:280px; border-radius:8px; overflow:hidden; background:{{ store.grad }}; padding:24px 20px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 8px 28px rgba(0,48,47,.09);">
+          <div style="position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; border:1px solid rgba(255,255,255,.14);"></div>
+          <div style="position:relative; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+            <div style="display:inline-flex; align-items:center; padding:4px 10px; border-radius:40px; background:rgba(255,255,255,.16); color:#fff; font-size:10px; font-weight:600; letter-spacing:0.1em; white-space:nowrap;">{{ store.format }}</div>
+            <div style="display:inline-flex; align-items:center; gap:5px; color:rgba(255,255,255,.88); font-size:11px; font-weight:500; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:50%; flex:none; background:{{ store.dot }};"></span>{{ store.status }}</div>
+          </div>
+          <div style="position:relative; margin-top:16px;">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:rgba(255,255,255,.5); margin-bottom:6px;">{{ store.en }}</div>
+            <div style="font-size:clamp(16px,1.8vw,22px); font-weight:700; color:#fff; line-height:1.25; word-break:keep-all;">{{ store.name }}</div>
+            <div style="margin-top:10px; display:flex; align-items:baseline; gap:3px;">
+              <span style="font-size:clamp(26px,3vw,38px); font-weight:200; color:rgba(255,255,255,.9); letter-spacing:-0.02em;">{{ store.size }}</span>
+              <span style="font-size:13px; font-weight:300; color:rgba(255,255,255,.65);">{{ t.storeSizeSuffix }}</span>
+            </div>
+            <div style="margin-top:8px; font-size:11px; font-weight:300; color:rgba(255,255,255,.55); line-height:1.5;">{{ store.addr }}</div>
+            <button onClick="{{ store.onMap }}" style="margin-top:14px; display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 14px; border-radius:40px; border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff; font-size:11px; font-weight:500; transition:background .25s;" style-hover="background:rgba(255,255,255,.15);">{{ t.locMapBtn }}</button>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <div id="ps-store-dots" class="ps-store-swipe-hint" style="display:none; justify-content:center; gap:8px; margin-top:16px;">
+      <span style="width:24px; height:4px; border-radius:2px; background:#005251; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
+    </div>
+  </div>
+</section>
+
+<!-- 갤러리 -->
+<section id="gallery" style="padding:clamp(60px,8vw,100px) 0 0;">
+  <div style="max-width:1320px; margin:0 auto; padding:0 32px; margin-bottom:clamp(28px,3vw,40px);" class="reveal">
+    <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">GALLERY</span>
+    <h2 style="margin-top:14px; font-size:clamp(24px,3vw,36px); font-weight:600; letter-spacing:-0.02em; line-height:1.2;">{{ t.galleryTitle }}</h2>
+    <div class="ps-loc-tabs" style="margin-top:clamp(20px,2vw,28px); display:flex; flex-wrap:wrap; gap:10px;">
+      <sc-for list="{{ galleryTabs }}" as="gt" hint-placeholder-count="2">
+        <button onClick="{{ gt.onClick }}" style="{{ gt.style }}">{{ gt.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  <div style="position:relative; overflow:hidden;">
+    <div id="ps-gallery-track" style="display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 32px 24px; cursor:grab;" onMouseDown="{{ galleryDragStart }}" onMouseMove="{{ galleryDragMove }}" onMouseUp="{{ galleryDragEnd }}" onMouseLeave="{{ galleryDragEnd }}">
+      <sc-for list="{{ galleryItems }}" as="gi" hint-placeholder-count="7">
+        <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="{{ gi.src }}" alt="{{ gi.alt }}" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+      </sc-for>
+    </div>
+    <button onClick="{{ galleryPrev }}" style="position:absolute; left:12px; top:50%; transform:translateY(-60%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.92); border:none; box-shadow:0 2px 12px rgba(0,0,0,.12); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s;" style-hover="background:#fff;">‹</button>
+    <button onClick="{{ galleryNext }}" style="position:absolute; right:12px; top:50%; transform:translateY(-60%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.92); border:none; box-shadow:0 2px 12px rgba(0,0,0,.12); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s;" style-hover="background:#fff;">›</button>
+  </div>
+  <div style="display:flex; justify-content:center; gap:6px; padding-bottom:clamp(40px,5vw,64px);">
+    <sc-for list="{{ galleryDots }}" as="gd" hint-placeholder-count="7">
+      <div style="{{ gd.style }}"></div>
+    </sc-for>
+  </div>
+</section>
 
 <!-- 브랜드 스테이트먼트 -->
 <section class="reveal" style="position:relative; overflow:hidden; height:clamp(460px,56vw,720px);">
@@ -346,56 +521,12 @@ input, textarea, button, select { font-family:inherit; }
             <div style="margin-top:4px; font-size:12px; color:#5B6B6D;">{{ t.stat2Desc }}</div>
           </div>
           <div>
-            <div style="font-size:clamp(28px,3.2vw,40px); font-weight:600; color:#005251; line-height:1;">7<span style="font-size:0.45em; font-weight:400;">{{ t.storeCountSuffix }}</span></div>
+            <div style="font-size:clamp(28px,3.2vw,40px); font-weight:600; color:#005251; line-height:1;">5<span style="font-size:0.45em; font-weight:400;">{{ t.storeCountSuffix }}</span></div>
             <div style="margin-top:8px; font-size:13px; font-weight:600; color:#10181E;">{{ t.stat3Format }}</div>
             <div style="margin-top:4px; font-size:12px; color:#5B6B6D;">{{ t.stat3Desc }}</div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ LOCATIONS ============ -->
-<section id="locations" style="padding:clamp(80px,10vw,140px) 32px; background:#F2F6F6;">
-  <div style="max-width:1320px; margin:0 auto;">
-    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:24px; margin-bottom:clamp(44px,5vw,72px);" class="reveal">
-      <div>
-        <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">WHERE — PHAMA SQUARE</span>
-        <h2 style="margin-top:20px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em; line-height:1.12; white-space:pre-line;">{{ t.locTitle }}</h2>
-      </div>
-      <p style="max-width:440px; font-size:15px; font-weight:300; line-height:1.85; color:#46585A;">{{ t.locDesc }}</p>
-    </div>
-    <div class="ps-store-swipe-hint" style="display:none; align-items:center; gap:8px; margin-bottom:14px; color:#8B9A9C; font-size:13px;">
-      <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M2 7h16M13 2l5 5-5 5" stroke="#01C0A4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span>{{ t.swipeHint }}</span>
-    </div>
-    <div id="ps-store-scroll" style="display:grid; gap:clamp(16px,1.8vw,24px);" class="ps-loc-grid reveal">
-      <sc-for list="{{ stores }}" as="store" hint-placeholder-count="4">
-        <article class="ps-lift" style="position:relative; min-height:300px; border-radius:8px; overflow:hidden; background:{{ store.grad }}; padding:24px 20px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 8px 28px rgba(0,48,47,.09);">
-          <div style="position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; border:1px solid rgba(255,255,255,.14);"></div>
-          <div style="position:relative; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-            <div style="display:inline-flex; align-items:center; padding:4px 10px; border-radius:40px; background:rgba(255,255,255,.16); backdrop-filter:blur(6px); color:#fff; font-size:10px; font-weight:600; letter-spacing:0.1em; white-space:nowrap;">{{ store.format }}</div>
-            <div style="display:inline-flex; align-items:center; gap:5px; color:rgba(255,255,255,.88); font-size:11px; font-weight:500; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:50%; flex:none; background:{{ store.dot }};"></span>{{ store.status }}</div>
-          </div>
-          <div style="position:relative; margin-top:16px;">
-            <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:rgba(255,255,255,.5); margin-bottom:6px;">{{ store.en }}</div>
-            <div style="font-size:clamp(16px,1.8vw,22px); font-weight:700; color:#fff; line-height:1.25; word-break:keep-all;">{{ store.name }}</div>
-            <div style="margin-top:10px; display:flex; align-items:baseline; gap:3px;">
-              <span style="font-size:clamp(26px,3vw,38px); font-weight:200; color:rgba(255,255,255,.9); letter-spacing:-0.02em;">{{ store.size }}</span>
-              <span style="font-size:13px; font-weight:300; color:rgba(255,255,255,.65);">{{ t.storeSizeSuffix }}</span>
-            </div>
-            <div style="margin-top:8px; font-size:11px; font-weight:300; color:rgba(255,255,255,.55); line-height:1.5;">{{ store.addr }}</div>
-            <button onClick="{{ store.onMap }}" style="margin-top:14px; display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 14px; border-radius:40px; border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff; font-size:11px; font-weight:500; transition:background .25s;" style-hover="background:rgba(255,255,255,.15);">{{ t.locMapBtn }}</button>
-          </div>
-        </article>
-      </sc-for>
-    </div>
-    <div id="ps-store-dots" class="ps-store-swipe-hint" style="display:none; justify-content:center; gap:8px; margin-top:16px;">
-      <span style="width:24px; height:4px; border-radius:2px; background:#005251; transition:all .3s;"></span>
-      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
-      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
-      <span style="width:8px; height:4px; border-radius:2px; background:#D5E0E0; transition:all .3s;"></span>
     </div>
   </div>
 </section>
@@ -424,33 +555,26 @@ input, textarea, button, select { font-family:inherit; }
 </section>
 
 <!-- ============ WHY ============ -->
-<section id="why" style="padding:clamp(90px,12vw,170px) 32px;">
+<section id="why" style="padding:clamp(72px,9vw,120px) 32px;">
   <div style="max-width:1320px; margin:0 auto;">
-    <div style="margin-bottom:clamp(48px,6vw,80px);" class="reveal">
-      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">WHY PHAMA SQUARE</span>
-      <h2 style="margin-top:20px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em; line-height:1.12; white-space:pre-line;">{{ t.whyTitle }}</h2>
-      <p style="margin-top:18px; font-size:clamp(16px,1.8vw,20px); font-weight:500; color:#005251; letter-spacing:-0.01em;">{{ t.whyCatchphrase }}</p>
-      <p style="margin-top:10px; font-size:16px; font-weight:300; color:#5B6B6D; line-height:1.7; max-width:560px;">{{ t.whyDesc }}</p>
+    <div style="margin-bottom:clamp(32px,4vw,48px);" class="reveal">
+      <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">FOR BRANDS</span>
+      <h2 style="margin-top:16px; font-size:clamp(28px,3.6vw,44px); font-weight:600; letter-spacing:-0.02em; line-height:1.15; white-space:pre-line;">{{ t.whyTitle }}</h2>
+      <p style="margin-top:12px; font-size:15px; font-weight:500; color:#005251;">{{ t.whyCatchphrase }}</p>
     </div>
-    <div style="display:flex; flex-direction:column; gap:clamp(28px,3vw,48px);">
+    <div class="ps-why-grid reveal" style="display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(12px,1.5vw,20px);">
       <sc-for list="{{ advantages }}" as="adv" hint-placeholder-count="3">
-        <article class="ps-why-row reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,4vw,64px); align-items:center; padding-bottom:clamp(28px,3vw,48px); border-bottom:1px solid #E3EAEA;">
-          <div class="ps-lift ps-why-deco" style="position:relative; aspect-ratio:16/7; overflow:hidden; border-radius:8px; background:{{ adv.grad }}; display:flex; align-items:center; justify-content:center;">
-            <div style="position:absolute; top:-30px; left:-30px; width:160px; height:160px; border-radius:50%; border:1px solid rgba(255,255,255,.16);"></div>
-            <div style="position:absolute; bottom:-50px; right:-30px; width:220px; height:220px; border-radius:50%; border:1px solid rgba(255,255,255,.1);"></div>
-            <div style="position:relative; text-align:center;">
-              <div style="font-size:clamp(44px,6vw,80px); font-weight:200; color:rgba(255,255,255,.92); line-height:1; letter-spacing:-0.03em;">0{{ adv.n }}</div>
-              <div style="margin-top:10px; font-size:11px; font-weight:600; letter-spacing:0.22em; color:rgba(255,255,255,.76);">{{ adv.kw }}</div>
-            </div>
+        <article style="padding:clamp(22px,2.4vw,28px); border-radius:10px; background:{{ adv.grad }}; color:#fff; min-height:0;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px;">
+            <span style="font-size:28px; font-weight:200; letter-spacing:-0.03em; line-height:1; color:rgba(255,255,255,.9);">0{{ adv.n }}</span>
+            <span style="font-size:10px; font-weight:600; letter-spacing:0.14em; color:rgba(255,255,255,.65); text-align:right;">{{ adv.kw }}</span>
           </div>
-          <div>
-            <h3 style="font-size:clamp(24px,3vw,38px); font-weight:700; letter-spacing:-0.02em; line-height:1.22;">{{ adv.title }}</h3>
-            <ul style="margin-top:22px; display:flex; flex-direction:column; gap:12px; list-style:none;">
-              <sc-for list="{{ adv.points }}" as="pt" hint-placeholder-count="3">
-                <li style="display:flex; gap:12px; font-size:16px; font-weight:300; color:#46585A; line-height:1.55;"><span style="color:#01C0A4; font-weight:600; flex:none;">—</span><span>{{ pt }}</span></li>
-              </sc-for>
-            </ul>
-          </div>
+          <h3 style="margin-top:16px; font-size:clamp(17px,1.8vw,20px); font-weight:600; letter-spacing:-0.01em; line-height:1.3;">{{ adv.title }}</h3>
+          <ul style="margin-top:14px; display:flex; flex-direction:column; gap:8px; list-style:none; padding:0;">
+            <sc-for list="{{ adv.points }}" as="pt" hint-placeholder-count="2">
+              <li style="display:flex; gap:8px; font-size:13px; font-weight:300; color:rgba(255,255,255,.78); line-height:1.5;"><span style="color:#7FE6CF; flex:none;">·</span><span>{{ pt }}</span></li>
+            </sc-for>
+          </ul>
         </article>
       </sc-for>
     </div>
@@ -539,33 +663,67 @@ input, textarea, button, select { font-family:inherit; }
 <!-- ============ PARTNERSHIP ============ -->
 <section id="partnership" style="padding:clamp(90px,11vw,160px) 32px clamp(120px,14vw,200px); background:#F2F6F6;">
   <div style="max-width:1320px; margin:0 auto;">
-    <div style="text-align:center; max-width:760px; margin:0 auto clamp(56px,7vw,88px);" class="reveal">
+    <div style="text-align:center; max-width:760px; margin:0 auto clamp(40px,5vw,64px);" class="reveal">
       <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">PARTNERSHIP</span>
       <h2 style="margin-top:22px; font-size:clamp(32px,4.4vw,56px); font-weight:600; letter-spacing:-0.02em; line-height:1.12; white-space:pre-line;">{{ t.partnerTitle }}</h2>
       <p style="margin-top:22px; font-size:clamp(15px,1.6vw,18px); font-weight:300; line-height:1.85; color:#46585A; white-space:pre-line;">{{ t.partnerDesc }}</p>
+    </div>
+
+    <!-- Primary: Partner Store -->
+    <article class="reveal" style="position:relative; overflow:hidden; border-radius:12px; background:linear-gradient(135deg,#005251 0%,#00302F 55%,#001f1f 100%); color:#fff; padding:clamp(36px,5vw,64px); margin-bottom:clamp(40px,5vw,64px);">
+      <div style="position:absolute; top:-80px; right:-60px; width:280px; height:280px; border-radius:50%; border:1px solid rgba(255,255,255,.1);"></div>
+      <div style="position:absolute; bottom:-100px; left:20%; width:220px; height:220px; border-radius:50%; background:rgba(1,192,164,.08);"></div>
+      <div style="position:relative; display:grid; gap:clamp(28px,4vw,48px); align-items:center;" class="ps-partner-hero">
+        <div>
+          <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border-radius:40px; background:rgba(43,202,176,.18); border:1px solid rgba(43,202,176,.35);">
+            <span style="width:6px; height:6px; border-radius:50%; background:#2BCAB0;"></span>
+            <span style="font-size:11px; font-weight:700; letter-spacing:0.16em; color:#7FE6CF;">{{ t.partnerStoreTag }}</span>
+          </div>
+          <h3 style="margin-top:20px; font-size:clamp(28px,4vw,48px); font-weight:600; letter-spacing:-0.02em; line-height:1.15;">{{ t.partnerStoreTitle }}</h3>
+          <p style="margin-top:16px; max-width:560px; font-size:16px; font-weight:300; line-height:1.8; color:rgba(255,255,255,.78);">{{ t.partnerStoreDesc }}</p>
+          <ul style="margin-top:28px; list-style:none; display:flex; flex-direction:column; gap:12px; padding:0; max-width:520px;">
+            <li style="display:flex; gap:10px; font-size:14px; font-weight:300; color:rgba(255,255,255,.75); line-height:1.55;"><span style="color:#7FE6CF; flex:none;">·</span><span>{{ t.partnerStoreP1 }}</span></li>
+            <li style="display:flex; gap:10px; font-size:14px; font-weight:300; color:rgba(255,255,255,.75); line-height:1.55;"><span style="color:#7FE6CF; flex:none;">·</span><span>{{ t.partnerStoreP2 }}</span></li>
+            <li style="display:flex; gap:10px; font-size:14px; font-weight:300; color:rgba(255,255,255,.75); line-height:1.55;"><span style="color:#7FE6CF; flex:none;">·</span><span>{{ t.partnerStoreP3 }}</span></li>
+          </ul>
+          <button onClick="{{ inquirePartnerStore }}" style="margin-top:32px; display:inline-flex; align-items:center; height:52px; padding:0 28px; border-radius:40px; border:none; background:#01C0A4; color:#fff; font-size:15px; font-weight:600; letter-spacing:0.02em; transition:background .25s;" style-hover="background:#00978F;">{{ t.partnerStoreCta }} →</button>
+        </div>
+        <div style="display:grid; gap:12px;">
+          <div style="padding:20px 22px; border-radius:10px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);">
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#7FE6CF; margin-bottom:8px;">01</div>
+            <div style="font-size:16px; font-weight:600; line-height:1.4;">{{ t.partnerStoreStep1 }}</div>
+          </div>
+          <div style="padding:20px 22px; border-radius:10px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);">
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#7FE6CF; margin-bottom:8px;">02</div>
+            <div style="font-size:16px; font-weight:600; line-height:1.4;">{{ t.partnerStoreStep2 }}</div>
+          </div>
+          <div style="padding:20px 22px; border-radius:10px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);">
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#7FE6CF; margin-bottom:8px;">03</div>
+            <div style="font-size:16px; font-weight:600; line-height:1.4;">{{ t.partnerStoreStep3 }}</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Secondary inquiries -->
+    <div class="reveal" style="margin-bottom:clamp(24px,3vw,36px);">
+      <span style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#8B9A9C;">{{ t.partnerOtherLabel }}</span>
+      <p style="margin-top:8px; font-size:15px; font-weight:300; color:#5B6B6D; line-height:1.7;">{{ t.partnerOtherDesc }}</p>
     </div>
     <div class="ps-swipe-hint" style="display:none; align-items:center; gap:8px; margin-bottom:14px; color:#8B9A9C; font-size:13px; font-weight:400; letter-spacing:0.04em;">
       <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><path d="M2 7h16M13 2l5 5-5 5" stroke="#01C0A4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span>{{ t.swipeHint }}</span>
     </div>
-    <div id="ps-ptype-scroll" style="display:grid; gap:clamp(16px,2vw,24px);" class="ps-ptypes-grid reveal">
+    <div id="ps-ptype-scroll" style="display:grid; gap:clamp(12px,1.6vw,18px);" class="ps-ptypes-grid reveal">
       <sc-for list="{{ ptypes }}" as="pt" hint-placeholder-count="3">
-        <article class="ps-pcard" style="border-radius:10px; background:{{ pt.grad }}; padding:clamp(32px,3.6vw,52px) clamp(28px,3vw,44px); min-height:460px; display:flex; flex-direction:column; justify-content:space-between; color:#fff;">
+        <article class="ps-pcard" style="border-radius:10px; background:#fff; border:1px solid #D5E0E0; padding:clamp(22px,2.4vw,28px); min-height:0; display:flex; flex-direction:column; justify-content:space-between; color:#10181E;">
           <div>
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;">
-              <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:rgba(255,255,255,.65);">{{ pt.tag }}</span>
-              <div style="width:40px; height:40px; border-radius:50%; border:1.5px solid rgba(255,255,255,.3); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:300; color:rgba(255,255,255,.9);">{{ pt.icon }}</div>
-            </div>
-            <h3 style="font-size:clamp(28px,3.2vw,42px); font-weight:600; letter-spacing:-0.02em; line-height:1.15;">{{ pt.title }}</h3>
-            <p style="margin-top:16px; font-size:15px; font-weight:300; line-height:1.75; color:rgba(255,255,255,.78);">{{ pt.sub }}</p>
-            <ul style="margin-top:24px; display:flex; flex-direction:column; gap:10px; list-style:none;">
-              <sc-for list="{{ pt.points }}" as="pp" hint-placeholder-count="3">
-                <li style="display:flex; gap:10px; font-size:14px; font-weight:300; color:rgba(255,255,255,.7); line-height:1.5;"><span style="color:#7FE6CF; flex:none;">·</span><span>{{ pp }}</span></li>
-              </sc-for>
-            </ul>
+            <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#00978F;">{{ pt.tag }}</span>
+            <h3 style="margin-top:12px; font-size:clamp(18px,2vw,22px); font-weight:600; letter-spacing:-0.01em; line-height:1.25;">{{ pt.title }}</h3>
+            <p style="margin-top:10px; font-size:13px; font-weight:300; line-height:1.65; color:#5B6B6D;">{{ pt.sub }}</p>
           </div>
-          <div style="margin-top:36px;">
-            <button onClick="{{ pt.onInquiry }}" style="display:inline-flex; align-items:center; height:50px; padding:0 28px; border-radius:40px; border:1.5px solid rgba(255,255,255,.55); background:transparent; color:#fff; font-size:14px; font-weight:600; letter-spacing:0.04em; transition:background .3s, border-color .3s;" style-hover="background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.9);">{{ pt.cta }} →</button>
+          <div style="margin-top:20px;">
+            <button onClick="{{ pt.onInquiry }}" style="display:inline-flex; align-items:center; height:40px; padding:0 16px; border-radius:40px; border:1.5px solid #005251; background:transparent; color:#005251; font-size:13px; font-weight:600; letter-spacing:0.02em; transition:background .25s, color .25s;" style-hover="background:#005251; color:#fff;">{{ pt.cta }} →</button>
           </div>
         </article>
       </sc-for>
@@ -601,7 +759,7 @@ input, textarea, button, select { font-family:inherit; }
           <div style="margin-bottom:20px;">
             <p style="font-size:12px; font-weight:500; color:#8B9A9C; margin-bottom:10px; letter-spacing:0.04em;">{{ t.fTypeLabel }}</p>
             <div style="display:flex; flex-wrap:nowrap; gap:6px; overflow-x:auto; scrollbar-width:none;">
-              <sc-for list="{{ typePills }}" as="tp" hint-placeholder-count="3">
+              <sc-for list="{{ typePills }}" as="tp" hint-placeholder-count="5">
                 <button type="button" onClick="{{ tp.onClick }}" style="{{ tp.style }}">{{ tp.label }}</button>
               </sc-for>
             </div>
@@ -617,6 +775,16 @@ input, textarea, button, select { font-family:inherit; }
               <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fPhone }}</span><input value="{{ form.phone }}" onChange="{{ onPhone }}" placeholder="{{ t.fPhonePH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#F9FBFB; font-size:14px;" /></label>
               <label style="display:flex; flex-direction:column; gap:7px; grid-column:1/-1;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fEmail }}</span><input value="{{ form.email }}" onChange="{{ onEmail }}" placeholder="name@email.com" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#F9FBFB; font-size:14px;" /></label>
             </div>
+
+            <sc-if value="{{ isPartnerStore }}" hint-placeholder-val="{{ true }}">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; padding:18px; background:#F2F6F6; border-radius:8px;" class="ps-form">
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fArea }}</span><input value="{{ form.area }}" onChange="{{ onArea }}" placeholder="{{ t.fPartnerAreaPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fInvest }}</span><input value="{{ form.invest }}" onChange="{{ onInvest }}" placeholder="{{ t.fInvestPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fTiming }}</span><input value="{{ form.timing }}" onChange="{{ onTiming }}" placeholder="{{ t.fPartnerTimingPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fPartnerExp }}</span><input value="{{ form.experience }}" onChange="{{ onExperience }}" placeholder="{{ t.fPartnerExpPH }}" class="ps-input" style="height:48px; padding:0 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px;" /></label>
+                <label style="display:flex; flex-direction:column; gap:7px; grid-column:1/-1;"><span style="font-size:12px; font-weight:500; color:#46585A;">{{ t.fMsg }}</span><textarea onChange="{{ onMessage }}" placeholder="{{ t.fPartnerMsgPH }}" rows="3" class="ps-input" style="padding:12px 14px; border:1px solid #D5E0E0; border-radius:6px; background:#fff; font-size:14px; line-height:1.65; resize:vertical;"></textarea></label>
+              </div>
+            </sc-if>
 
             <sc-if value="{{ isPharmacy }}" hint-placeholder-val="{{ false }}">
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; padding:18px; background:#F2F6F6; border-radius:8px;" class="ps-form">
@@ -679,29 +847,37 @@ input, textarea, button, select { font-family:inherit; }
   </div>
 </section>
 
-<!-- 갤러리 -->
-<section id="gallery" style="padding:clamp(60px,8vw,100px) 0 0;">
-  <div style="max-width:1320px; margin:0 auto; padding:0 32px; margin-bottom:clamp(28px,3vw,40px);" class="reveal">
-    <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">GALLERY</span>
-    <h2 style="margin-top:14px; font-size:clamp(24px,3vw,36px); font-weight:600; letter-spacing:-0.02em; line-height:1.2;">{{ t.galleryTitle }}</h2>
-  </div>
-  <div style="position:relative; overflow:hidden;">
-    <div id="ps-gallery-track" style="display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding:0 32px 24px; cursor:grab;" onMouseDown="{{ galleryDragStart }}" onMouseMove="{{ galleryDragMove }}" onMouseUp="{{ galleryDragEnd }}" onMouseLeave="{{ galleryDragEnd }}">
-      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-01.jpg" alt="PHAMA SQUARE 01" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
-      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-05.jpg" alt="PHAMA SQUARE 02" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
-      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-04.jpg" alt="PHAMA SQUARE 03" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
-      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-06.jpg" alt="PHAMA SQUARE 04" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
-      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-02.jpg" alt="PHAMA SQUARE 05" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
-      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-07.jpg" alt="PHAMA SQUARE 06" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
-      <div style="flex:none; width:clamp(280px,45vw,640px); aspect-ratio:4/3; border-radius:10px; overflow:hidden; scroll-snap-align:start; position:relative;" class="ps-lift"><img src="./assets/c-gallery-03.jpg" alt="PHAMA SQUARE 07" style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s cubic-bezier(.16,.84,.44,1);" style-hover="transform:scale(1.04);" /></div>
+<!-- ============ NEWS ============ -->
+<section id="news" style="padding:clamp(80px,9vw,130px) 32px; background:#F2F6F6;">
+  <div style="max-width:1320px; margin:0 auto;" class="reveal">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:20px;">
+      <div>
+        <span style="font-size:13px; font-weight:600; letter-spacing:0.22em; color:#00978F;">NEWS</span>
+        <h2 style="margin-top:14px; font-size:clamp(28px,3.8vw,48px); font-weight:600; letter-spacing:-0.02em; line-height:1.15;">{{ t.newsTitle }}</h2>
+        <p style="margin-top:14px; max-width:480px; font-size:15px; font-weight:300; line-height:1.75; color:#46585A;">{{ t.newsDesc }}</p>
+      </div>
+      <a href="{{ newsMoreHref }}" style="display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 20px; border-radius:40px; border:1.5px solid #005251; color:#005251; font-size:14px; font-weight:600; transition:background .25s, color .25s;" style-hover="background:#005251; color:#fff;">{{ t.newsMore }}</a>
     </div>
-    <button onClick="{{ galleryPrev }}" style="position:absolute; left:12px; top:50%; transform:translateY(-60%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.92); border:none; box-shadow:0 2px 12px rgba(0,0,0,.12); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s;" style-hover="background:#fff;">‹</button>
-    <button onClick="{{ galleryNext }}" style="position:absolute; right:12px; top:50%; transform:translateY(-60%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.92); border:none; box-shadow:0 2px 12px rgba(0,0,0,.12); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s;" style-hover="background:#fff;">›</button>
-  </div>
-  <div style="display:flex; justify-content:center; gap:6px; padding-bottom:clamp(40px,5vw,64px);">
-    <sc-for list="{{ galleryDots }}" as="gd" hint-placeholder-count="7">
-      <div style="{{ gd.style }}"></div>
-    </sc-for>
+    <div class="ps-loc-tabs" style="margin-top:clamp(28px,3vw,40px); margin-bottom:clamp(8px,1vw,12px); display:flex; flex-wrap:wrap; gap:10px;">
+      <sc-for list="{{ newsTabs }}" as="nt" hint-placeholder-count="3">
+        <button onClick="{{ nt.onClick }}" style="{{ nt.style }}">{{ nt.label }}</button>
+      </sc-for>
+    </div>
+    <div style="background:#fff; border:1px solid #E3EAEA; border-radius:12px; overflow:hidden;">
+      <sc-for list="{{ newsItems }}" as="ni" hint-placeholder-count="4">
+        <a href="{{ ni.href }}" style="display:flex; align-items:center; gap:16px; padding:clamp(18px,2vw,24px) clamp(18px,2.2vw,28px); border-bottom:1px solid #E8F0F0; transition:background .2s;" style-hover="background:#F7FAFA;">
+          <span style="flex:none; font-size:12px; font-weight:500; color:#8B9A9C; letter-spacing:0.02em; min-width:92px;">{{ ni.date }}</span>
+          <span style="flex:1; min-width:0; font-size:clamp(15px,1.5vw,17px); font-weight:{{ ni.weight }}; color:#10181E; line-height:1.45;">{{ ni.title }}</span>
+          <sc-if value="{{ ni.pinned }}" hint-placeholder-val="{{ false }}">
+            <span style="flex:none; height:22px; padding:0 10px; border-radius:40px; background:#01C0A4; color:#fff; font-size:10px; font-weight:700; letter-spacing:0.06em; display:inline-flex; align-items:center;">{{ t.newsPinned }}</span>
+          </sc-if>
+          <span style="flex:none; color:#B2CECE; font-size:18px; line-height:1;">›</span>
+        </a>
+      </sc-for>
+      <sc-if value="{{ newsEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:48px 24px; text-align:center; color:#8B9A9C; font-size:15px; font-weight:300;">{{ t.newsEmpty }}</div>
+      </sc-if>
+    </div>
   </div>
 </section>
 
@@ -781,21 +957,21 @@ input, textarea, button, select { font-family:inherit; }
       <h3 style="font-size:22px; font-weight:600; color:#fff; line-height:1.3; margin-top:14px; white-space:pre-line;">{{ t.popupTitle }}</h3>
     </div>
     <div style="display:flex; flex-direction:column; gap:1px; background:#E8EFEF;">
-      <a href="#partnership" onClick="{{ closePopup }}" style="display:flex; align-items:center; justify-content:space-between; padding:20px 28px; background:#fff; transition:background .2s;" style-hover="background:#F2F6F6;">
+      <a href="#inquiry" onClick="{{ popupPartnerStore }}" style="display:flex; align-items:center; justify-content:space-between; padding:20px 28px; background:#fff; transition:background .2s;" style-hover="background:#F2F6F6;">
         <div>
-          <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#00978F; margin-bottom:6px;">PHARMACY</div>
-          <div style="font-size:17px; font-weight:600; color:#10181E;">{{ t.popupPharmacyTitle }}</div>
-          <div style="font-size:13px; font-weight:300; color:#5B6B6D; margin-top:4px; line-height:1.5;">{{ t.popupPharmacyDesc }}</div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#00978F; margin-bottom:6px;">PARTNER STORE</div>
+          <div style="font-size:17px; font-weight:600; color:#10181E;">{{ t.popupPartnerTitle }}</div>
+          <div style="font-size:13px; font-weight:300; color:#5B6B6D; margin-top:4px; line-height:1.5;">{{ t.popupPartnerDesc }}</div>
         </div>
         <span style="font-size:20px; color:#005251; font-weight:300;">→</span>
       </a>
-      <a href="#partnership" onClick="{{ closePopup }}" style="display:flex; align-items:center; justify-content:space-between; padding:20px 28px; background:#fff; transition:background .2s;" style-hover="background:#F2F6F6;">
+      <a href="#partnership" onClick="{{ closePopup }}" style="display:flex; align-items:center; justify-content:space-between; padding:18px 28px; background:#fff; transition:background .2s;" style-hover="background:#F2F6F6;">
         <div>
-          <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#00978F; margin-bottom:6px;">STORE DEV</div>
-          <div style="font-size:17px; font-weight:600; color:#10181E;">{{ t.popupStoreTitle }}</div>
-          <div style="font-size:13px; font-weight:300; color:#5B6B6D; margin-top:4px; line-height:1.5;">{{ t.popupStoreDesc }}</div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#8B9A9C; margin-bottom:6px;">OTHER</div>
+          <div style="font-size:15px; font-weight:600; color:#10181E;">{{ t.popupOtherTitle }}</div>
+          <div style="font-size:13px; font-weight:300; color:#5B6B6D; margin-top:4px; line-height:1.5;">{{ t.popupOtherDesc }}</div>
         </div>
-        <span style="font-size:20px; color:#005251; font-weight:300;">→</span>
+        <span style="font-size:18px; color:#8B9A9C; font-weight:300;">→</span>
       </a>
     </div>
     <div style="padding:16px 28px; background:#F8FAFA; display:flex; align-items:center; justify-content:flex-end;">
@@ -805,7 +981,7 @@ input, textarea, button, select { font-family:inherit; }
 </div>
 
 <!-- Scroll to top -->
-<button onClick="{{ scrollTop }}" style="{{ scrollTopStyle }}" aria-label="Back to top">
+<button onClick="{{ scrollTop }}" class="ps-scroll-top" style="position:fixed; bottom:28px; right:28px; z-index:150; width:46px; height:46px; border-radius:50%; background:#005251; border:none; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 24px rgba(0,82,81,.35); cursor:pointer;" aria-label="Back to top">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
 </button>
 
@@ -825,16 +1001,19 @@ class Component extends DCLogic {
     langDropdownOpen: false,
     latestNotice: null,
     galleryIdx: 0,
-    activeSection: '',
+    galleryStore: 0,
+    newsPosts: [],
+    newsCategory: 'notice',
+    activeSection: 'top',
     activeTab: 0,
-    inquiryType: 'brand',
-    selectedStore: 0,
+    inquiryType: 'partnerStore',
+    selectedStore: 1,
     formOpen: true,
     agree: null,
     submitted: false,
     popupVisible: false,
     brandsExpanded: false,
-    form: { name:'', role:'', phone:'', email:'', company:'', message:'', area:'', experience:'', timing:'', currentPharmacy:'', storeRole:'', category:'', location:'' }
+    form: { name:'', role:'', phone:'', email:'', company:'', message:'', area:'', experience:'', timing:'', currentPharmacy:'', storeRole:'', category:'', location:'', invest:'' }
   };
 
   componentDidMount() {
@@ -849,18 +1028,36 @@ class Component extends DCLogic {
       const ps = JSON.parse(localStorage.getItem('ps_posts') || '[]');
       const n = ps.find(p => p.active !== false && p.category === 'notice' && p.pinned);
       if (n) this.setState({ latestNotice: n });
+      if (Array.isArray(ps) && ps.length) this.setState({ newsPosts: ps });
     } catch(e) {}
+    this._loadNewsPosts();
 
-    const navKeys = ['about','gallery','brands','partnership','location'];
+    const navKeys = ['gallery','about','brands','partnership','news','location'];
+    // Nav scroll UI is handled by the standalone script (html.ps-scrolled) to avoid React re-render fights.
     this._onScroll = () => {
-      const sc = window.scrollY > 60;
-      const y = window.scrollY + 140;
-      let cur = '';
-      for (const k of navKeys) { const el = document.getElementById(k); if (el && el.offsetTop <= y) cur = k; }
-      if (sc !== this.state.scrolled || cur !== this.state.activeSection) this.setState({ scrolled: sc, activeSection: cur });
+      const yPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const sc = yPos > 40;
+      const y = yPos + 120;
+      let cur = 'top';
+      for (const k of navKeys) {
+        const el = document.getElementById(k);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top + yPos <= y) cur = k;
+      }
+      if (sc !== this.state.scrolled || cur !== this.state.activeSection) {
+        this.setState({ scrolled: sc, activeSection: cur });
+      }
+    };
+    // Debounce state updates so React does not thrash classList on every frame
+    const rawScroll = this._onScroll;
+    let scrollTimer = null;
+    this._onScroll = () => {
+      if (scrollTimer) return;
+      scrollTimer = setTimeout(() => { scrollTimer = null; rawScroll(); }, 120);
     };
     window.addEventListener('scroll', this._onScroll, { passive:true });
-    this._onScroll();
+    window.addEventListener('hashchange', rawScroll);
+    rawScroll();
 
     const dismissed = localStorage.getItem('ps_popup_dismiss');
     const now = Date.now();
@@ -898,15 +1095,15 @@ class Component extends DCLogic {
     }
 
     const hero = document.querySelector('.ps-hero');
-    const c1 = document.querySelector('.ps-hero-c1');
-    const c2 = document.querySelector('.ps-hero-c2');
-    if (hero && c1 && c2) {
-      let px = 0, py = 0, t = 0;
-      const heroMouse = (e) => { const r = hero.getBoundingClientRect(); px = (e.clientX - r.left - r.width/2) / r.width * 26; py = (e.clientY - r.top - r.height/2) / r.height * 16; };
-      hero.addEventListener('mousemove', heroMouse);
-      const animHero = () => { t += 0.007; const f1 = Math.sin(t) * 14; const f2 = Math.sin(t * 0.9 + 1) * 10; if (c1) c1.style.transform = `translate(${px}px,${f1 + py}px)`; if (c2) c2.style.transform = `translate(${-px*0.7}px,${f2 - py*0.7}px)`; this._heroRaf = requestAnimationFrame(animHero); };
-      animHero();
-      this._heroCleanup = () => { hero.removeEventListener('mousemove', heroMouse); cancelAnimationFrame(this._heroRaf); };
+    const slides = document.querySelectorAll('.ps-hero-slide');
+    if (hero && slides.length > 1) {
+      let slideIdx = 0;
+      this._heroSlideTimer = setInterval(() => {
+        slides[slideIdx].classList.remove('is-active');
+        slideIdx = (slideIdx + 1) % slides.length;
+        slides[slideIdx].classList.add('is-active');
+      }, 5200);
+      this._heroCleanup = () => { clearInterval(this._heroSlideTimer); };
     }
 
     const initStoreDots = () => {
@@ -953,6 +1150,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     if (this._popupTimer) clearTimeout(this._popupTimer);
     window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('hashchange', this._onScroll);
     if (this._io) this._io.disconnect();
     if (this._revealFallback) clearTimeout(this._revealFallback);
     if (this._removeMouse) this._removeMouse();
@@ -989,8 +1187,13 @@ class Component extends DCLogic {
     const f = this.state.form;
     const type = this.state.inquiryType;
     const T = this._getT(this.state.lang);
-    const typeLabel = type === 'pharmacy' ? T.typePharmacy : type === 'brand' ? T.typeBrand : T.typeStoreDev;
+    const typeLabel = type === 'partnerStore' ? T.typePartnerStore
+      : type === 'pharmacy' ? T.typePharmacy
+      : type === 'brand' ? T.typeBrand
+      : type === 'storeDev' ? T.typeStoreDev
+      : T.typeOther;
     let body = T.fName.replace(' *','') + ': ' + f.name + '\n' + T.fPhone.replace(' *','') + ': ' + f.phone + '\n' + T.fEmail + ': ' + f.email + '\n';
+    if (type === 'partnerStore') body += T.fArea + ': ' + f.area + '\n' + T.fInvest + ': ' + f.invest + '\n' + T.fTiming + ': ' + f.timing + '\n' + T.fPartnerExp + ': ' + f.experience + '\n' + T.fMsg + ': ' + f.message + '\n';
     if (type === 'pharmacy') body += T.fArea + ': ' + f.area + '\n' + T.fExp + ': ' + f.experience + '\n' + T.fTiming + ': ' + f.timing + '\n';
     if (type === 'brand') body += T.fRole + ': ' + f.role + '\n' + T.fCompany + ': ' + f.company + '\n' + T.fCategory + ': ' + f.category + '\n' + T.fMsg + ': ' + f.message + '\n';
     if (type === 'other') body += (T.fMsg || '문의 내용') + ': ' + f.message + '\n';
@@ -1007,61 +1210,137 @@ class Component extends DCLogic {
         this.setState({ submitted: true });
       });
   };
-  resetForm = () => this.setState({ submitted: false, agree: null, form:{ name:'', role:'', phone:'', email:'', company:'', message:'', area:'', experience:'', timing:'', currentPharmacy:'', storeRole:'', category:'', location:'' } });
+  resetForm = () => this.setState({ submitted: false, agree: null, inquiryType: 'partnerStore', form:{ name:'', role:'', phone:'', email:'', company:'', message:'', area:'', experience:'', timing:'', currentPharmacy:'', storeRole:'', category:'', location:'', invest:'' } });
+
+  _loadNewsPosts() {
+    const apply = (posts) => {
+      if (!Array.isArray(posts) || !posts.length) return false;
+      try { localStorage.setItem('ps_posts', JSON.stringify(posts)); } catch (e) {}
+      const n = posts.find(p => p.active !== false && p.category === 'notice' && p.pinned);
+      this.setState({ newsPosts: posts, latestNotice: n || null });
+      return true;
+    };
+    fetch('./posts_data.json?t=' + Date.now())
+      .then(r => r.json())
+      .then(data => { if (!apply(data)) apply(this._newsSeed()); })
+      .catch(() => {
+        fetch('./posts.php?t=' + Date.now())
+          .then(r => r.json())
+          .then(data => { if (!apply(data)) apply(this._newsSeed()); })
+          .catch(() => apply(this._newsSeed()));
+      });
+  }
+
+  _newsSeed() {
+    return [
+      { id:'guro-open-2026', category:'notice', active:true, pinned:true, date:'2026-08-01', title:{ ko:'파마스퀘어 익스프레스 구로점 오픈', en:'Phama Square Express Guro Now Open', zh:'파马广场 九老快捷店开业' }, content:{ ko:'파마스퀘어 익스프레스 구로점이 오픈했습니다.' }, link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
+      { id:'renewal-2026-0628', category:'notice', active:true, pinned:true, date:'2026-06-28', title:{ ko:'파마스퀘어 공식 웹사이트 리뉴얼 안내', en:'Official Website Renewal', zh:'官网改版通知' }, content:{ ko:'' }, link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
+      { id:'s1', category:'notice', active:true, pinned:false, date:'2025-03-15', title:{ ko:'파마스퀘어 하남 플래그십 정식 오픈', en:'Hanam Flagship Officially Open', zh:'河南旗舰店正式开业' }, content:{ ko:'' }, link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
+      { id:'s3', category:'press', active:true, pinned:false, date:'2026-03-05', title:{ ko:'파마스퀘어, 웰니스 플랫폼의 새로운 기준', en:'Phama Square Sets a New Standard for Wellness Platforms', zh:'파马广场树立健康平台新标准' }, content:{ ko:'' }, link:'https://mk.co.kr', linkLabel:{ko:'매일경제 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'s4', category:'press', active:true, pinned:false, date:'2025-08-20', title:{ ko:'K-뷰티 헬스케어 공간의 진화, 파마스퀘어', en:'The Evolution of K-Beauty Healthcare Spaces', zh:'K-Beauty健康空间的进化' }, content:{ ko:'' }, link:'https://biz.chosun.com', linkLabel:{ko:'조선비즈 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'s5', category:'hr', active:true, pinned:true, date:'2026-06-01', title:{ ko:'[채용] 상품기획 MD', en:'[Hiring] Product Planning MD', zh:'[招聘] 商品企划 MD' }, content:{ ko:'' }, link:'mailto:official@phamasquare.com', linkLabel:{ko:'이메일로 지원',en:'Apply by email',zh:'邮件投递'}, department:'상품팀', jobType:'정규직', deadline:'상시채용' },
+      { id:'s6', category:'hr', active:true, pinned:false, date:'2026-06-15', title:{ ko:'[채용] 디지털 마케터', en:'[Hiring] Digital Marketer', zh:'[招聘] 数字营销' }, content:{ ko:'' }, link:'mailto:official@phamasquare.com', linkLabel:{ko:'이메일로 지원',en:'Apply by email',zh:'邮件投递'}, department:'마케팅팀', jobType:'정규직', deadline:'2026-07-31' }
+    ];
+  }
 
   _getT(lang) {
     const i18n = {
       ko: {
         announceLabel: '파마스퀘어 AI 건강가이드 프로그램', announceLink: 'AI 건강가이드 체험하기 →',
-        healthGuide: '건강가이드', partnershipCTA: '파트너십 문의', partnershipCTAFull: '파트너십 문의하기',
-        heroDesc: '내면의 건강과 미적 가치가 균형을 이루는 공간.\n파마스퀘어가 제안하는 새로운 웰니스 경험.',
+        healthGuide: '건강가이드', partnershipCTA: '파트너 매장 문의', partnershipCTAFull: '파트너 매장 문의하기',
+        heroTitle: '익스프레스 구로점 오픈',
+        heroDesc: '2026년 8월 1일 오픈.\n도심형 웰니스 스토어에서 건강기능식품·뷰티·펫케어를 한곳에서.',
+        heroGalleryCTA: '매장 갤러리 보기', heroLocationCTA: '오시는 길',
+        heroMetaFormat: 'EXPRESS', heroMetaAddr: '서울 관악구 시흥대로 554, B1', heroMetaNote: '도심형 웰니스 스토어',
+        guroOpenLabel: 'NOW OPEN', guroOpenTitle: '파마스퀘어 익스프레스 구로점',
+        guroOpenDesc: '하남 플래그십에 이은 두 번째 매장. 접근성 좋은 도심형 익스프레스로 구로에 오픈했습니다.',
+        guroOpenFacts: [
+          { k: 'FORMAT', v: 'Express · 약 200평' },
+          { k: 'ADDRESS', v: '서울 관악구 시흥대로 554, B1' },
+          { k: 'FOCUS', v: '건강 · 뷰티 · 펫 · 라이프' }
+        ],
+        guroOpenGallery: '갤러리 보기', guroOpenMap: '위치 확인',
+        formatTitle: '익스프레스와 창고형',
+        formatDesc: '입지와 쇼핑 목적에 맞춰 두 가지 매장 포맷으로 운영합니다.',
+        formatExpress: {
+          tag: 'EXPRESS', title: '익스프레스', size: '150~200평',
+          desc: '도심 접근성에 맞춘 컴팩트 웰니스 스토어.',
+          points: ['핵심 SKU 중심의 빠른 쇼핑', '대중교통·생활권 인접 입지', '짧은 동선으로 필요한 제품만 빠르게'],
+          example: '예: 구로점'
+        },
+        formatWarehouse: {
+          tag: 'WAREHOUSE', title: '창고형', size: '300~500평',
+          desc: '대형 규모로 풀 라인업과 체험을 제공하는 복합 매장.',
+          points: ['건강·뷰티·펫·라이프 풀 카테고리', '브랜드 체험존과 긴 체류형 공간', '플래그십·스탠다드 대형 매장'],
+          example: '예: 하남 플래그십'
+        },
+        locTitle: '전국으로 확장합니다', locDesc: '하남 플래그십과 구로 익스프레스를 시작으로 청라·김포·홍대 등 주요 입지로 넓혀갑니다.', swipeHint: '옆으로 밀어 더 보기', locMapBtn: '위치 확인 →', storeSizeSuffix: '평 규모',
         taglineL1: '건강은 더하고,', taglineL2: '가격은 낮춥니다.', taglineCenter: '건강은 더하고, 가격은 낮춥니다.', taglineSub: '전문가 큐레이션과 대량 직소싱으로 소비자에게 더 나은 선택지를 제공합니다.',
         aboutTitleL1: '아름다운 균형을', aboutTitleL2: '이루는 공간,', aboutBrand: '파마스퀘어',
         aboutP1: '파마스퀘어는 건강기능식품, 뷰티, 펫 그리고 독립 입점 약국이 한 공간에 구성된 웰니스 플랫폼으로서, 건강한 내면의 균형과 미적 가치가 조화를 이루는 새로운 웰니스 경험을 제안합니다.',
-        aboutP2: '파마스퀘어 하남 플래그십은 약 500평 규모의 스토어로 2025년 오픈했습니다. 건강기능식품·뷰티·펫·라이프스타일·의약품까지 4,000개 이상의 SKU를 갖춘 대형 웰니스 스토어입니다.',
-        aboutP3: '2026년 하남·구로를 시작으로 청라·김포·홍대·송도·천안까지 연내 7개 매장 운영을 목표로 빠르게 확장 중이며, 향후 전국 주요 도시로 넓혀갈 예정입니다.',
-        pyeong: '평', storeCountSuffix: '개+', stat1Num: '300~500', stat1Unit: '평', stat2Num: '150~200', stat2Unit: '평', stat1Format: '플래그십 · 스탠다드', stat1Desc: '도심 외각 대형 복합매장', stat2Format: '익스프레스', stat2Desc: '도심 접근성 특화 매장', stat3Format: '2026년 목표 매장 수', stat3Desc: '하남·구로·청라·김포·홍대·송도·천안',
-        locTitle: '전국으로 확장하는\n웰니스 플랫폼', locDesc: '하남 플래그십을 시작으로 구로·청라·김포 등 주요 입지에 순차 오픈하며, 송도·홍대·천안 등 전국 주요 도시로 확장합니다.', swipeHint: '옆으로 밀어 더 보기', locMapBtn: '위치 확인 →', storeSizeSuffix: '평 규모',
+        aboutP2: '파마스퀘어 하남 플래그십은 약 500평 규모의 스토어로 2025년 오픈했습니다. 건강기능식품·뷰티·펫·라이프스타일·의약품까지 4,000개 이상의 SKU를 갖춘 대형 웰니스 스토어입니다. 이어 2026년 8월 1일, 익스프레스 구로점을 오픈했습니다.',
+        aboutP3: '2026년 하남·구로를 시작으로 청라·김포·홍대까지 연내 5개 매장 운영을 목표로 빠르게 확장 중이며, 향후 전국 주요 도시로 넓혀갈 예정입니다.',
+        pyeong: '평', storeCountSuffix: '개+', stat1Num: '300~500', stat1Unit: '평', stat2Num: '150~200', stat2Unit: '평', stat1Format: '플래그십 · 스탠다드', stat1Desc: '도심 외각 대형 복합매장', stat2Format: '익스프레스', stat2Desc: '도심 접근성 특화 매장', stat3Format: '2026년 목표 매장 수', stat3Desc: '하남·구로·청라·김포·홍대',
         typeOther: '기타 문의', fOtherMsgPH: '문의 내용을 자유롭게 작성해주세요.',
         philTitle: '조화의 철학', philDesc: '몸과 마음, 건강과 아름다움,\n일상과 감성을 연결하는 균형의 가치,\n그것이 파마스퀘어의 철학입니다.',
-        whyTitle: '입점해야 하는\n분명한 이유', whyCatchphrase: '건강은 더하고, 가격은 낮춥니다.', whyDesc: '파마스퀘어는 소비자에게 더 나은 웰니스를, 파트너 브랜드에게는 더 넓은 시장을 제공합니다.',
+        whyTitle: '브랜드가 입점해야 하는\n분명한 이유', whyCatchphrase: '건강은 더하고, 가격은 낮춥니다.', whyDesc: '파마스퀘어는 소비자에게 더 나은 웰니스를, 파트너 브랜드에게는 더 넓은 시장을 제공합니다.',
         aiTitleL1: '단순 유통을 넘어,', aiTitleL2: 'AI 웰니스 플랫폼', aiTitleSuffix: '으로.', aiDesc: '파마스퀘어는 매장을 단순 판매 공간이 아닌 고객 건강 데이터의 거점으로 바라봅니다. 피로·수면·면역·피부·다이어트 등 일상의 건강 신호를 읽고, AI가 개인에게 꼭 맞는 웰니스를 추천하는 플랫폼으로 진화합니다.',
         aiBannerTitle: '파마스퀘어 AI 건강가이드 프로그램', aiBannerDesc: '증상과 건강 고민을 입력하면 AI가 맞춤 웰니스 솔루션을 제안합니다.', aiBannerCTA: '지금 체험하기 →',
         brandsTitle: '함께하는 브랜드', brandsSub: '— 입점 브랜드 리스트는 순차 업데이트 예정입니다.', brandsUnit: '개 브랜드',
         tabHealth: '건강식', tabBeauty: '화장품', tabPet: '펫제품', tabLife: '라이프스타일',
-        partnerTitle: '함께 성장할\n파트너를 찾습니다', partnerDesc: '약국 입점, 브랜드사 입점, 점포 개발 협업\n— 각 유형에 맞는 문의를 보내주세요.',
-        inquiryTitle: '문의하기', inquiryDesc: '파트너십 유형을 선택하고 내용을 보내주시면, 내부 검토 후 담당자가 개별 회신드리겠습니다.', inquiryP1: '내부 검토 후 담당자가 개별 회신드리겠습니다.', inquiryP2: '답변이 다소 늦어질 수 있는 점 양해 부탁드립니다.',
+        partnerTitle: '파트너 매장을\n함께 열어갈 분을 찾습니다', partnerDesc: '매장에 직접 투자하고 파마스퀘어 파트너로 운영할 분을 공개 모집합니다.\n약국·브랜드·입지 제안 문의도 함께 받고 있습니다.',
+        partnerStoreTag: 'NOW RECRUITING',
+        partnerStoreTitle: '파트너 매장 모집',
+        partnerStoreDesc: '파마스퀘어 매장에 투자하고, 브랜드·운영 노하우와 함께 파트너 매장을 운영할 수 있습니다.',
+        partnerStoreP1: '매장 투자 후 파트너로서 운영에 참여',
+        partnerStoreP2: '전국 확장에 맞춘 입지·포맷 검토',
+        partnerStoreP3: '본사 운영·MD·브랜딩 지원',
+        partnerStoreStep1: '투자 — 매장 오픈에 직접 참여',
+        partnerStoreStep2: '오픈 — 익스프레스·창고형 포맷으로 론칭',
+        partnerStoreStep3: '운영 — 파마스퀘어 파트너 매장으로 성장',
+        partnerStoreCta: '파트너 매장 문의하기',
+        partnerOtherLabel: 'OTHER INQUIRIES',
+        partnerOtherDesc: '약국 입점, 브랜드 입점, 입지 제안도 받고 있습니다.',
+        inquiryTitle: '문의하기', inquiryDesc: '문의 유형을 선택해 주세요. 파트너 매장 문의를 우선 검토합니다.', inquiryP1: '내부 검토 후 담당자가 개별 회신드리겠습니다.', inquiryP2: '답변이 다소 늦어질 수 있는 점 양해 부탁드립니다.',
         fTypeLabel: '문의 유형 선택', fName: '성함 *', fPhone: '연락처 *', fEmail: '이메일', fNamePH: '홍길동', fPhonePH: '010-0000-0000',
         fArea: '희망 지역', fAreaPH: '예: 서울 강남 / 경기 수원', fExp: '약사 업력', fExpPH: '예: 7년', fTiming: '희망 입점 시기', fTimingPH: '예: 2026년 상반기', fCurrentOp: '현 약국 운영 여부',
+        fInvest: '관심 투자 규모', fInvestPH: '예: 5억~10억 / 협의',
+        fPartnerAreaPH: '예: 서울·경기 / 특정 상권',
+        fPartnerTimingPH: '예: 2026년 하반기',
+        fPartnerExp: '관련 경험', fPartnerExpPH: '예: 리테일 운영 / 투자 경험',
+        fPartnerMsgPH: '희망 지역, 투자 여력, 운영 참여 방식 등을 자유롭게 작성해주세요.',
         currentOpOptions: ['운영 중', '미운영', '폐업 예정'],
         fRole: '직책 / 직위', fRolePH: '대표 / 매니저', fCompany: '회사명', fCompanyPH: '주식회사 ○○○', fCategory: '희망 입점 카테고리', fCategoryPH: '뷰티 / 건강기능식품 / 펫 / 라이프스타일', fMsg: '문의 내용', fBrandMsgPH: '브랜드 소개, 희망 입점 내용 등을 자유롭게 작성해주세요.',
         fStoreRoleLabel: '역할', storeRoleOptions: ['건물주', '임대인', '중개인', '기타'], fCompanyOrg: '회사 / 기관명', fCompanyOrgPH: '주식회사 ○○○ / 개인', fLocation: '제안 입지 (주소 / 상권명)', fLocationPH: '예: 서울 홍대입구역 인근 / 경기 수원 ○○빌딩', fStoreMsgPH: '제안 공간의 특성, 가용 면적, 월 임대료 범위 등을 자유롭게 작성해주세요.',
         fPrivacy: '개인정보 수집 및 이용에 동의합니다.', fAgreeYes: '동의함', fAgreeNo: '동의 안 함', fSubmit: '문의 전송하기',
         formOpenLabel: '문의 내용 입력 중', formClosedLabel: '문의 내용 작성하기 →',
         submittedTitle: '문의가 접수되었습니다', submittedDesc: '내부 검토 후 담당자가 개별 회신드리겠습니다.\n답변이 다소 늦어질 수 있는 점 양해 부탁드립니다.\n감사합니다.', newInquiry: '새 문의 작성',
-        galleryTitle: '파마스퀘어 하남점', locationTitle: '오시는 길', naverMap: '네이버 지도', kakaoMap: '카카오맵',
+        galleryTitle: '파마스퀘어 스토어', locationTitle: '오시는 길', naverMap: '네이버 지도', kakaoMap: '카카오맵',
         locTabs: ['하남점', '구로점', '청라점', '김포점'],
-        typePharmacy: '약국 입점', typeBrand: '브랜드사 입점', typeStoreDev: '점포 개발 협업',
-        footerDesc: '대한민국 No.1 AI 웰니스 플랫폼으로 성장하여 균형 있는 라이프스타일 문화를 선도합니다.', footerLegalName: '법인명', footerCEO: '대표이사', footerBizNum: '사업자번호', footerEmail: '이메일', footerAddr: '주소',
+        galleryTabs: ['구로점', '하남점'],
+        newsTitle: '파마스퀘어 소식', newsDesc: '공지사항, 언론보도, 채용 정보를 카테고리별로 확인하세요.', newsMore: '전체 소식 보기', newsEmpty: '등록된 소식이 없습니다.', newsPinned: '중요',
+        newsCats: ['공지사항', '언론보도', '채용공고'],
+        typePartnerStore: '파트너 매장', typePharmacy: '약국 입점', typeBrand: '브랜드사 입점', typeStoreDev: '입지 제안', typeOther: '기타 문의', fOtherMsgPH: '문의 내용을 자유롭게 작성해주세요.',
+        footerDesc: '균형 있는 웰니스 문화를 선도합니다.', footerLegalName: '법인명', footerCEO: '대표이사', footerBizNum: '사업자번호', footerEmail: '이메일', footerAddr: '주소',
         copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: '개인정보취급방침',
-        popupDismissBtn: '3일간 보지 않기', popupTitle: '파마스퀘어와 함께할\n파트너를 찾습니다', popupPharmacyTitle: '약사 파트너 모집', popupPharmacyDesc: '독립 약국 개설 · 서울 및 경기권 우선 검토', popupStoreTitle: '점포 개발 협업', popupStoreDesc: '파마스퀘어 오픈에 적합한 입지 제안 환영', popupDismiss: '오늘 하루 보지 않기',
-        marqueeTagline: '건강은 더하고, 가격은 낮춥니다', marquee263: '263개 입점 브랜드', marqueePharmacy: '약사 파트너십 상시 모집', marqueeStoreDev: '점포 개발 협업 환영',
+        popupDismissBtn: '3일간 보지 않기', popupTitle: '파트너 매장을\n함께 열어갈 분을 찾습니다', popupPartnerTitle: '파트너 매장 모집', popupPartnerDesc: '매장 투자 · 파트너 운영 · 전국 확장', popupOtherTitle: '약국 · 브랜드 · 입지 문의', popupOtherDesc: '그 외 파트너십 문의도 환영합니다', popupDismiss: '오늘 하루 보지 않기',
+        marqueeTagline: '건강은 더하고, 가격은 낮춥니다', marquee263: '263개 입점 브랜드', marqueePharmacy: '파트너 매장 공개 모집', marqueeStoreDev: '입지 제안 환영',
         brandsCountPrefix: '총 ', brandsCountMid: ' · ', expandBtn: '전체 브랜드 보기 (+{n}개) ↓',
         pillars: [ { n:1, en:'Harmony', desc:'건강과 미(美)의 조화' }, { n:2, en:'Balance', desc:'일상과 감각의 균형' }, { n:3, en:'Trust', desc:'전문가 기반의 신뢰 서비스' }, { n:4, en:'Experience', desc:'체험 기반의 프리미엄 H&B 공간' } ],
         advantages: [
-          { n:1, kw:'LARGE-FORMAT STORE', title:'대형 복합 웰니스 플랫폼', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['지점별 200~500평 규모의 대형 스토어','브랜드 체험형 존 구성으로 체류 시간 증가','체류 시간 증가 → 구매 전환율 상승'] },
-          { n:2, kw:'FULL LINE-UP + PHARMACY', title:'수천 종 카테고리 풀 라인업 + 독립약국', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['뷰티 · 건강기능식품 · 라이프스타일 · 펫케어','독립약국 입점으로 의약품까지 원스톱 케어','웰니스 전 영역을 아우르는 통합 큐레이션'] },
-          { n:3, kw:'NATIONWIDE EXPANSION', title:'확장 가능한 전국 웰니스 플랫폼', grad:'linear-gradient(150deg,#019e88,#005251)', points:['하남(500평) 플래그십 운영','구로 · 청라 · 김포 순차 오픈','송도 · 홍대 · 천안 등 전국 확장 예정'] }
+          { n:1, kw:'LARGE-FORMAT STORE', title:'대형 매장에서 고객을 직접', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['200~500평 규모 매장에서 브랜드 노출','체험존으로 체류·구매 전환 상승'] },
+          { n:2, kw:'FULL LINE-UP', title:'풀 카테고리 입점 환경', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['뷰티·건기식·라이프·펫 구성','독립약국과 함께 원스톱 웰니스'] },
+          { n:3, kw:'NATIONWIDE REACH', title:'전국 확장 네트워크', grad:'linear-gradient(150deg,#019e88,#005251)', points:['하남·구로 운영 중','청라·김포·홍대 연내 확장'] }
         ],
         aiSteps: [ { n:1, en:'DATA HUB', title:'오프라인 건강 접점', desc:'매장에서 만나는 건강 니즈와 구매 데이터를, 병원 방문 이전 단계의 사전 건강 신호로 구조화합니다.' }, { n:2, en:'AI RECOMMEND', title:'AI 맞춤 추천', desc:'자가진단·구매 이력·재구매 주기를 연결해, 고객 개인에게 꼭 맞는 웰니스 솔루션을 제안합니다.' }, { n:3, en:'PLATFORM', title:'플랫폼으로 확장', desc:'축적된 웰니스 데이터를 기반으로 구독·검진·헬스케어 서비스로 이어지는 플랫폼을 지향합니다.' } ],
         ptypes: [
-          { tag:'01 · PHARMACY', icon:'+', title:'약국 입점', sub:'약사님의 독립적인 약국 개설 및 운영을 전제로 한 입점 안내입니다. 채용이 아닌 분리된 독립 약국 구조입니다.', points:['검토 지역: 서울 전 지역 및 경기권','기재사항: 성함, 희망지역, 약사 업력, 희망 입점 시기','독립 운영, 전문성과 자율성 보장'], cta:'약국 입점 문의', grad:'linear-gradient(150deg,#007a73 0%,#004a47 100%)', type:'pharmacy' },
-          { tag:'02 · BRAND', icon:'◈', title:'브랜드사 입점', sub:'뷰티, 건강기능식품, 라이프스타일, 펫케어 전 카테고리 브랜드사의 입점을 검토합니다.', points:['200~500평 대형 스토어에서 고객을 직접 만나세요','수천 종 카테고리 풀라인업 구성 환경','라이브커머스 스튜디오 연계 가능'], cta:'브랜드 입점 문의', grad:'linear-gradient(150deg,#009e8a 0%,#006b62 100%)', type:'brand' },
-          { tag:'03 · STORE DEV', icon:'⬡', title:'점포 개발 협업', sub:'파마스퀘어 오픈에 적합한 입지를 제안해주세요. 상권 분석, 부동산 정보, 공간 특성 등 자유롭게 보내주시면 내부 검토 후 연락드립니다.', points:['하남·구로·청라·김포 등 전국 확장 진행 중','대형 유동인구 상권, 대형몰 인접 입지 선호','제안 내용 검토 후 담당자 개별 연락'], cta:'입지 제안하기', grad:'linear-gradient(150deg,#005251 0%,#001f1f 100%)', type:'storeDev' }
+          { tag:'PHARMACY', title:'약국 입점', sub:'독립 약국 개설·운영을 전제로 한 입점 안내입니다.', cta:'약국 문의', type:'pharmacy' },
+          { tag:'BRAND', title:'브랜드사 입점', sub:'뷰티·건기식·펫·라이프스타일 브랜드 입점을 검토합니다.', cta:'브랜드 문의', type:'brand' },
+          { tag:'LOCATION', title:'입지 제안', sub:'파마스퀘어 오픈에 적합한 상권·공간을 제안해주세요.', cta:'입지 제안', type:'storeDev' }
         ],
         stores: [
           { en:'HANAM FLAGSHIP', name:'파마스퀘어 하남점', format:'FLAGSHIP', status:'NOW OPEN', addr:'경기도 하남시 미사대로 410, 1F' },
-          { en:'GURO EXPRESS', name:'파마스퀘어 익스프레스 구로점', format:'EXPRESS', status:'COMING SOON', addr:'서울특별시 관악구 시흥대로 554, B1' },
+          { en:'GURO EXPRESS', name:'파마스퀘어 익스프레스 구로점', format:'EXPRESS', status:'NOW OPEN', addr:'서울특별시 관악구 시흥대로 554, B1' },
           { en:'CHEONGNA', name:'파마스퀘어 청라점', format:'STANDARD', status:'COMING SOON', addr:'인천광역시 서구 서곶로 120, B2' },
           { en:'GIMPO', name:'파마스퀘어 김포점', format:'STANDARD', status:'COMING SOON', addr:'경기도 김포시 (주소 업데이트 예정)' }
         ],
@@ -1074,55 +1353,100 @@ class Component extends DCLogic {
       },
       en: {
         announceLabel: 'Phama Square AI Health Guide Program', announceLink: 'Try AI Health Guide →',
-        healthGuide: 'Health Guide', partnershipCTA: 'Partnership', partnershipCTAFull: 'Contact for Partnership',
-        heroDesc: 'A space where inner wellness and aesthetic values find perfect balance.\nA new wellness experience, proposed by Phama Square.',
+        healthGuide: 'Health Guide', partnershipCTA: 'Partner Store', partnershipCTAFull: 'Inquire about Partner Store',
+        heroTitle: 'Express Guro Now Open',
+        heroDesc: 'Opened August 1, 2026.\nHealth foods, beauty, and pet care in one urban wellness store.',
+        heroGalleryCTA: 'View Gallery', heroLocationCTA: 'Directions',
+        heroMetaFormat: 'EXPRESS', heroMetaAddr: '554 Siheung-daero, Gwanak-gu, Seoul, B1', heroMetaNote: 'Urban wellness store',
+        guroOpenLabel: 'NOW OPEN', guroOpenTitle: 'Phama Square Express Guro',
+        guroOpenDesc: 'Our second store after the Hanam Flagship — an accessible urban Express format, now open in Guro.',
+        guroOpenFacts: [
+          { k: 'FORMAT', v: 'Express · ~660 m²' },
+          { k: 'ADDRESS', v: '554 Siheung-daero, Gwanak-gu, Seoul, B1' },
+          { k: 'FOCUS', v: 'Health · Beauty · Pet · Life' }
+        ],
+        guroOpenGallery: 'View Gallery', guroOpenMap: 'View Location',
+        formatTitle: 'Express vs Warehouse',
+        formatDesc: 'Two store formats tailored to location and shopping needs.',
+        formatExpress: {
+          tag: 'EXPRESS', title: 'Express', size: '150~200 pyeong',
+          desc: 'A compact wellness store built for urban accessibility.',
+          points: ['Curated core SKUs for quick shopping', 'Near transit and daily living areas', 'Short paths to get what you need fast'],
+          example: 'e.g. Guro'
+        },
+        formatWarehouse: {
+          tag: 'WAREHOUSE', title: 'Warehouse', size: '300~500 pyeong',
+          desc: 'A large-format complex with full lineup and experience zones.',
+          points: ['Full categories: health, beauty, pet, life', 'Brand experience zones for longer stays', 'Flagship and Standard large stores'],
+          example: 'e.g. Hanam Flagship'
+        },
+        locTitle: 'Expanding nationwide', locDesc: 'Starting from Hanam Flagship and Guro Express, we expand to Cheongna, Gimpo, Hongdae, and more.', swipeHint: 'Swipe for more', locMapBtn: 'View Location →', storeSizeSuffix: ' m²',
         taglineL1: 'More health,', taglineL2: 'better prices.', taglineCenter: 'More health, better prices.', taglineSub: 'Expert curation and bulk direct sourcing deliver better choices to our customers.',
         aboutTitleL1: 'A space of', aboutTitleL2: 'beautiful balance,', aboutBrand: 'Phama Square',
         aboutP1: 'Phama Square is a wellness platform bringing together health foods, beauty, pet care, and independent pharmacies under one roof — offering a new wellness experience that harmonizes inner health with aesthetic values.',
-        aboutP2: 'The Phama Square Hanam Flagship opened in 2025, spanning approximately 500 pyeong (≈1,650m²). It carries 4,000+ SKUs across health foods, beauty, pet, lifestyle, and pharmaceutical products.',
-        aboutP3: 'Starting with Hanam and Guro in 2026, we are rapidly expanding to Cheongna, Gimpo, Hongdae, Songdo, and Cheonan — targeting 7 stores this year — with plans for all major cities nationwide.',
-        pyeong: 'm²', storeCountSuffix: '+', stat1Num: '990~1,650', stat1Unit: 'm²', stat2Num: '495~660', stat2Unit: 'm²', stat1Format: 'Flagship · Standard', stat1Desc: 'Large-format complex stores', stat2Format: 'Express', stat2Desc: 'Urban accessibility-focused stores', stat3Format: '2026 store target', stat3Desc: 'Hanam · Guro · Cheongna · Gimpo · Hongdae · Songdo · Cheonan',
-        locTitle: 'A wellness platform\nexpanding nationwide', locDesc: 'Starting from our Hanam flagship, we are sequentially opening in Guro, Cheongna, and Gimpo, with expansion to Songdo, Hongdae, Cheonan, and all major cities nationwide.', swipeHint: 'Swipe for more', locMapBtn: 'View Location →', storeSizeSuffix: ' m²',
+        aboutP2: 'The Phama Square Hanam Flagship opened in 2025, spanning approximately 500 pyeong (≈1,650m²). It carries 4,000+ SKUs across health foods, beauty, pet, lifestyle, and pharmaceutical products. Express Guro then opened on August 1, 2026.',
+        aboutP3: 'Starting with Hanam and Guro in 2026, we are expanding to Cheongna, Gimpo, and Hongdae — targeting 5 stores this year — with plans for major cities nationwide.',
+        pyeong: 'm²', storeCountSuffix: '+', stat1Num: '990~1,650', stat1Unit: 'm²', stat2Num: '495~660', stat2Unit: 'm²', stat1Format: 'Flagship · Standard', stat1Desc: 'Large-format complex stores', stat2Format: 'Express', stat2Desc: 'Urban accessibility-focused stores', stat3Format: '2026 store target', stat3Desc: 'Hanam · Guro · Cheongna · Gimpo · Hongdae',
         typeOther: 'Other Inquiry', fOtherMsgPH: 'Please feel free to write your inquiry.',
         philTitle: 'Philosophy of Harmony', philDesc: 'Body and mind, health and beauty,\ndaily life and sensibility — the value of balance\nconnecting them all. This is the philosophy of Phama Square.',
-        whyTitle: 'Clear reasons\nto partner with us', whyCatchphrase: 'More health, better prices.', whyDesc: 'Phama Square offers consumers a better wellness experience and brands a wider market.',
+        whyTitle: 'Clear reasons for brands\nto partner with us', whyCatchphrase: 'More health, better prices.', whyDesc: 'Phama Square offers consumers a better wellness experience and brands a wider market.',
         aiTitleL1: 'Beyond distribution,', aiTitleL2: 'an AI wellness platform', aiTitleSuffix: '.', aiDesc: 'Phama Square sees its stores not just as retail spaces, but as hubs for customer health data. By reading daily health signals — fatigue, sleep, immunity, skin, diet — we are evolving into a platform where AI recommends personalized wellness for each individual.',
         aiBannerTitle: 'Phama Square AI Health Guide Program', aiBannerDesc: 'Enter your symptoms and health concerns — AI will suggest personalized wellness solutions.', aiBannerCTA: 'Try it now →',
         brandsTitle: 'Partner Brands', brandsSub: '— Brand list will be updated sequentially.', brandsUnit: ' brands',
         tabHealth: 'Health', tabBeauty: 'Beauty', tabPet: 'Pet', tabLife: 'Lifestyle',
-        partnerTitle: 'Looking for partners\nto grow with', partnerDesc: 'Pharmacy partnership, brand partnership, store development\n— please send your inquiry by type.',
-        inquiryTitle: 'Contact Us', inquiryDesc: 'Please select your partnership type and send your inquiry. Our team will review it and get back to you individually.', inquiryP1: 'Our team will review and respond individually.', inquiryP2: 'We appreciate your patience for a timely response.',
+        partnerTitle: 'Open a partner store\nwith Phama Square', partnerDesc: 'We are recruiting partners who invest in a store and operate it with us.\nPharmacy, brand, and location inquiries are also welcome.',
+        partnerStoreTag: 'NOW RECRUITING',
+        partnerStoreTitle: 'Partner Store Recruitment',
+        partnerStoreDesc: 'Invest in a Phama Square store and operate it as a partner — with brand, merchandising, and operations support.',
+        partnerStoreP1: 'Invest and join as a partner operator',
+        partnerStoreP2: 'Site and format review for nationwide expansion',
+        partnerStoreP3: 'HQ support for operations, MD, and branding',
+        partnerStoreStep1: 'Invest — take part in opening a store',
+        partnerStoreStep2: 'Launch — Express or Warehouse format',
+        partnerStoreStep3: 'Operate — grow as a Phama Square partner',
+        partnerStoreCta: 'Inquire about Partner Store',
+        partnerOtherLabel: 'OTHER INQUIRIES',
+        partnerOtherDesc: 'We also welcome pharmacy, brand, and location proposals.',
+        inquiryTitle: 'Contact Us', inquiryDesc: 'Select your inquiry type. Partner store inquiries are reviewed first.', inquiryP1: 'Our team will review and respond individually.', inquiryP2: 'We appreciate your patience for a timely response.',
         fTypeLabel: 'Select inquiry type', fName: 'Full Name *', fPhone: 'Phone *', fEmail: 'Email', fNamePH: 'Full name', fPhonePH: 'Phone number',
         fArea: 'Preferred Area', fAreaPH: 'e.g. Seoul Gangnam / Gyeonggi Suwon', fExp: 'Pharmacist Experience', fExpPH: 'e.g. 7 years', fTiming: 'Preferred Opening Time', fTimingPH: 'e.g. First half of 2026', fCurrentOp: 'Current pharmacy status',
+        fInvest: 'Investment Interest', fInvestPH: 'e.g. ₩500M–1B / negotiable',
+        fPartnerAreaPH: 'e.g. Seoul · Gyeonggi / specific district',
+        fPartnerTimingPH: 'e.g. Second half of 2026',
+        fPartnerExp: 'Relevant Experience', fPartnerExpPH: 'e.g. Retail ops / investment experience',
+        fPartnerMsgPH: 'Tell us about preferred area, investment capacity, and how you want to operate.',
         currentOpOptions: ['Currently operating', 'Not operating', 'Closing soon'],
         fRole: 'Title / Position', fRolePH: 'CEO / Manager', fCompany: 'Company Name', fCompanyPH: 'Your Company Name', fCategory: 'Preferred Category', fCategoryPH: 'Beauty / Health / Pet / Lifestyle', fMsg: 'Message', fBrandMsgPH: 'Please describe your brand, preferred categories, and other inquiries.',
         fStoreRoleLabel: 'Your Role', storeRoleOptions: ['Building Owner', 'Lessor', 'Broker', 'Other'], fCompanyOrg: 'Company / Organization', fCompanyOrgPH: 'Company Name', fLocation: 'Proposed Location', fLocationPH: 'e.g. Near Hongdae Station, Seoul / Suwon Building, Gyeonggi', fStoreMsgPH: 'Please describe the space characteristics, available area, rent range, etc.',
         fPrivacy: 'I agree to the collection and use of personal information.', fAgreeYes: 'Agree', fAgreeNo: 'Disagree', fSubmit: 'Submit Inquiry',
         formOpenLabel: 'Filling out inquiry', formClosedLabel: 'Fill out inquiry →',
         submittedTitle: 'Your inquiry has been received.', submittedDesc: 'Our team will review and respond individually.\nWe appreciate your patience.\nThank you.', newInquiry: 'New Inquiry',
-        galleryTitle: 'Phama Square Hanam Store', locationTitle: 'Directions', naverMap: 'Naver Map', kakaoMap: 'Kakao Map',
+        galleryTitle: 'Phama Square Stores', locationTitle: 'Directions', naverMap: 'Naver Map', kakaoMap: 'Kakao Map',
         locTabs: ['Hanam', 'Guro', 'Cheongna', 'Gimpo'],
-        typePharmacy: 'Pharmacy Partnership', typeBrand: 'Brand Partnership', typeStoreDev: 'Store Development',
+        galleryTabs: ['Guro', 'Hanam'],
+        newsTitle: 'Phama Square News', newsDesc: 'Browse notices, press coverage, and careers by category.', newsMore: 'View all news', newsEmpty: 'No posts yet.', newsPinned: 'PINNED',
+        newsCats: ['Notice', 'Press', 'Careers'],
+        typePartnerStore: 'Partner Store', typePharmacy: 'Pharmacy', typeBrand: 'Brand', typeStoreDev: 'Location', typeOther: 'Other',
         footerDesc: "Growing into South Korea's No.1 AI wellness platform, leading a balanced lifestyle culture.", footerLegalName: 'Legal Name', footerCEO: 'CEO', footerBizNum: 'Business Reg. No.', footerEmail: 'Email', footerAddr: 'Address',
         copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: 'Privacy Policy',
-        popupDismissBtn: 'Do not show for 3 days', popupTitle: 'Looking for partners\nto grow with Phama Square', popupPharmacyTitle: 'Pharmacist Partner Recruitment', popupPharmacyDesc: 'Independent pharmacy setup · Priority review for Seoul & Gyeonggi', popupStoreTitle: 'Store Development Partnership', popupStoreDesc: 'Welcome proposals for locations suitable for Phama Square', popupDismiss: 'Do not show today',
-        marqueeTagline: 'More health, better prices', marquee263: '263 partner brands', marqueePharmacy: 'Recruiting pharmacist partners', marqueeStoreDev: 'Store development welcome',
+        popupDismissBtn: 'Do not show for 3 days', popupTitle: 'Open a partner store\nwith Phama Square', popupPartnerTitle: 'Partner Store Recruitment', popupPartnerDesc: 'Invest · Partner operate · Expand nationwide', popupOtherTitle: 'Pharmacy · Brand · Location', popupOtherDesc: 'Other partnership inquiries welcome', popupDismiss: 'Do not show today',
+        marqueeTagline: 'More health, better prices', marquee263: '263 partner brands', marqueePharmacy: 'Recruiting partner stores', marqueeStoreDev: 'Location proposals welcome',
         brandsCountPrefix: 'Total ', brandsCountMid: ' · ', expandBtn: 'View all brands (+{n}) ↓',
         pillars: [ { n:1, en:'Harmony', desc:'Harmony of health & beauty' }, { n:2, en:'Balance', desc:'Balance of daily life & sensibility' }, { n:3, en:'Trust', desc:'Trust through expert-based service' }, { n:4, en:'Experience', desc:'Premium H&B experience space' } ],
         advantages: [
-          { n:1, kw:'LARGE-FORMAT STORE', title:'Large-Format Wellness Platform', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['200–500 pyeong large-format stores per branch','Brand experience zones increase dwell time','Higher dwell time → improved purchase conversion'] },
-          { n:2, kw:'FULL LINE-UP + PHARMACY', title:'Full Category Lineup + Independent Pharmacy', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['Beauty · Health Foods · Lifestyle · Pet Care','One-stop care including pharmaceuticals via independent pharmacy','Integrated curation across the entire wellness spectrum'] },
-          { n:3, kw:'NATIONWIDE EXPANSION', title:'Expandable Nationwide Wellness Platform', grad:'linear-gradient(150deg,#019e88,#005251)', points:['Hanam (500 pyeong) Flagship in operation','Sequential openings: Guro · Cheongna · Gimpo','Nationwide expansion: Songdo · Hongdae · Cheonan'] }
+          { n:1, kw:'LARGE-FORMAT STORE', title:'Meet customers in large stores', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['200–500 pyeong stores for brand presence','Experience zones that lift conversion'] },
+          { n:2, kw:'FULL LINE-UP', title:'Full-category retail setting', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['Beauty · health · life · pet lineup','One-stop wellness with pharmacy'] },
+          { n:3, kw:'NATIONWIDE REACH', title:'Nationwide store network', grad:'linear-gradient(150deg,#019e88,#005251)', points:['Hanam & Guro now open','Cheongna · Gimpo · Hongdae expanding'] }
         ],
         aiSteps: [ { n:1, en:'DATA HUB', title:'Offline Health Touchpoint', desc:'Health needs and purchase data gathered in-store are structured as pre-clinical health signals.' }, { n:2, en:'AI RECOMMEND', title:'AI Personalized Recommendations', desc:'By connecting self-diagnostics, purchase history, and repurchase cycles, we recommend personalized wellness solutions.' }, { n:3, en:'PLATFORM', title:'Platform Expansion', desc:'Based on accumulated wellness data, we aim to evolve into a subscription, checkup, and healthcare service platform.' } ],
         ptypes: [
-          { tag:'01 · PHARMACY', icon:'+', title:'Pharmacy Partnership', sub:'For pharmacists seeking to open and operate an independent pharmacy — not employment, but a separate independent structure.', points:['Review areas: All of Seoul and Gyeonggi Province','Required: Name, preferred area, experience, desired opening time','Independent operation with guaranteed expertise and autonomy'], cta:'Pharmacy Inquiry', grad:'linear-gradient(150deg,#007a73 0%,#004a47 100%)', type:'pharmacy' },
-          { tag:'02 · BRAND', icon:'◈', title:'Brand Partnership', sub:'We welcome partnerships with brands in all categories: beauty, health foods, lifestyle, and pet care.', points:['Reach customers directly in 200–500 pyeong stores','Full-lineup environment with thousands of SKUs','Live commerce studio linkage possible'], cta:'Brand Inquiry', grad:'linear-gradient(150deg,#009e8a 0%,#006b62 100%)', type:'brand' },
-          { tag:'03 · STORE DEV', icon:'⬡', title:'Store Development', sub:"Propose locations suitable for a Phama Square opening. Send market analysis, real estate info, or space characteristics — we'll review and contact you.", points:['Nationwide expansion in progress: Hanam, Guro, Cheongna, Gimpo','Prefer high-traffic areas and locations near large malls','Individual contact after internal review'], cta:'Propose Location', grad:'linear-gradient(150deg,#005251 0%,#001f1f 100%)', type:'storeDev' }
+          { tag:'PHARMACY', title:'Pharmacy', sub:'Independent pharmacy setup and operation inside our stores.', cta:'Pharmacy inquiry', type:'pharmacy' },
+          { tag:'BRAND', title:'Brand', sub:'Beauty, health, pet, and lifestyle brands welcome.', cta:'Brand inquiry', type:'brand' },
+          { tag:'LOCATION', title:'Location', sub:'Propose sites suited for a Phama Square opening.', cta:'Propose site', type:'storeDev' }
         ],
         stores: [
           { en:'HANAM FLAGSHIP', name:'Phama Square Hanam', format:'FLAGSHIP', status:'NOW OPEN', addr:'410 Misadae-ro, Hanam-si, Gyeonggi-do, 1F' },
-          { en:'GURO EXPRESS', name:'Phama Square Express Guro', format:'EXPRESS', status:'COMING SOON', addr:'554 Siheung-daero, Gwanak-gu, Seoul, B1' },
+          { en:'GURO EXPRESS', name:'Phama Square Express Guro', format:'EXPRESS', status:'NOW OPEN', addr:'554 Siheung-daero, Gwanak-gu, Seoul, B1' },
           { en:'CHEONGNA', name:'Phama Square Cheongna', format:'STANDARD', status:'COMING SOON', addr:'120 Seogot-ro, Seo-gu, Incheon, B2' },
           { en:'GIMPO', name:'Phama Square Gimpo', format:'STANDARD', status:'COMING SOON', addr:'Gimpo-si, Gyeonggi-do (address TBA)' }
         ],
@@ -1135,54 +1459,99 @@ class Component extends DCLogic {
       },
       zh: {
         announceLabel: '파马广场 AI 健康指南计划', announceLink: '体验AI健康指南 →',
-        healthGuide: '健康指南', partnershipCTA: '合作咨询', partnershipCTAFull: '联系合作',
-        heroDesc: '内在健康与美学价值完美平衡的空间。\n파马广场提案的全新健康体验。',
+        healthGuide: '健康指南', partnershipCTA: '合作门店咨询', partnershipCTAFull: '合作门店咨询',
+        heroTitle: '九老快捷店开业',
+        heroDesc: '2026年8月1日开业。\n都市型健康门店，健康食品、美容与宠物护理一站式体验。',
+        heroGalleryCTA: '查看门店相册', heroLocationCTA: '前往方式',
+        heroMetaFormat: 'EXPRESS', heroMetaAddr: '首尔 冠岳区 矢弓大路 554, B1', heroMetaNote: '都市型健康门店',
+        guroOpenLabel: 'NOW OPEN', guroOpenTitle: '파马广场 九老快捷店',
+        guroOpenDesc: '继河南旗舰店之后的第二家门店，以便利的都市快捷店形态于九老开业。',
+        guroOpenFacts: [
+          { k: 'FORMAT', v: '快捷店 · 约200坪' },
+          { k: 'ADDRESS', v: '首尔 冠岳区 矢弓大路 554, B1' },
+          { k: 'FOCUS', v: '健康 · 美容 · 宠物 · 生活' }
+        ],
+        guroOpenGallery: '查看相册', guroOpenMap: '查看位置',
+        formatTitle: '快捷店与仓储型',
+        formatDesc: '根据选址与购物目的运营两种门店形态。',
+        formatExpress: {
+          tag: 'EXPRESS', title: '快捷店', size: '150~200坪',
+          desc: '面向都市便利的紧凑型健康门店。',
+          points: ['核心SKU，快速选购', '靠近交通与生活圈', '动线短，按需快速购买'],
+          example: '例：九老店'
+        },
+        formatWarehouse: {
+          tag: 'WAREHOUSE', title: '仓储型', size: '300~500坪',
+          desc: '以大空间提供完整品类与体验的综合门店。',
+          points: ['健康·美容·宠物·生活全品类', '品牌体验区，适合长时间停留', '旗舰店与标准大型门店'],
+          example: '例：河南旗舰店'
+        },
         taglineL1: '健康加倍，', taglineL2: '价格更低。', taglineCenter: '健康加倍，价格更低。', taglineSub: '通过专家精选和大量直采，为消费者提供更优选择。',
         aboutTitleL1: '追求美丽均衡', aboutTitleL2: '的空间，', aboutBrand: '파马广场',
         aboutP1: '파마广场是一个将健康食品、美容、宠物和独立药房融为一体的健康平台，提供内在健康与美学价值和谐统一的全新健康体验。',
         aboutP2: '파마广场河南旗舰店于2025年开业，约500坪（约1,650㎡），汇聚健康食品、美容、宠物、生活方式及药品，共计4,000余个SKU，是大型综合健康商店。',
         aboutP3: '从2026年河南、九老起步，逐步开设青罗、金浦、弘大、松岛、天安等门店，目标年内开设7家，并计划向全国主要城市扩展。',
         pyeong: '坪', storeCountSuffix: '家+', stat1Format: '旗舰店 · 标准店', stat1Desc: '城郊大型综合商场', stat2Format: '快捷店', stat2Desc: '注重都市便利的门店', stat3Format: '2026年目标门店数', stat3Desc: '河南·九老·青罗·金浦·弘大·松岛·天安',
-        locTitle: '向全国扩张的\n健康平台', locDesc: '从河南旗舰店出发，依次在九老、青罗、金浦等核心地段开设门店，并扩展至松岛、弘大、天安等全国主要城市。', swipeHint: '左右滑动查看更多', locMapBtn: '查看位置 →', storeSizeSuffix: '坪规模',
+        locTitle: '向全国扩展', locDesc: '从河南旗舰店与九老快捷店起步，向青罗、金浦、弘大、松岛、天安等主要商圈扩展。', swipeHint: '左右滑动查看更多', locMapBtn: '查看位置 →', storeSizeSuffix: '坪规模',
         philTitle: '和谐哲学', philDesc: '身与心、健康与美丽、\n日常与感性——连接它们的均衡价值，\n这就是파마广场的哲学。',
-        whyTitle: '入驻的\n明确理由', whyCatchphrase: '健康加倍，价格更低。', whyDesc: '파马广场为消费者提供更优质的健康体验，为合作品牌开拓更广阔的市场。',
+        whyTitle: '品牌入驻的\n明确理由', whyCatchphrase: '健康加倍，价格更低。', whyDesc: '파马广场为消费者提供更优质的健康体验，为合作品牌开拓更广阔的市场。',
         aiTitleL1: '超越零售，', aiTitleL2: 'AI健康平台', aiTitleSuffix: '。', aiDesc: '파马广场将门店视为顾客健康数据的重要节点，通过读取日常健康信号——疲劳、睡眠、免疫、肌肤、减重，由AI向个人推荐最适合的健康方案，进化为真正的健康平台。',
         aiBannerTitle: '파마广场 AI 健康指南计划', aiBannerDesc: '输入症状和健康烦恼，AI将为您推荐个性化健康解决方案。', aiBannerCTA: '立即体验 →',
         brandsTitle: '合作品牌', brandsSub: '— 入驻品牌名单将陆续更新。', brandsUnit: '个品牌',
         tabHealth: '健康食品', tabBeauty: '美容', tabPet: '宠物', tabLife: '生活方式',
-        partnerTitle: '寻找共同\n成长的合作伙伴', partnerDesc: '药局入驻、品牌入驻、门店开发合作\n——请按类型发送咨询。',
-        inquiryTitle: '联系我们', inquiryDesc: '请选择合作类型并发送咨询，我们内部审核后会由负责人单独回复。', inquiryP1: '内部审核后，负责人将单独回复。', inquiryP2: '如回复稍有延迟，敬请谅解。',
+        partnerTitle: '寻找共同开设\n合作门店的伙伴', partnerDesc: '公开招募投资门店并以合作伙伴身份运营的人士。\n药局、品牌、选址提案咨询也一并受理。',
+        partnerStoreTag: 'NOW RECRUITING',
+        partnerStoreTitle: '合作门店招募',
+        partnerStoreDesc: '投资门店并以PHAMA SQUARE合作伙伴身份运营，享受品牌与运营支持。',
+        partnerStoreP1: '投资后以合作伙伴身份参与运营',
+        partnerStoreP2: '配合全国扩张进行选址与业态评估',
+        partnerStoreP3: '总部提供运营、MD与品牌支持',
+        partnerStoreStep1: '投资 — 直接参与门店开设',
+        partnerStoreStep2: '开业 — 以快捷店或仓储型启动',
+        partnerStoreStep3: '运营 — 作为合作门店共同成长',
+        partnerStoreCta: '合作门店咨询',
+        partnerOtherLabel: 'OTHER INQUIRIES',
+        partnerOtherDesc: '也欢迎药局入驻、品牌入驻与选址提案。',
+        inquiryTitle: '联系我们', inquiryDesc: '请选择咨询类型。合作门店咨询将优先审核。', inquiryP1: '内部审核后，负责人将单独回复。', inquiryP2: '如回复稍有延迟，敬请谅解。',
         fTypeLabel: '选择咨询类型', fName: '姓名 *', fPhone: '联系电话 *', fEmail: '电子邮件', fNamePH: '请输入姓名', fPhonePH: '请输入电话号码',
         fArea: '希望地区', fAreaPH: '例：首尔江南 / 京畿水原', fExp: '药剂师经验', fExpPH: '例：7年', fTiming: '希望入驻时间', fTimingPH: '例：2026年上半年', fCurrentOp: '当前药局状态',
+        fInvest: '意向投资规模', fInvestPH: '例：5亿~10亿韩元 / 协商',
+        fPartnerAreaPH: '例：首尔·京畿 / 特定商圈',
+        fPartnerTimingPH: '例：2026年下半年',
+        fPartnerExp: '相关经验', fPartnerExpPH: '例：零售运营 / 投资经验',
+        fPartnerMsgPH: '请填写希望地区、投资意向与运营参与方式等。',
         currentOpOptions: ['运营中', '未运营', '即将关闭'],
         fRole: '职务 / 职位', fRolePH: '代表 / 经理', fCompany: '公司名称', fCompanyPH: '××公司', fCategory: '希望入驻品类', fCategoryPH: '美容 / 健康食品 / 宠物 / 生活方式', fMsg: '咨询内容', fBrandMsgPH: '请填写品牌介绍、希望入驻内容等咨询事项。',
         fStoreRoleLabel: '您的角色', storeRoleOptions: ['楼主', '房东', '中介', '其他'], fCompanyOrg: '公司 / 机构名称', fCompanyOrgPH: '××公司', fLocation: '建议地址（地址 / 商圈名）', fLocationPH: '例：首尔弘大入口站附近 / 京畿水原某大楼', fStoreMsgPH: '请自由填写空间特点、可用面积、月租范围等信息。',
         fPrivacy: '同意收集和使用个人信息。', fAgreeYes: '同意', fAgreeNo: '不同意', fSubmit: '提交咨询',
         formOpenLabel: '正在填写咨询', formClosedLabel: '填写咨询内容 →',
         submittedTitle: '咨询已接收', submittedDesc: '内部审核后，负责人将单独回复。\n如回复稍有延迟，敬请谅解。\n感谢您。', newInquiry: '重新咨询',
-        galleryTitle: '파마广场 河南店', locationTitle: '前往方式', naverMap: 'Naver地图', kakaoMap: 'Kakao地图',
+        galleryTitle: '파马广场 门店', locationTitle: '前往方式', naverMap: 'Naver地图', kakaoMap: 'Kakao地图',
         locTabs: ['河南店', '九老店', '青罗店', '金浦店'],
-        typePharmacy: '药局入驻', typeBrand: '品牌入驻', typeStoreDev: '门店开发合作',
+        galleryTabs: ['九老店', '河南店'],
+        newsTitle: '파马广场 消息', newsDesc: '按分类查看公告、媒体报道与招聘信息。', newsMore: '查看全部消息', newsEmpty: '暂无消息。', newsPinned: '置顶',
+        newsCats: ['公告', '媒体', '招聘'],
+        typePartnerStore: '合作门店', typePharmacy: '药局入驻', typeBrand: '品牌入驻', typeStoreDev: '选址提案',
         footerDesc: '致力于成为韩国No.1 AI健康平台，引领均衡生活方式文化。', footerLegalName: '法人名称', footerCEO: '代表董事', footerBizNum: '营业执照号', footerEmail: '邮箱', footerAddr: '地址',
         copyright: '© 2026 PHAMA SQUARE. All rights reserved.', privacyPolicy: '隐私政策',
-        popupDismissBtn: '3天内不再显示', popupTitle: '寻找与파马广场\n共同成长的合作伙伴', popupPharmacyTitle: '药剂师合作伙伴招募', popupPharmacyDesc: '独立药局开设 · 优先审核首尔及京畿地区', popupStoreTitle: '门店开发合作', popupStoreDesc: '欢迎提交适合파马广场开设的地址建议', popupDismiss: '今日不再显示',
-        marqueeTagline: '健康加倍，价格更低', marquee263: '263个入驻品牌', marqueePharmacy: '常时招募药剂师合作伙伴', marqueeStoreDev: '欢迎门店开发合作',
+        popupDismissBtn: '3天内不再显示', popupTitle: '寻找共同开设\n合作门店的伙伴', popupPartnerTitle: '合作门店招募', popupPartnerDesc: '门店投资 · 合作运营 · 全国扩张', popupOtherTitle: '药局 · 品牌 · 选址', popupOtherDesc: '也欢迎其他合作咨询', popupDismiss: '今日不再显示',
+        marqueeTagline: '健康加倍，价格更低', marquee263: '263个入驻品牌', marqueePharmacy: '公开招募合作门店', marqueeStoreDev: '欢迎选址提案',
         brandsCountPrefix: '共 ', brandsCountMid: ' · ', expandBtn: '查看所有品牌（+{n}个）↓',
         pillars: [ { n:1, en:'Harmony', desc:'健康与美丽的调和' }, { n:2, en:'Balance', desc:'日常与感性的平衡' }, { n:3, en:'Trust', desc:'基于专业的可信服务' }, { n:4, en:'Experience', desc:'体验型高端H&B空间' } ],
         advantages: [
-          { n:1, kw:'LARGE-FORMAT STORE', title:'大型综合健康平台', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['各门店200~500坪的大型综合商场','品牌体验区延长顾客留店时间','留店时间增加 → 购买转化率提升'] },
-          { n:2, kw:'FULL LINE-UP + PHARMACY', title:'全品类商品 + 独立药局', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['美容·健康食品·生活方式·宠物护理','独立药局入驻，提供包括药品的一站式服务','涵盖全健康领域的综合精选'] },
-          { n:3, kw:'NATIONWIDE EXPANSION', title:'可扩展的全国健康平台', grad:'linear-gradient(150deg,#019e88,#005251)', points:['河南（500坪）旗舰店运营中','九老·青罗·金浦依次开业','松岛·弘大·天安等全国扩张计划中'] }
+          { n:1, kw:'LARGE-FORMAT STORE', title:'大型综合健康平台', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['各门店200~500坪大型门店','体验区提升停留与转化'] },
+          { n:2, kw:'FULL LINE-UP + PHARMACY', title:'全品类 + 独立药局', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['美容·健康·生活·宠物全品类','独立药局一站式药品服务'] },
+          { n:3, kw:'NATIONWIDE EXPANSION', title:'全国扩张平台', grad:'linear-gradient(150deg,#019e88,#005251)', points:['河南旗舰店 · 九老快捷店已开业','青罗·金浦·弘大年内扩展'] }
         ],
         aiSteps: [ { n:1, en:'DATA HUB', title:'线下健康接触点', desc:'将门店中的健康需求和购买数据结构化为就医前的健康预警信号。' }, { n:2, en:'AI RECOMMEND', title:'AI个性化推荐', desc:'通过整合自我诊断、购买历史和复购周期，向个人推荐最适合的健康解决方案。' }, { n:3, en:'PLATFORM', title:'平台化扩展', desc:'基于积累的健康数据，致力于发展为涵盖订阅、体检、医疗服务的综合平台。' } ],
         ptypes: [
-          { tag:'01 · PHARMACY', icon:'+', title:'药局入驻', sub:'以药剂师独立开设和运营药局为前提的入驻说明。非雇用关系，为独立分离的药局结构。', points:['审核地区：首尔全域及京畿地区','需填写：姓名、希望地区、药剂师经验、希望入驻时间','独立运营，保障专业性与自主性'], cta:'药局入驻咨询', grad:'linear-gradient(150deg,#007a73 0%,#004a47 100%)', type:'pharmacy' },
-          { tag:'02 · BRAND', icon:'◈', title:'品牌入驻', sub:'我们欢迎美容、健康食品、生活方式、宠物护理等全品类品牌的入驻申请。', points:['在200~500坪大型门店直接接触顾客','数千种SKU的完整品类环境','可联动直播电商工作室'], cta:'品牌入驻咨询', grad:'linear-gradient(150deg,#009e8a 0%,#006b62 100%)', type:'brand' },
-          { tag:'03 · STORE DEV', icon:'⬡', title:'门店开发合作', sub:'欢迎提交适合파마广场开设的地址建议。请自由发送商圈分析、房产信息、空间特性等，内部审核后将联系您。', points:['全国持续扩张中：河南、九老、青罗、金浦','优先考虑高客流商圈及大型商场周边地址','内部审核后负责人单独联系'], cta:'提交地址建议', grad:'linear-gradient(150deg,#005251 0%,#001f1f 100%)', type:'storeDev' }
+          { tag:'PHARMACY', title:'药局入驻', sub:'以独立开设与运营药局为前提的入驻咨询。', cta:'药局咨询', type:'pharmacy' },
+          { tag:'BRAND', title:'品牌入驻', sub:'欢迎美容、健康食品、宠物、生活方式品牌。', cta:'品牌咨询', type:'brand' },
+          { tag:'LOCATION', title:'选址提案', sub:'欢迎提交适合开店的商圈与空间建议。', cta:'提交选址', type:'storeDev' }
         ],
         stores: [
           { en:'HANAM FLAGSHIP', name:'파마广场 河南店', format:'FLAGSHIP', status:'NOW OPEN', addr:'京畿道 河南市 弥沙大路 410, 1F' },
-          { en:'GURO EXPRESS', name:'파마广场 九老快捷店', format:'EXPRESS', status:'COMING SOON', addr:'首尔特别市 冠岳区 矢弓大路 554, B1' },
+          { en:'GURO EXPRESS', name:'파마广场 九老快捷店', format:'EXPRESS', status:'NOW OPEN', addr:'首尔特别市 冠岳区 矢弓大路 554, B1' },
           { en:'CHEONGNA', name:'파마广场 青罗店', format:'STANDARD', status:'COMING SOON', addr:'仁川广域市 西区 西串路 120, B2' },
           { en:'GIMPO', name:'파마广场 金浦店', format:'STANDARD', status:'COMING SOON', addr:'京畿道 金浦市（地址待更新）' }
         ],
@@ -1203,19 +1572,29 @@ class Component extends DCLogic {
     if (lang === 'zh') {
       const B = 'PHAMA SQUARE';
       T.announceLabel = B + ' AI 健康指南计划';
-      T.heroDesc = '内在健康与美学价值完美平衡的空间。\n' + B + '提案的全新健康体验。';
+      T.heroTitle = '九老快捷店开业';
+      T.heroDesc = '2026年8月1日开业。\n都市型健康门店，健康食品、美容与宠物护理一站式体验。';
       T.aboutBrand = B;
       T.aboutP1 = B + '是一个将健康食品、美容、宠物和独立药房融为一体的健康平台，提供内在健康与美学价值和谐统一的全新健康体验。';
-      T.aboutP2 = B + '河南旗舰店于2025年开业，约1,650m²，汇聚健康食品、美容、宠物、生活方式及药品，共计4,000余个SKU，是大型综合健康商店。';
+      T.aboutP2 = B + '河南旗舰店于2025年开业，约1,650m²，汇聚健康食品、美容、宠物、生活方式及药品，共计4,000余个SKU，是大型综合健康商店。随后于2026年8月1日开设九老快捷店。';
+      T.aboutP3 = '从2026年河南、九老起步，向青罗、金浦、弘大扩展，目标年内开设5家门店，并计划向全国主要城市扩展。';
+      T.stat3Desc = '河南·九老·青罗·金浦·弘大';
+      T.locDesc = '从河南旗舰店与九老快捷店起步，向青罗、金浦、弘大等主要商圈扩展。';
       T.philDesc = '身与心、健康与美丽、\n日常与感性——连接它们的均衡价值，\n这就是' + B + '的哲学。';
       T.whyDesc = B + '为消费者提供更优质的健康体验，为合作品牌开拓更广阔的市场。';
       T.aiDesc = B + '将门店视为顾客健康数据的重要节点，通过读取日常健康信号——疲劳、睡眠、免疫、肌肤、减重，由AI向个人推荐最适合的健康方案，进化为真正的健康平台。';
       T.aiBannerTitle = B + ' AI 健康指南计划';
-      T.galleryTitle = B + ' 河南店';
-      T.popupTitle = '寻找与' + B + '\n共同成长的合作伙伴';
-      T.popupStoreDesc = '欢迎提交适合' + B + '开设的地址建议';
-      T.partnerTitle = '寻找共同\n成长的合作伙伴';
-      T.partnerDesc = '药局入驻、品牌入驻、门店开发合作\n——请按类型发送咨询。';
+      T.galleryTitle = B + ' 门店';
+      T.popupTitle = '寻找共同开设\n合作门店的伙伴';
+      T.popupPartnerTitle = '合作门店招募';
+      T.popupPartnerDesc = '门店投资 · 合作运营 · 全国扩张';
+      T.popupOtherTitle = '药局 · 品牌 · 选址';
+      T.popupOtherDesc = '也欢迎其他合作咨询';
+      T.partnerTitle = '寻找共同开设\n合作门店的伙伴';
+      T.partnerDesc = '公开招募投资门店并以合作伙伴身份运营的人士。\n药局、品牌、选址提案咨询也一并受理。';
+      T.partnerStoreDesc = '投资门店并以' + B + '合作伙伴身份运营，享受品牌与运营支持。';
+      T.partnershipCTA = '合作门店咨询';
+      T.partnershipCTAFull = '合作门店咨询';
       T.footerDesc = '致力于成为韩国No.1 AI健康平台，引领均衡生活方式文化。';
       T.tabLife = '生活方式';
       T.stat1Num = '990~1,650'; T.stat1Unit = 'm²';
@@ -1233,13 +1612,13 @@ class Component extends DCLogic {
         { n:3, en:'PLATFORM', title:'平台化扩展', desc:'基于积累的健康数据，致力于发展为涵盖订阅、体检、医疗服务的综合平台。' }
       ];
       T.advantages = [
-        { n:1, kw:'LARGE-FORMAT STORE', title:'大型综合健康平台', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['各门店660~1,650m²的大型综合商场','品牌体验区延长顾客留店时间','留店时间增加 → 购买转化率提升'] },
-        { n:2, kw:'FULL LINE-UP + PHARMACY', title:'全品类商品 + 独立药局', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['美容·健康食品·生活方式·宠物护理','独立药局入驻，提供包括药品的一站式服务','涵盖全健康领域的综合精选'] },
-        { n:3, kw:'NATIONWIDE EXPANSION', title:'可扩展的全国健康平台', grad:'linear-gradient(150deg,#019e88,#005251)', points:['河南（~1,650m²）旗舰店运营中','九老·青罗·金浦依次开业','松岛·弘大·天安等全国扩张计划中'] }
+        { n:1, kw:'LARGE-FORMAT STORE', title:'在大型门店直接触达顾客', grad:'linear-gradient(150deg,#00978F,#004f4e)', points:['660~1,650m²门店品牌曝光','体验区提升转化'] },
+        { n:2, kw:'FULL LINE-UP', title:'全品类入驻环境', grad:'linear-gradient(150deg,#007a73,#00302f)', points:['美容·健康·生活·宠物品类','与独立药局形成一站式健康'] },
+        { n:3, kw:'NATIONWIDE REACH', title:'全国门店网络', grad:'linear-gradient(150deg,#019e88,#005251)', points:['河南·九老已开业','青罗·金浦·弘大年内扩展'] }
       ];
       T.stores = [
         { en:'HANAM FLAGSHIP', name: B + ' 河南店', format:'FLAGSHIP', status:'NOW OPEN', addr:'京畿道 河南市 弥沙大路 410, 1F' },
-        { en:'GURO EXPRESS', name: B + ' 九老快捷店', format:'EXPRESS', status:'COMING SOON', addr:'首尔特别市 冠岳区 矢弓大路 554, B1' },
+        { en:'GURO EXPRESS', name: B + ' 九老快捷店', format:'EXPRESS', status:'NOW OPEN', addr:'首尔特别市 冠岳区 矢弓大路 554, B1' },
         { en:'CHEONGNA', name: B + ' 青罗店', format:'STANDARD', status:'COMING SOON', addr:'仁川广域市 西区 西串路 120, B2' },
         { en:'GIMPO', name: B + ' 金浦店', format:'STANDARD', status:'COMING SOON', addr:'京畿道 金浦市（地址待更新）' }
       ];
@@ -1271,31 +1650,47 @@ class Component extends DCLogic {
     const navInk = this.state.scrolled ? '#10181E' : '#ffffff';
     const barStyle = 'position:fixed; top:0; left:0; right:0; z-index:100; background:#10181E; transition:opacity .35s, transform .35s; ' + (this.state.scrolled ? 'opacity:0; transform:translateY(-100%); pointer-events:none;' : 'opacity:1; transform:translateY(0);');
     const navTop = this.state.scrolled ? '0px' : '44px';
-    const navStyle = 'position:fixed; top:' + navTop + '; left:0; right:0; z-index:90; transition:all .4s; ' + (this.state.scrolled ? 'background:rgba(251,252,252,.86); backdrop-filter:blur(14px); border-bottom:1px solid rgba(0,82,81,.08);' : 'background:transparent;');
+    const navScrolledClass = this.state.scrolled ? ' is-scrolled' : '';
+    const navStyle = 'position:fixed; top:' + navTop + '; left:0; right:0; z-index:90; transition:top .4s, background .4s, box-shadow .4s, border-color .4s; ' + (this.state.scrolled ? 'background:#FBFCFC; border-bottom:1px solid rgba(0,82,81,.12); box-shadow:0 4px 18px rgba(0,32,28,.08);' : 'background:#00302F; box-shadow:none; border-bottom:1px solid transparent;');
     const drawerStyle = 'position:fixed; top:0; right:0; bottom:0; z-index:80; width:min(72vw,320px); background:linear-gradient(160deg,#005251,#00302F); box-shadow:-8px 0 40px rgba(0,0,0,.35); transition:opacity .4s, transform .4s; ' + (this.state.menuOpen ? 'opacity:1; transform:translateX(0); pointer-events:auto;' : 'opacity:0; transform:translateX(100%); pointer-events:none;');
 
     const navDefs = [
       { href:'#top',         key:'top',         label:'HOME',        target:'' },
+      { href:'#gallery',     key:'gallery',      label:'GALLERY',     target:'' },
       { href:'#about',       key:'about',        label:'ABOUT',       target:'' },
       { href:'#brands',      key:'brands',       label:'BRAND',       target:'' },
       { href:'#partnership', key:'partnership',  label:'PARTNERSHIP', target:'' },
-      { href:'#gallery',     key:'gallery',      label:'GALLERY',     target:'' },
+      { href:'#news',        key:'news',         label:'NEWS',        target:'' },
       { href:'#location',    key:'location',     label:'LOCATION',    target:'' }
     ];
     const newsLabelMap = { ko:'소식', en:'NEWS', zh:'消息' };
-    const newsDropMap = [
-      { label:'공지사항', href:'./board.dc.html#notice' },
-      { label:'언론보도', href:'./board.dc.html#press' },
-      { label:'채용공고', href:'./board.dc.html#hr' }
-    ];
+    const newsCatKeys = ['notice', 'press', 'hr'];
+    const newsDropMap = T.newsCats.map((label, i) => ({
+      label,
+      href: './board.dc.html#' + newsCatKeys[i]
+    }));
     const navItems = navDefs.map(d => {
       const isActive = this.state.activeSection === d.key;
-      const op = this.state.scrolled ? (isActive ? '1' : '0.6') : (isActive ? '1' : '0.82');
+      const op = isActive ? '1' : (this.state.scrolled ? '0.55' : '0.75');
+      const ink = isActive
+        ? (this.state.scrolled ? '#00978F' : '#7FE6CF')
+        : navInk;
       return {
+        key: d.key,
         href: d.href, label: d.label, target: d.target||'',
-        style: 'font-size:13px; font-weight:' + (isActive ? '700' : '500') + '; letter-spacing:0.14em; color:' + navInk + '; opacity:' + op + '; transition:color .4s, opacity .3s;'
+        activeClass: isActive ? ' is-active' : '',
+        style: 'font-size:13px; font-weight:' + (isActive ? '700' : '500') + '; letter-spacing:0.14em; color:' + ink + '; opacity:' + op + '; transition:color .3s, opacity .3s;',
+        drawerStyle: 'display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); text-decoration:none;' + (isActive ? ' border-left:3px solid #01C0A4; padding-left:10px; margin-left:-10px;' : ''),
+        drawerWeight: isActive ? '700' : '500',
+        drawerColor: isActive ? '#7FE6CF' : '#fff',
+        drawerChevron: isActive ? 'rgba(127,230,207,.7)' : 'rgba(255,255,255,.3)'
       };
     });
+    const newsIsActive = this.state.activeSection === 'news';
+    const newsActiveClass = newsIsActive ? ' is-active' : '';
+    const newsNavOp = newsIsActive ? '1' : (this.state.scrolled ? '0.55' : '0.75');
+    const newsInk = newsIsActive ? (this.state.scrolled ? '#00978F' : '#7FE6CF') : navInk;
+    const newsNavBtnStyle = 'display:flex; align-items:center; gap:2px; font-size:13px; font-weight:' + (newsIsActive ? '700' : '500') + '; letter-spacing:0.14em; color:' + newsInk + '; opacity:' + newsNavOp + '; background:none; border:none; cursor:pointer; padding:4px 0; transition:color .3s, opacity .3s;';
 
     const langOptions = [
       { id:'ko', label:'KO', flag:'🇰🇷' },
@@ -1332,10 +1727,10 @@ class Component extends DCLogic {
 
     const agreeBtn = (on) => 'height:38px; padding:0 18px; border-radius:40px; border:1px solid ' + (on ? '#01C0A4' : '#D5E0E0') + '; background:' + (on ? '#01C0A4' : '#fff') + '; color:' + (on ? '#fff' : '#46585A') + '; font-size:13px; font-weight:500; transition:.2s;';
 
-    const typeKeys = ['pharmacy', 'brand', 'storeDev', 'other'];
-    const typeLabels = [T.typePharmacy, T.typeBrand, T.typeStoreDev, T.typeOther || '기타 문의'];
+    const typeKeys = ['partnerStore', 'pharmacy', 'brand', 'storeDev', 'other'];
+    const typeLabels = [T.typePartnerStore, T.typePharmacy, T.typeBrand, T.typeStoreDev, T.typeOther || '기타 문의'];
     const typePillStyle = (on) => 'flex:none; height:36px; padding:0 12px; white-space:nowrap; border-radius:40px; border:1.5px solid ' + (on ? '#005251' : '#D5E0E0') + '; background:' + (on ? '#005251' : '#fff') + '; color:' + (on ? '#fff' : '#46585A') + '; font-size:13px; font-weight:' + (on ? '600' : '400') + '; transition:.25s;';
-    const typePills = typeKeys.map((k, i) => ({ label: typeLabels[i], style: typePillStyle(k === this.state.inquiryType), onClick: () => this.setState({ inquiryType: k }) }));
+    const typePills = typeKeys.map((k, i) => ({ label: typeLabels[i], style: typePillStyle(k === this.state.inquiryType), onClick: () => this.setState({ inquiryType: k, formOpen: true }) }));
 
     const hidden = Math.max(0, active.list.length - 24);
     const expandBrandsText = T.expandBtn.replace('{n}', hidden);
@@ -1343,7 +1738,7 @@ class Component extends DCLogic {
     const storeData = T.stores.map((s, i) => ({
       ...s,
       size: lang === 'ko' ? ['500','200','450','400'][i] : ['~1,650','~660','~1,490','~1,320'][i],
-      dot: i === 0 ? '#7FE6CF' : 'rgba(255,255,255,.45)',
+      dot: (i === 0 || i === 1) ? '#7FE6CF' : 'rgba(255,255,255,.45)',
       grad: ['linear-gradient(150deg,#00978F 0%,#004f4e 100%)','linear-gradient(150deg,#019e88 0%,#00605a 100%)','linear-gradient(150deg,#007a73 0%,#00302f 100%)','linear-gradient(150deg,#00857d 0%,#013f3e 100%)'][i],
       onMap: (() => { const idx = i; return () => { this.setState({selectedStore:idx}); const el=document.getElementById('location'); if(el) window.scrollTo({top:el.offsetTop-88,behavior:'smooth'}); }; })()
     }));
@@ -1364,7 +1759,8 @@ class Component extends DCLogic {
       noticeTitle: this.state.latestNotice ? ((this.state.latestNotice.title && (this.state.latestNotice.title[lang] || this.state.latestNotice.title.ko)) || '') : '',
       newsLabel: newsLabelMap[lang] || 'NEWS',
       newsDropItems: newsDropMap,
-      newsNavBtnStyle: 'display:flex; align-items:center; gap:2px; font-size:13px; font-weight:500; letter-spacing:0.14em; color:' + navInk + '; opacity:.82; background:none; border:none; cursor:pointer; padding:4px 0; transition:color .4s, opacity .3s;',
+      newsActiveClass,
+      newsNavBtnStyle,
       currentLangCode, langCodeStyle, langDropItems, langTriggerStyle, langDropdownStyle, toggleLangDropdown,
       barStyle, navStyle, navInk, drawerStyle, navItems, langButtons,
       logoImgStyle: 'height:100%; width:auto; transition:filter .5s ease; filter:' + (this.state.scrolled ? 'none' : 'brightness(0) invert(1)') + '; max-width:none;',
@@ -1391,18 +1787,27 @@ class Component extends DCLogic {
       formButtonIcon: this.state.formOpen ? '−' : '+',
       formMarginBottom: this.state.formOpen ? '16px' : '0',
       formDisplayStyle: this.state.formOpen ? 'block' : 'none',
+      isPartnerStore: this.state.inquiryType === 'partnerStore',
       isPharmacy: this.state.inquiryType === 'pharmacy',
       isBrand: this.state.inquiryType === 'brand',
       isStoreDev: this.state.inquiryType === 'storeDev',
       isOther: this.state.inquiryType === 'other',
+      inquirePartnerStore: () => this.setInquiryType('partnerStore'),
+      inquirePartnerStoreMobile: () => { this.closeMenu(); this.setInquiryType('partnerStore'); },
+      popupPartnerStore: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        this.setState({ popupVisible: false, inquiryType: 'partnerStore', formOpen: true });
+        const el = document.getElementById('inquiry');
+        if (el) setTimeout(() => window.scrollTo({ top: el.offsetTop - 88, behavior: 'smooth' }), 50);
+      },
       currentOpOptions: T.currentOpOptions,
       storeRoleOptions: T.storeRoleOptions,
       form: this.state.form,
       onName: this.setField('name'), onRole: this.setField('role'), onPhone: this.setField('phone'),
       onEmail: this.setField('email'), onCompany: this.setField('company'), onMessage: this.setField('message'),
       onArea: this.setField('area'), onExperience: this.setField('experience'), onTiming: this.setField('timing'),
+      onInvest: this.setField('invest'), onCategory: this.setField('category'), onLocation: this.setField('location'),
       onCurrentPharmacy: this.setField('currentPharmacy'), onStoreRole: this.setField('storeRole'),
-      onCategory: this.setField('category'), onLocation: this.setField('location'),
       submitForm: this.submitForm, resetForm: this.resetForm,
       submitted: this.state.submitted, notSubmitted: !this.state.submitted,
       agreeYes: () => this.setState({ agree:true }), agreeNo: () => this.setState({ agree:false }),
@@ -1416,11 +1821,94 @@ class Component extends DCLogic {
         onClick: () => this.setState({ selectedStore: i }),
         style: 'height:42px; padding:0 20px; border-radius:40px; border:1.5px solid ' + (this.state.selectedStore === i ? '#005251' : '#D5E0E0') + '; background:' + (this.state.selectedStore === i ? '#005251' : '#fff') + '; color:' + (this.state.selectedStore === i ? '#fff' : '#46585A') + '; font-size:14px; font-weight:' + (this.state.selectedStore === i ? '600' : '400') + '; transition:.25s; white-space:nowrap;'
       })),
+      formatCards: (() => {
+        const ex = T.formatExpress;
+        const wh = T.formatWarehouse;
+        return [
+          {
+            tag: ex.tag, title: ex.title, size: ex.size, desc: ex.desc, example: ex.example,
+            p1: ex.points[0], p2: ex.points[1], p3: ex.points[2],
+            bg: '#005251', ink: '#fff', accent: '#7FE6CF', muted: 'rgba(255,255,255,.72)', border: '#005251', line: 'rgba(255,255,255,.18)'
+          },
+          {
+            tag: wh.tag, title: wh.title, size: wh.size, desc: wh.desc, example: wh.example,
+            p1: wh.points[0], p2: wh.points[1], p3: wh.points[2],
+            bg: '#fff', ink: '#10181E', accent: '#00978F', muted: '#5B6B6D', border: '#D5E0E0', line: '#E3EAEA'
+          }
+        ];
+      })(),
+      focusGuroLocation: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        this.setState({ selectedStore: 1 });
+        const el = document.getElementById('location');
+        if (el) window.scrollTo({ top: el.offsetTop - 88, behavior: 'smooth' });
+      },
+
+      newsMoreHref: './board.dc.html#' + this.state.newsCategory,
+      newsTabs: T.newsCats.map((label, i) => {
+        const key = newsCatKeys[i];
+        const on = this.state.newsCategory === key;
+        return {
+          label,
+          onClick: () => this.setState({ newsCategory: key }),
+          style: 'height:42px; padding:0 20px; border-radius:40px; border:1.5px solid ' + (on ? '#005251' : '#D5E0E0') + '; background:' + (on ? '#005251' : '#fff') + '; color:' + (on ? '#fff' : '#46585A') + '; font-size:14px; font-weight:' + (on ? '600' : '400') + '; transition:.25s; white-space:nowrap;'
+        };
+      }),
+      newsItems: (() => {
+        const cat = this.state.newsCategory;
+        const list = (this.state.newsPosts || [])
+          .filter(p => p.active !== false && p.category === cat)
+          .sort((a, b) => {
+            if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+            return new Date(b.date) - new Date(a.date);
+          })
+          .slice(0, 5)
+          .map(p => ({
+            date: p.date,
+            title: (p.title && (p.title[lang] || p.title.ko || '')) || '',
+            weight: p.pinned ? '600' : '500',
+            pinned: !!p.pinned,
+            href: './board.dc.html#' + cat
+          }));
+        return list;
+      })(),
+      newsEmpty: !(this.state.newsPosts || []).some(p => p.active !== false && p.category === this.state.newsCategory),
 
       noop: () => {},
-      galleryDots: [0,1,2,3,4,5,6].map(i => ({ style: 'width:' + (i===this.state.galleryIdx?'22px':'7px') + '; height:7px; border-radius:40px; background:' + (i===this.state.galleryIdx?'#01C0A4':'#D5E0E0') + '; transition:all .3s;' })),
+      galleryTabs: T.galleryTabs.map((label, i) => ({
+        label,
+        onClick: () => {
+          this.setState({ galleryStore: i, galleryIdx: 0 });
+          const track = document.getElementById('ps-gallery-track');
+          if (track) track.scrollTo({ left: 0, behavior: 'smooth' });
+        },
+        style: 'height:42px; padding:0 20px; border-radius:40px; border:1.5px solid ' + (this.state.galleryStore === i ? '#005251' : '#D5E0E0') + '; background:' + (this.state.galleryStore === i ? '#005251' : '#fff') + '; color:' + (this.state.galleryStore === i ? '#fff' : '#46585A') + '; font-size:14px; font-weight:' + (this.state.galleryStore === i ? '600' : '400') + '; transition:.25s; white-space:nowrap;'
+      })),
+      galleryItems: (() => {
+        const sets = [
+          [
+            { src: './assets/guro-01.jpg', alt: 'PHAMA SQUARE 구로점 01' },
+            { src: './assets/guro-02.jpg', alt: 'PHAMA SQUARE 구로점 02' }
+          ],
+          [
+            { src: './assets/c-gallery-01.jpg', alt: 'PHAMA SQUARE 하남점 01' },
+            { src: './assets/c-gallery-05.jpg', alt: 'PHAMA SQUARE 하남점 02' },
+            { src: './assets/c-gallery-04.jpg', alt: 'PHAMA SQUARE 하남점 03' },
+            { src: './assets/c-gallery-06.jpg', alt: 'PHAMA SQUARE 하남점 04' },
+            { src: './assets/c-gallery-02.jpg', alt: 'PHAMA SQUARE 하남점 05' },
+            { src: './assets/c-gallery-07.jpg', alt: 'PHAMA SQUARE 하남점 06' },
+            { src: './assets/c-gallery-03.jpg', alt: 'PHAMA SQUARE 하남점 07' }
+          ]
+        ];
+        return sets[this.state.galleryStore] || sets[0];
+      })(),
+      galleryDots: (() => {
+        const counts = [2, 7];
+        const max = counts[this.state.galleryStore] || 2;
+        return Array.from({ length: max }, (_, i) => ({ style: 'width:' + (i===this.state.galleryIdx?'22px':'7px') + '; height:7px; border-radius:40px; background:' + (i===this.state.galleryIdx?'#01C0A4':'#D5E0E0') + '; transition:all .3s;' }));
+      })(),
       galleryPrev: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const w = card.offsetWidth + 12; const newIdx = Math.max(0, this.state.galleryIdx - 1); track.scrollBy({ left: -w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
-      galleryNext: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const w = card.offsetWidth + 12; const newIdx = Math.min(6, this.state.galleryIdx + 1); track.scrollBy({ left: w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
+      galleryNext: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const counts = [2, 7]; const max = (counts[this.state.galleryStore] || 2) - 1; const w = card.offsetWidth + 12; const newIdx = Math.min(max, this.state.galleryIdx + 1); track.scrollBy({ left: w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
       galleryDragStart: (e) => { this._dragX = e.clientX; this._dragging = true; const t = document.getElementById('ps-gallery-track'); if (t) { t.style.cursor = 'grabbing'; this._dragSX = t.scrollLeft; } },
       galleryDragMove: (e) => { if (!this._dragging) return; const t = document.getElementById('ps-gallery-track'); if (t) t.scrollLeft = this._dragSX - (e.clientX - this._dragX); },
       galleryDragEnd: () => { this._dragging = false; const t = document.getElementById('ps-gallery-track'); if (t) { t.style.cursor = 'grab'; const card = t.querySelector('div'); if (card) this.setState({ galleryIdx: Math.round(t.scrollLeft / (card.offsetWidth + 12)) }); } },
@@ -1437,6 +1925,74 @@ class Component extends DCLogic {
   }
 }
 
+</script>
+<script>
+(function () {
+  var KEYS = ['gallery', 'about', 'brands', 'partnership', 'news', 'location'];
+  var lastCur = '';
+  var lastSc = null;
+
+  function yPos() {
+    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  }
+
+  var applying = false;
+  function applyNavSpy() {
+    if (applying) return;
+    applying = true;
+    try {
+      var y = yPos();
+      var sc = y > 40;
+      var marker = y + 120;
+      var cur = 'top';
+      for (var i = 0; i < KEYS.length; i++) {
+        var el = document.getElementById(KEYS[i]);
+        if (!el) continue;
+        var top = el.getBoundingClientRect().top + y;
+        if (top <= marker) cur = KEYS[i];
+      }
+
+      document.documentElement.classList.toggle('ps-scrolled', sc);
+      lastSc = sc;
+      lastCur = cur;
+
+      var nodes = document.querySelectorAll('[data-nav-key]');
+      for (var j = 0; j < nodes.length; j++) {
+        var n = nodes[j];
+        n.classList.toggle('is-active', n.getAttribute('data-nav-key') === cur);
+      }
+    } finally {
+      applying = false;
+    }
+  }
+
+  function boot() {
+    applyNavSpy();
+    window.addEventListener('scroll', applyNavSpy, { passive: true });
+    window.addEventListener('hashchange', applyNavSpy);
+    window.addEventListener('resize', applyNavSpy);
+
+    // Re-apply after React re-renders recreate nav nodes
+    try {
+      var mo = new MutationObserver(function () {
+        if (!applying) applyNavSpy();
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    } catch (e) {}
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(boot, 0);
+      setTimeout(applyNavSpy, 300);
+      setTimeout(applyNavSpy, 1000);
+    });
+  } else {
+    setTimeout(boot, 0);
+    setTimeout(applyNavSpy, 300);
+    setTimeout(applyNavSpy, 1000);
+  }
+})();
 </script>
 </body>
 </html>

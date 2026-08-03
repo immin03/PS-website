@@ -34,15 +34,15 @@ button,input,select,textarea{font-family:inherit;}
 
 <nav style="{{ navStyle }}">
   <div class="bd-nav-inner" style="max-width:1200px; margin:0 auto; padding:0 32px; height:62px; display:flex; align-items:center; justify-content:space-between; gap:16px;">
-    <a href="./index.html" class="bd-logo" aria-label="PHAMA SQUARE">
+    <a href="./index.html.html" class="bd-logo" aria-label="PHAMA SQUARE">
       <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="height:100%; width:auto;" />
     </a>
     <div class="bd-desktop-links" style="display:flex; align-items:center; gap:20px;">
-      <a href="./index.html" style="font-size:13px; font-weight:400; color:#46585A; display:flex; align-items:center; gap:4px; transition:color .2s; white-space:nowrap;" style-hover="color:#005251;">
+      <a href="./index.html.html" style="font-size:13px; font-weight:400; color:#46585A; display:flex; align-items:center; gap:4px; transition:color .2s; white-space:nowrap;" style-hover="color:#005251;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>메인으로
       </a>
       <div style="width:1px; height:14px; background:#D5E0E0; flex:none;"></div>
-      <a href="./index.html#inquiry" style="display:inline-flex; align-items:center; height:36px; padding:0 18px; border-radius:40px; background:#01C0A4; color:#fff; font-size:13px; font-weight:600; white-space:nowrap; flex:none; transition:background .25s;" style-hover="background:#00978F;">파트너십 문의</a>
+      <a href="./index.html.html#inquiry" style="display:inline-flex; align-items:center; height:36px; padding:0 18px; border-radius:40px; background:#01C0A4; color:#fff; font-size:13px; font-weight:600; white-space:nowrap; flex:none; transition:background .25s;" style-hover="background:#00978F;">파트너십 문의</a>
     </div>
     <button onClick="{{ toggleMenu }}" class="bd-burger" aria-label="메뉴" style="flex-direction:column; gap:5.5px; background:none; border:none; padding:8px; cursor:pointer; margin-left:auto; flex:none;">
       <span style="display:block; width:22px; height:2px; background:#2B3A3C; border-radius:1px;"></span>
@@ -67,12 +67,12 @@ button,input,select,textarea{font-family:inherit;}
         <span style="font-size:15px; font-weight:500; letter-spacing:0.06em;">채용공고</span>
         <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
       </div>
-      <a href="./index.html" style="display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
+      <a href="./index.html.html" style="display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
         <span style="font-size:15px; font-weight:400; letter-spacing:0.06em;">← 메인으로</span>
       </a>
     </div>
     <div style="margin-top:24px;">
-      <a href="./index.html#inquiry" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:center; height:50px; border-radius:40px; background:#01C0A4; color:#fff; font-size:15px; font-weight:600; text-decoration:none;">파트너십 문의</a>
+      <a href="./index.html.html#inquiry" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:center; height:50px; border-radius:40px; background:#01C0A4; color:#fff; font-size:15px; font-weight:600; text-decoration:none;">파트너십 문의</a>
     </div>
   </div>
 </div>
@@ -171,22 +171,30 @@ class Component extends DCLogic {
   componentDidMount() {
     // 서버에서 최신 게시글 로드 (기기 간 동기화)
     this._loadFromServer = () => {
+      const apply = (serverPosts) => {
+        if (!Array.isArray(serverPosts)) return false;
+        try { localStorage.setItem('ps_posts', JSON.stringify(serverPosts)); } catch(e) {}
+        this.setState({ posts: serverPosts });
+        return true;
+      };
+      const fallback = () => {
+        fetch('./posts_data.json?t=' + Date.now())
+          .then(r => r.json())
+          .then(data => { if (!apply(data) || !data.length) apply(this._seed()); })
+          .catch(() => {
+            try {
+              let cached = JSON.parse(localStorage.getItem('ps_posts') || 'null');
+              if (!cached || !cached.length) cached = this._seed();
+              this.setState({ posts: cached });
+            } catch(e) { this.setState({ posts: this._seed() }); }
+          });
+      };
       fetch('./posts.php?t=' + Date.now())
         .then(r => r.json())
         .then(serverPosts => {
-          if (Array.isArray(serverPosts) && serverPosts.length >= 0) {
-            try { localStorage.setItem('ps_posts', JSON.stringify(serverPosts)); } catch(e) {}
-            this.setState({ posts: serverPosts });
-          }
+          if (!apply(serverPosts) || !serverPosts.length) fallback();
         })
-        .catch(() => {
-          // 서버 실패 시 localStorage 사용
-          try {
-            let cached = JSON.parse(localStorage.getItem('ps_posts') || 'null');
-            if (!cached) { cached = this._seed(); }
-            this.setState({ posts: cached });
-          } catch(e) {}
-        });
+        .catch(fallback);
     };
     this._loadFromServer();
 
@@ -237,11 +245,15 @@ class Component extends DCLogic {
 
   _seed() {
     return [
+      { id:'guro-open-2026', category:'notice', active:true, pinned:true, date:'2026-08-01',
+        title:{ ko:'파마스퀘어 익스프레스 구로점 오픈' },
+        content:{ ko:'파마스퀘어 익스프레스 구로점이 오픈했습니다.\n\n위치: 서울특별시 관악구 시흥대로 554, B1\n\n도심형 웰니스 스토어에서 건강기능식품·뷰티·펫케어까지 만나보세요.\n많은 관심 부탁드립니다.' },
+        link:'', linkLabel:{ko:''}, department:'', jobType:'', deadline:'' },
       { id:'renewal-2026-0628', category:'notice', active:true, pinned:true, date:'2026-06-28',
         title:{ ko:'파마스퀘어 공식 웹사이트 리뉴얼 안내' },
         content:{ ko:'안녕하세요, 파마스퀘어입니다.\n\n파마스퀘어 공식 웹사이트가 새롭게 리뉴얼되었습니다.\n더욱 직관적이고 편리한 환경으로 개선된 웹사이트를 만나보세요.\n\n■ 주요 변경사항\n- 새로운 디자인으로 전면 개편\n- AI 건강가이드 베타 서비스 출시\n- 공지사항·언론보도·채용 소식 게시판 운영 시작\n- 한국어·영어·중국어 다국어 지원\n\n앞으로도 더 나은 서비스로 찾아뵙겠습니다.\n감사합니다.' },
         link:'', linkLabel:{ko:''}, department:'', jobType:'', deadline:'' },
-      { id:'s1', category:'notice', active:true, pinned:true, date:'2025-03-15', title:{ ko:'파마스퀘어 하남 플래그십 정식 오픈' }, content:{ ko:'파마스퀘어 하남 플래그십이 2025년 3월 15일 정식 오픈했습니다.\n\n위치: 경기도 하남시 미사대로 410, 1층\n영업시간: 매일 10:00 ~ 22:00\n\n많은 관심과 사랑 부탁드립니다.' }, link:'', linkLabel:{ko:''}, department:'', jobType:'', deadline:'' },
+      { id:'s1', category:'notice', active:true, pinned:false, date:'2025-03-15', title:{ ko:'파마스퀘어 하남 플래그십 정식 오픈' }, content:{ ko:'파마스퀘어 하남 플래그십이 2025년 3월 15일 정식 오픈했습니다.\n\n위치: 경기도 하남시 미사대로 410, 1층\n영업시간: 매일 10:00 ~ 22:00\n\n많은 관심과 사랑 부탁드립니다.' }, link:'', linkLabel:{ko:''}, department:'', jobType:'', deadline:'' },
       { id:'s2', category:'notice', active:true, pinned:false, date:'2026-01-10', title:{ ko:'개인정보처리방침 개정 안내' }, content:{ ko:'2026년 1월 10일부터 개인정보처리방침이 일부 개정됩니다.\n\n문의: official@phamasquare.com' }, link:'', linkLabel:{ko:''}, department:'', jobType:'', deadline:'' },
       { id:'s3', category:'press', active:true, pinned:false, date:'2026-03-05', title:{ ko:'파마스퀘어, 웰니스 플랫폼의 새로운 기준' }, content:{ ko:'매일경제가 파마스퀘어의 확장 전략과 AI 웰니스 비전에 대해 심층 보도했습니다.' }, link:'https://mk.co.kr', linkLabel:{ko:'매일경제 원문 보기'}, department:'', jobType:'', deadline:'' },
       { id:'s4', category:'press', active:true, pinned:false, date:'2025-08-20', title:{ ko:'K-뷰티 헬스케어 공간의 진화, 파마스퀘어' }, content:{ ko:'파마스퀘어가 국내 최초의 AI 웰니스 플랫폼으로 주목받고 있습니다.' }, link:'https://biz.chosun.com', linkLabel:{ko:'조선비즈 원문 보기'}, department:'', jobType:'', deadline:'' },

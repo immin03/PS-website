@@ -1,1 +1,178 @@
-[{"id":"renewal-2026-0628","category":"notice","active":true,"pinned":true,"date":"2026-06-28","title":{"ko":"파마스퀘어 공식 웹사이트 리뉴얼 안내","en":"","zh":""},"content":{"ko":"안녕하세요, 파마스퀘어입니다.\n\n파마스퀘어 공식 웹사이트가 새롭게 리뉴얼되었습니다.\n더욱 직관적이고 편리한 환경으로 개선된 웹사이트를 만나보세요.\n\n■ 주요 변경사항\n- 새로운 디자인으로 전면 개편\n- AI 건강가이드 베타 서비스 출시\n- 공지사항·언론보도·채용 소식 게시판 운영 시작\n- 한국어·영어·중국어 다국어 지원\n\n앞으로도 더 나은 서비스로 찾아뵙겠습니다.\n감사합니다.","en":"","zh":""},"link":"","linkLabel":{"ko":"","en":"","zh":""},"department":"","jobType":"","deadline":""}]
+[
+  {
+    "id": "guro-open-2026",
+    "category": "notice",
+    "active": true,
+    "pinned": true,
+    "date": "2026-08-01",
+    "title": {
+      "ko": "파마스퀘어 익스프레스 구로점 오픈",
+      "en": "Phama Square Express Guro Now Open",
+      "zh": "파马广场 九老快捷店开业"
+    },
+    "content": {
+      "ko": "파마스퀘어 익스프레스 구로점이 오픈했습니다.\n\n위치: 서울특별시 관악구 시흥대로 554, B1\n\n도심형 웰니스 스토어에서 건강기능식품·뷰티·펫케어까지 만나보세요.\n많은 관심 부탁드립니다.",
+      "en": "Phama Square Express Guro is now open.\n\nAddress: 554 Siheung-daero, Gwanak-gu, Seoul, B1\n\nVisit our urban wellness store for health foods, beauty, and pet care.",
+      "zh": "파马广场九老快捷店已开业。\n\n地址：首尔特别市 冠岳区 矢弓大路 554, B1"
+    },
+    "link": "",
+    "linkLabel": { "ko": "", "en": "", "zh": "" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "renewal-2026-0628",
+    "category": "notice",
+    "active": true,
+    "pinned": true,
+    "date": "2026-06-28",
+    "title": {
+      "ko": "파마스퀘어 공식 웹사이트 리뉴얼 안내",
+      "en": "Official Website Renewal",
+      "zh": "官网改版通知"
+    },
+    "content": {
+      "ko": "안녕하세요, 파마스퀘어입니다.\n\n파마스퀘어 공식 웹사이트가 새롭게 리뉴얼되었습니다.\n더욱 직관적이고 편리한 환경으로 개선된 웹사이트를 만나보세요.\n\n■ 주요 변경사항\n- 새로운 디자인으로 전면 개편\n- AI 건강가이드 베타 서비스 출시\n- 공지사항·언론보도·채용 소식 게시판 운영 시작\n- 한국어·영어·중국어 다국어 지원\n\n앞으로도 더 나은 서비스로 찾아뵙겠습니다.\n감사합니다.",
+      "en": "Phama Square's official website has been renewed with a clearer design, AI Health Guide beta, and multilingual support.",
+      "zh": "파马广场官网已全面改版，并上线AI健康指南与多语言支持。"
+    },
+    "link": "",
+    "linkLabel": { "ko": "", "en": "", "zh": "" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "s1",
+    "category": "notice",
+    "active": true,
+    "pinned": false,
+    "date": "2025-03-15",
+    "title": {
+      "ko": "파마스퀘어 하남 플래그십 정식 오픈",
+      "en": "Hanam Flagship Officially Open",
+      "zh": "河南旗舰店正式开业"
+    },
+    "content": {
+      "ko": "파마스퀘어 하남 플래그십이 2025년 3월 15일 정식 오픈했습니다.\n\n위치: 경기도 하남시 미사대로 410, 1층\n영업시간: 매일 10:00 ~ 22:00\n\n많은 관심과 사랑 부탁드립니다.",
+      "en": "Phama Square Hanam Flagship opened on March 15, 2025.\n\nAddress: 410 Misadae-ro, Hanam-si, Gyeonggi-do, 1F\nHours: Daily 10:00 – 22:00",
+      "zh": "파马广场河南旗舰店于2025年3月15日正式开业。"
+    },
+    "link": "",
+    "linkLabel": { "ko": "", "en": "", "zh": "" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "s2",
+    "category": "notice",
+    "active": true,
+    "pinned": false,
+    "date": "2026-01-10",
+    "title": {
+      "ko": "개인정보처리방침 개정 안내",
+      "en": "Privacy Policy Update",
+      "zh": "隐私政策修订通知"
+    },
+    "content": {
+      "ko": "2026년 1월 10일부터 개인정보처리방침이 일부 개정됩니다.\n\n문의: official@phamasquare.com",
+      "en": "Our Privacy Policy will be partially updated from January 10, 2026.\n\nContact: official@phamasquare.com",
+      "zh": "隐私政策将于2026年1月10日起部分修订。\n\n咨询：official@phamasquare.com"
+    },
+    "link": "",
+    "linkLabel": { "ko": "", "en": "", "zh": "" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "s3",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-03-05",
+    "title": {
+      "ko": "파마스퀘어, 웰니스 플랫폼의 새로운 기준",
+      "en": "Phama Square Sets a New Standard for Wellness Platforms",
+      "zh": "파马广场树立健康平台新标准"
+    },
+    "content": {
+      "ko": "매일경제가 파마스퀘어의 확장 전략과 AI 웰니스 비전에 대해 심층 보도했습니다.",
+      "en": "Maeil Business Newspaper covered Phama Square’s expansion strategy and AI wellness vision.",
+      "zh": "每日经济报道了파马广场的扩张战略与AI健康愿景。"
+    },
+    "link": "https://mk.co.kr",
+    "linkLabel": { "ko": "매일경제 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "s4",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2025-08-20",
+    "title": {
+      "ko": "K-뷰티 헬스케어 공간의 진화, 파마스퀘어",
+      "en": "The Evolution of K-Beauty Healthcare Spaces",
+      "zh": "K-Beauty健康空间的进化"
+    },
+    "content": {
+      "ko": "파마스퀘어가 국내 최초의 AI 웰니스 플랫폼으로 주목받고 있습니다.",
+      "en": "Phama Square is gaining attention as Korea’s pioneering AI wellness platform.",
+      "zh": "파马广场作为韩国领先的AI健康平台备受关注。"
+    },
+    "link": "https://biz.chosun.com",
+    "linkLabel": { "ko": "조선비즈 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "s5",
+    "category": "hr",
+    "active": true,
+    "pinned": true,
+    "date": "2026-06-01",
+    "title": {
+      "ko": "[채용] 상품기획 MD",
+      "en": "[Hiring] Product Planning MD",
+      "zh": "[招聘] 商品企划 MD"
+    },
+    "content": {
+      "ko": "파마스퀘어와 함께 성장할 상품기획 MD를 모집합니다.\n\n■ 담당 업무\n- 건강기능식품/뷰티/펫 카테고리 상품 기획 및 소싱\n- 브랜드사 미팅 및 협상\n\n■ 지원 자격\n- 경력 2년 이상 우대 (신입 가능)\n\n■ 지원 방법\nofficial@phamasquare.com으로 이력서 제출",
+      "en": "We are hiring a Product Planning MD.\n\nApply: official@phamasquare.com",
+      "zh": "招聘商品企划MD。\n\n投递：official@phamasquare.com"
+    },
+    "link": "mailto:official@phamasquare.com",
+    "linkLabel": { "ko": "이메일로 지원", "en": "Apply by email", "zh": "邮件投递" },
+    "department": "상품팀",
+    "jobType": "정규직",
+    "deadline": "상시채용"
+  },
+  {
+    "id": "s6",
+    "category": "hr",
+    "active": true,
+    "pinned": false,
+    "date": "2026-06-15",
+    "title": {
+      "ko": "[채용] 디지털 마케터",
+      "en": "[Hiring] Digital Marketer",
+      "zh": "[招聘] 数字营销"
+    },
+    "content": {
+      "ko": "파마스퀘어의 디지털 마케터를 모집합니다.\n\n■ 담당 업무\n- SNS 콘텐츠 기획 및 운영\n- 디지털 광고 집행 및 성과 분석\n\n■ 마감일: 2026년 7월 31일\n\n지원: official@phamasquare.com",
+      "en": "We are hiring a Digital Marketer.\n\nDeadline: July 31, 2026\nApply: official@phamasquare.com",
+      "zh": "招聘数字营销专员。\n\n截止日期：2026年7月31日"
+    },
+    "link": "mailto:official@phamasquare.com",
+    "linkLabel": { "ko": "이메일로 지원", "en": "Apply by email", "zh": "邮件投递" },
+    "department": "마케팅팀",
+    "jobType": "정규직",
+    "deadline": "2026-07-31"
+  }
+]
