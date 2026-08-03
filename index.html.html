@@ -873,6 +873,11 @@ input, textarea, button, select { font-family:inherit; }
         <div style="padding:48px 24px; text-align:center; color:#8B9A9C; font-size:15px; font-weight:300;">{{ t.newsEmpty }}</div>
       </sc-if>
     </div>
+    <sc-if value="{{ newsHasMore }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:16px; display:flex; justify-content:center;">
+        <button onClick="{{ newsLoadMore }}" style="height:44px; padding:0 24px; border-radius:40px; border:1.5px solid #D5E0E0; background:#fff; color:#46585A; font-size:14px; font-weight:500; transition:border-color .2s, color .2s, background .2s;" style-hover="border-color:#005251; color:#005251; background:#F7FAFA;">{{ t.newsLoadMore }}</button>
+      </div>
+    </sc-if>
   </div>
 </section>
 
@@ -1008,6 +1013,7 @@ class Component extends DCLogic {
     galleryStore: 0,
     newsPosts: [],
     newsCategory: 'notice',
+    newsVisible: 5,
     activeSection: 'top',
     activeTab: 0,
     inquiryType: 'partnerStore',
@@ -1299,7 +1305,7 @@ class Component extends DCLogic {
         galleryTitle: '파마스퀘어 스토어', locationTitle: '오시는 길', naverMap: '네이버 지도', kakaoMap: '카카오맵',
         locTabs: ['하남점', '구로점', '청라점', '김포점'],
         galleryTabs: ['구로점', '하남점'],
-        newsTitle: '파마스퀘어 소식', newsDesc: '공지사항, 언론보도, 채용 정보를 카테고리별로 확인하세요.', newsMore: '전체 소식 보기', newsEmpty: '등록된 소식이 없습니다.', newsPinned: '중요',
+        newsTitle: '파마스퀘어 소식', newsDesc: '공지사항, 언론보도, 채용 정보를 카테고리별로 확인하세요.', newsMore: '전체 소식 보기', newsEmpty: '등록된 소식이 없습니다.', newsPinned: '중요', newsLoadMore: '다음 목록 보기',
         newsCats: ['공지사항', '언론보도', '채용공고'],
         typePartnerStore: '파트너 매장', typePharmacy: '약국 입점', typeBrand: '브랜드사 입점', typeStoreDev: '입지 제안', typeOther: '기타 문의', fOtherMsgPH: '문의 내용을 자유롭게 작성해주세요.',
         footerDesc: '균형 있는 웰니스 문화를 선도합니다.', footerLegalName: '법인명', footerCEO: '대표이사', footerBizNum: '사업자번호', footerEmail: '이메일', footerAddr: '주소',
@@ -1429,7 +1435,7 @@ class Component extends DCLogic {
         galleryTitle: 'Phama Square Stores', locationTitle: 'Directions', naverMap: 'Naver Map', kakaoMap: 'Kakao Map',
         locTabs: ['Hanam', 'Guro', 'Cheongna', 'Gimpo'],
         galleryTabs: ['Guro', 'Hanam'],
-        newsTitle: 'Phama Square News', newsDesc: 'Browse notices, press coverage, and careers by category.', newsMore: 'View all news', newsEmpty: 'No posts yet.', newsPinned: 'PINNED',
+        newsTitle: 'Phama Square News', newsDesc: 'Browse notices, press coverage, and careers by category.', newsMore: 'View all news', newsEmpty: 'No posts yet.', newsPinned: 'PINNED', newsLoadMore: 'Show more',
         newsCats: ['Notice', 'Press', 'Careers'],
         typePartnerStore: 'Partner Store', typePharmacy: 'Pharmacy', typeBrand: 'Brand', typeStoreDev: 'Location', typeOther: 'Other',
         footerDesc: "Growing into South Korea's No.1 AI wellness platform, leading a balanced lifestyle culture.", footerLegalName: 'Legal Name', footerCEO: 'CEO', footerBizNum: 'Business Reg. No.', footerEmail: 'Email', footerAddr: 'Address',
@@ -1558,7 +1564,7 @@ class Component extends DCLogic {
         galleryTitle: '파马广场 门店', locationTitle: '前往方式', naverMap: 'Naver地图', kakaoMap: 'Kakao地图',
         locTabs: ['河南店', '九老店', '青罗店', '金浦店'],
         galleryTabs: ['九老店', '河南店'],
-        newsTitle: '파马广场 消息', newsDesc: '按分类查看公告、媒体报道与招聘信息。', newsMore: '查看全部消息', newsEmpty: '暂无消息。', newsPinned: '置顶',
+        newsTitle: '파马广场 消息', newsDesc: '按分类查看公告、媒体报道与招聘信息。', newsMore: '查看全部消息', newsEmpty: '暂无消息。', newsPinned: '置顶', newsLoadMore: '查看更多',
         newsCats: ['公告', '媒体', '招聘'],
         typePartnerStore: '合作门店', typePharmacy: '药局入驻', typeBrand: '品牌入驻', typeStoreDev: '选址提案',
         footerDesc: '致力于成为韩国No.1 AI健康平台，引领均衡生活方式文化。', footerLegalName: '法人名称', footerCEO: '代表董事', footerBizNum: '营业执照号', footerEmail: '邮箱', footerAddr: '地址',
@@ -1885,7 +1891,7 @@ class Component extends DCLogic {
         const on = this.state.newsCategory === key;
         return {
           label,
-          onClick: () => this.setState({ newsCategory: key }),
+          onClick: () => this.setState({ newsCategory: key, newsVisible: 5 }),
           style: 'height:42px; padding:0 20px; border-radius:40px; border:1.5px solid ' + (on ? '#005251' : '#D5E0E0') + '; background:' + (on ? '#005251' : '#fff') + '; color:' + (on ? '#fff' : '#46585A') + '; font-size:14px; font-weight:' + (on ? '600' : '400') + '; transition:.25s; white-space:nowrap;'
         };
       }),
@@ -1897,7 +1903,7 @@ class Component extends DCLogic {
             if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
             return new Date(b.date) - new Date(a.date);
           })
-          .slice(0, 5)
+          .slice(0, this.state.newsVisible || 5)
           .map(p => ({
             date: p.date,
             title: (p.title && (p.title[lang] || p.title.ko || '')) || '',
@@ -1907,6 +1913,12 @@ class Component extends DCLogic {
           }));
         return list;
       })(),
+      newsHasMore: (() => {
+        const cat = this.state.newsCategory;
+        const total = (this.state.newsPosts || []).filter(p => p.active !== false && p.category === cat).length;
+        return total > (this.state.newsVisible || 5);
+      })(),
+      newsLoadMore: () => this.setState({ newsVisible: (this.state.newsVisible || 5) + 5 }),
       newsEmpty: !(this.state.newsPosts || []).some(p => p.active !== false && p.category === this.state.newsCategory),
 
       noop: () => {},
