@@ -88,45 +88,221 @@
     "deadline": ""
   },
   {
-    "id": "s3",
+    "id": "press-guro-sentv-20260803",
     "category": "press",
     "active": true,
-    "pinned": false,
-    "date": "2026-03-05",
+    "pinned": true,
+    "date": "2026-08-03",
     "title": {
-      "ko": "파마스퀘어, 웰니스 플랫폼의 새로운 기준",
-      "en": "Phama Square Sets a New Standard for Wellness Platforms",
-      "zh": "파马广场树立健康平台新标准"
+      "ko": "파마스퀘어, 구로디지털단지에 도심형 ‘익스프레스’ 첫 매장 오픈",
+      "en": "Phama Square Opens First Express Store in Guro Digital Complex",
+      "zh": "파马广场在九老数码园区开设首家快捷店"
     },
     "content": {
-      "ko": "매일경제가 파마스퀘어의 확장 전략과 AI 웰니스 비전에 대해 심층 보도했습니다.",
-      "en": "Maeil Business Newspaper covered Phama Square’s expansion strategy and AI wellness vision.",
-      "zh": "每日经济报道了파马广场的扩张战略与AI健康愿景。"
+      "ko": "서울경제TV — 파마스퀘어가 구로디지털단지 엠타워에 도심형 매장 ‘파마스퀘어 익스프레스 구로점’을 오픈했다고 보도했습니다.",
+      "en": "Seoul Economic TV covered the opening of Phama Square Express Guro.",
+      "zh": "首尔经济TV报道了파马广场九老快捷店开业。"
     },
-    "link": "https://mk.co.kr",
-    "linkLabel": { "ko": "매일경제 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "link": "https://www.sentv.co.kr/article/view/sentv202608030183",
+    "linkLabel": { "ko": "서울경제TV 원문 보기", "en": "Read article", "zh": "查看原文" },
     "department": "",
     "jobType": "",
     "deadline": ""
   },
   {
-    "id": "s4",
+    "id": "press-guro-wowtv-20260803",
     "category": "press",
     "active": true,
     "pinned": false,
-    "date": "2025-08-20",
+    "date": "2026-08-03",
     "title": {
-      "ko": "K-뷰티 헬스케어 공간의 진화, 파마스퀘어",
-      "en": "The Evolution of K-Beauty Healthcare Spaces",
-      "zh": "K-Beauty健康空间的进化"
+      "ko": "파마스퀘어, 하남에 이어 구로디지털단지에 2호점 열어",
+      "en": "Phama Square Opens Second Store in Guro Digital Complex",
+      "zh": "파马广场继河南店后在九老开设2号店"
     },
     "content": {
-      "ko": "파마스퀘어가 국내 최초의 AI 웰니스 플랫폼으로 주목받고 있습니다.",
-      "en": "Phama Square is gaining attention as Korea’s pioneering AI wellness platform.",
-      "zh": "파马广场作为韩国领先的AI健康平台备受关注。"
+      "ko": "한국경제TV — 하남 1호점에 이어 구로디지털단지에 익스프레스 포맷 2호점을 열었다는 내용이 보도됐습니다.",
+      "en": "Korea Economic TV reported the opening of the second Phama Square store in Guro.",
+      "zh": "韩国经济TV报道了파马广场九老2号店开业。"
     },
-    "link": "https://biz.chosun.com",
-    "linkLabel": { "ko": "조선비즈 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "link": "https://www.wowtv.co.kr/NewsCenter/News/Read?articleId=A202608030253",
+    "linkLabel": { "ko": "한국경제TV 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-partner-hinews-20260731",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-07-31",
+    "title": {
+      "ko": "파마스퀘어, 첫 공식 파트너사 간담회서 가맹사업 확장 계획 공유",
+      "en": "Phama Square Shares Franchise Expansion Plans at First Partner Meeting",
+      "zh": "파马广场首次合作商座谈会上分享加盟扩张计划"
+    },
+    "content": {
+      "ko": "하이뉴스 — 하남 1호점에서 파트너사 간담회를 열고 가맹사업 확장 계획을 공유했다는 내용이 보도됐습니다.",
+      "en": "HiNews covered Phama Square’s first official partner meeting and franchise plans.",
+      "zh": "HiNews报道了파马广场首次合作商座谈会及加盟计划。"
+    },
+    "link": "https://www.hinews.co.kr/view.php?ud=2026073114391884786cf2d78c68_48",
+    "linkLabel": { "ko": "하이뉴스 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-wellness-dailypharm-20260513",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-05-13",
+    "title": {
+      "ko": "창고형약국의 또 다른 이름 ‘웰니스 플랫폼’…전국구 확장",
+      "en": "Warehouse Pharmacies Rebrand as Wellness Platforms Nationwide",
+      "zh": "仓储型药房的另一名称‘健康平台’…全国扩张"
+    },
+    "content": {
+      "ko": "데일리팜 — 파마스퀘어를 포함한 웰니스 플랫폼들의 전국 확장 움직임이 보도됐습니다.",
+      "en": "Daily Pharm covered nationwide expansion of wellness platforms including Phama Square.",
+      "zh": "Daily Pharm报道了包括파马广场在内的健康平台全国扩张。"
+    },
+    "link": "https://dailypharm.com/user/news/338417",
+    "linkLabel": { "ko": "데일리팜 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-members-enet-20260423",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-04-23",
+    "title": {
+      "ko": "파마스퀘어, 회원 8,500명 확보···투자 유치 후 확장 본격화",
+      "en": "Phama Square Reaches 8,500 Members, Accelerates Expansion After Funding",
+      "zh": "파马广场会员达8,500人···融资后加速扩张"
+    },
+    "content": {
+      "ko": "이넷뉴스 — 하남 1호점 누적 회원 8,500명과 투자 유치 후 확장 본격화 소식이 보도됐습니다.",
+      "en": "eNet News reported Phama Square’s 8,500 members and post-funding expansion.",
+      "zh": "eNet News报道了파马广场8,500名会员及融资后扩张。"
+    },
+    "link": "https://www.enetnews.co.kr/news/articleView.html?idxno=49273",
+    "linkLabel": { "ko": "이넷뉴스 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-hanam-sentv-20260325",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-03-25",
+    "title": {
+      "ko": "파마스퀘어, 하남 1호점 오픈…창고형 웰니스 시장 출사표",
+      "en": "Phama Square Opens Hanam Flagship, Enters Warehouse Wellness Market",
+      "zh": "파马广场河南1号店开业…进军仓储型健康市场"
+    },
+    "content": {
+      "ko": "서울경제TV — 하남 1호점 그랜드 오픈과 수도권·가맹 확장 계획이 보도됐습니다.",
+      "en": "Seoul Economic TV covered the Hanam flagship grand opening.",
+      "zh": "首尔经济TV报道了河南旗舰店盛大开业。"
+    },
+    "link": "https://www.sentv.co.kr/article/view/sentv202603250149",
+    "linkLabel": { "ko": "서울경제TV 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-hanam-sportsseoul-202603",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-03-24",
+    "title": {
+      "ko": "“건강은 더하고 가격은 낮춘다”…하남 미사 500평 ‘창고형 약국’ 가보니",
+      "en": "Sports Seoul Visits Hanam’s 500-Pyeong Warehouse Wellness Store",
+      "zh": "体育首尔探访河南弥沙500坪仓储型门店"
+    },
+    "content": {
+      "ko": "스포츠서울 — 하남 미사 500평 규모 파마스퀘어 현장 취재 기사가 실렸습니다.",
+      "en": "Sports Seoul published an on-site report from the Hanam store.",
+      "zh": "体育首尔刊登了河南门店现场报道。"
+    },
+    "link": "https://www.sportsseoul.com/news/read/1603743",
+    "linkLabel": { "ko": "스포츠서울 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-hanam-donga-20260311",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-03-11",
+    "title": {
+      "ko": "창고형 웰니스 플랫폼 ‘파마스퀘어’, 오는 21일 하남 1호점 그랜드 오픈",
+      "en": "Phama Square Announces Hanam Grand Opening on March 21",
+      "zh": "仓储型健康平台‘파马广场’将于21日河南1号店盛大开业"
+    },
+    "content": {
+      "ko": "동아일보 — 하남 1호점 그랜드 오픈 일정과 소프트오픈 기간 운영 안정화 내용이 보도됐습니다.",
+      "en": "The Dong-A Ilbo covered Phama Square’s Hanam grand opening announcement.",
+      "zh": "东亚日报报道了파马广场河南盛大开业预告。"
+    },
+    "link": "https://www.donga.com/news/Economy/article/all/20260311/133507126/1",
+    "linkLabel": { "ko": "동아일보 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-hb-igoodnews-202601",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2026-01-20",
+    "title": {
+      "ko": "새로운 H&B트렌드로 떠오르는 파마스퀘어",
+      "en": "Phama Square Emerges as a New H&B Trend",
+      "zh": "파马广场成为新的H&B趋势"
+    },
+    "content": {
+      "ko": "주간기쁜소식 — 창고형 H&B 스토어로 주목받는 파마스퀘어 현장 취재 기사가 실렸습니다.",
+      "en": "Weekly Good News featured Phama Square as an emerging H&B trend.",
+      "zh": "周刊喜讯刊登了파马广场作为新兴H&B趋势的报道。"
+    },
+    "link": "http://www.igoodnews.or.kr/news/articleView.html?idxno=16371",
+    "linkLabel": { "ko": "주간기쁜소식 원문 보기", "en": "Read article", "zh": "查看原文" },
+    "department": "",
+    "jobType": "",
+    "deadline": ""
+  },
+  {
+    "id": "press-softopen-enet-20251223",
+    "category": "press",
+    "active": true,
+    "pinned": false,
+    "date": "2025-12-23",
+    "title": {
+      "ko": "파마스퀘어, 12월 23일 Soft Open “창고형 H&B로 새로운 소비 경험 제시”",
+      "en": "Phama Square Soft Opens on Dec 23 with Warehouse H&B Experience",
+      "zh": "파马广场12月23日软开业“以仓储型H&B呈现新消费体验”"
+    },
+    "content": {
+      "ko": "이넷뉴스 — 하남 Soft Open 첫날 고객·브랜드사·인플루언서 방문과 이벤트 운영이 보도됐습니다.",
+      "en": "eNet News covered Phama Square’s soft opening day in Hanam.",
+      "zh": "eNet News报道了파马广场河南软开业首日。"
+    },
+    "link": "https://www.enetnews.co.kr/news/articleView.html?idxno=45404",
+    "linkLabel": { "ko": "이넷뉴스 원문 보기", "en": "Read article", "zh": "查看原文" },
     "department": "",
     "jobType": "",
     "deadline": ""
