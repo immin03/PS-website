@@ -61,9 +61,8 @@ input, textarea, button, select { font-family:inherit; }
 @media(hover:hover){ .ps-cursor-dot, .ps-cursor-ring { display:block; } }
 .ps-cursor-dot { position:fixed; width:8px; height:8px; border-radius:50%; background:#01C0A4; pointer-events:none; z-index:9999; top:0; left:0; will-change:transform; }
 .ps-cursor-ring { position:fixed; border-radius:50%; border:1.5px solid rgba(1,192,164,.55); pointer-events:none; z-index:9998; top:0; left:0; will-change:transform; transition:width .22s, height .22s, border-color .22s; }
-.ps-nav-link { position:relative; padding:6px 10px; border-radius:40px; }
-.ps-nav-link::after { display:none; }
-.ps-news-nav-btn { padding:6px 10px; border-radius:40px; }
+.ps-nav-link { position:relative; padding:4px 2px; }
+.ps-news-nav-btn { padding:4px 2px; }
 .ps-site-nav {
   position:fixed !important; left:0; right:0; z-index:90;
   top:44px;
@@ -71,38 +70,61 @@ input, textarea, button, select { font-family:inherit; }
   background:#007a73 !important;
   border-bottom:1px solid transparent !important;
   box-shadow:none !important;
-  transition:top .35s ease, height .35s ease, box-shadow .35s ease;
+  transition:top .4s cubic-bezier(.22,.8,.28,1), height .4s cubic-bezier(.22,.8,.28,1), box-shadow .4s ease, background .4s ease;
 }
 .ps-site-nav[data-compact="1"] {
   top:0 !important;
-  height:58px;
-  box-shadow:0 10px 32px rgba(0,20,18,.22) !important;
-  border-bottom:1px solid rgba(255,255,255,.12) !important;
-}
-.ps-site-nav[data-compact="1"]::after {
-  content:'';
-  position:absolute; left:0; right:0; bottom:0; height:3px;
-  background:linear-gradient(90deg, #01C0A4, #7FE6CF, #01C0A4);
-  pointer-events:none;
+  height:60px;
+  background:rgba(0,122,115,.94) !important;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 8px 28px rgba(0,20,18,.16) !important;
+  border-bottom:1px solid rgba(255,255,255,.1) !important;
 }
 #ps-announce-bar[data-hidden="1"] {
   opacity:0 !important;
   transform:translateY(-100%) !important;
   pointer-events:none !important;
 }
+.ps-nav-track {
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
+.ps-nav-ink {
+  position:absolute;
+  left:0;
+  bottom:-2px;
+  height:2px;
+  width:24px;
+  border-radius:2px;
+  background:#7FE6CF;
+  box-shadow:0 0 12px rgba(127,230,207,.45);
+  transform:translateX(0);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .45s cubic-bezier(.22,.8,.28,1), width .45s cubic-bezier(.22,.8,.28,1), opacity .3s ease;
+  will-change:transform, width;
+}
+.ps-nav-ink.is-on { opacity:1; }
 .ps-site-nav .ps-nav-link,
 .ps-site-nav .ps-news-nav-btn {
-  color:rgba(255,255,255,.72) !important;
+  color:rgba(255,255,255,.62) !important;
   opacity:1 !important;
   font-weight:500 !important;
-  transition:color .25s, background .25s, box-shadow .25s;
+  transition:color .3s ease;
+}
+.ps-site-nav .ps-nav-link:hover,
+.ps-site-nav .ps-news-nav-btn:hover {
+  color:rgba(255,255,255,.92) !important;
 }
 .ps-site-nav .ps-nav-link.is-active,
 .ps-site-nav .ps-news-nav-btn.is-active {
   color:#ffffff !important;
-  font-weight:700 !important;
-  background:rgba(255,255,255,.2) !important;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
+  font-weight:600 !important;
+  background:transparent !important;
+  box-shadow:none !important;
 }
 #ps-announce-bar {
   transition:opacity .35s, transform .35s !important;
@@ -131,6 +153,9 @@ input, textarea, button, select { font-family:inherit; }
   transform:translateY(12px);
   pointer-events:none;
   transition:opacity .35s, transform .35s;
+}
+@media(max-width:1023px){
+  .ps-nav-ink { display:none !important; }
 }
 .ps-news-dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px); background:#fff; border-radius:12px; box-shadow:0 12px 36px rgba(0,82,81,.18); border:1px solid rgba(0,82,81,.08); min-width:160px; overflow:hidden; z-index:300; transition:opacity .2s, transform .2s, visibility .2s; pointer-events:none; }
 .ps-news-nav:hover .ps-news-dropdown { visibility:visible; opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
@@ -256,7 +281,8 @@ input, textarea, button, select { font-family:inherit; }
     <a href="#top" class="ps-logo" aria-label="PHAMA SQUARE">
       <img src="./assets/logo-h-dark.png" alt="PHAMA SQUARE" style="height:100%; width:auto; max-width:none;" />
     </a>
-    <div style="display:flex; align-items:center; gap:22px; margin-left:clamp(32px,4vw,64px);" class="ps-desktop-nav">
+    <div class="ps-desktop-nav ps-nav-track" id="ps-nav-track" style="margin-left:clamp(32px,4vw,64px);">
+      <span class="ps-nav-ink" id="ps-nav-ink" aria-hidden="true"></span>
       <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
         <a href="{{ item.href }}" target="{{ item.target }}" data-nav-key="{{ item.key }}" class="ps-nav-link{{ item.activeClass }}" style="{{ item.style }}">{{ item.label }}</a>
       </sc-for>
@@ -1909,11 +1935,12 @@ class Component extends DCLogic {
   var SECTION_IDS = ['top', 'gallery', 'about', 'brands', 'partnership', 'news', 'location'];
   var activeId = '';
   var compact = false;
-  var io = null;
 
   function navEl() { return document.getElementById('ps-site-nav'); }
   function barEl() { return document.getElementById('ps-announce-bar'); }
   function topBtn() { return document.querySelector('.ps-scroll-top'); }
+  function trackEl() { return document.getElementById('ps-nav-track'); }
+  function inkEl() { return document.getElementById('ps-nav-ink'); }
 
   function setCompact(on) {
     if (compact === on) return;
@@ -1924,47 +1951,44 @@ class Component extends DCLogic {
     if (nav) nav.setAttribute('data-compact', on ? '1' : '0');
     if (bar) bar.setAttribute('data-hidden', on ? '1' : '0');
     if (btn) btn.setAttribute('data-show', on ? '1' : '0');
+    // height change shifts link positions — remeasure ink
+    requestAnimationFrame(moveInk);
+  }
+
+  function moveInk() {
+    var track = trackEl();
+    var ink = inkEl();
+    if (!track || !ink) return;
+    var target = track.querySelector('[data-nav-key="' + (activeId || 'top') + '"]');
+    if (!target || window.innerWidth < 1024) {
+      ink.classList.remove('is-on');
+      return;
+    }
+    var tr = track.getBoundingClientRect();
+    var r = target.getBoundingClientRect();
+    var x = r.left - tr.left;
+    var w = Math.max(18, r.width);
+    ink.style.width = w + 'px';
+    ink.style.transform = 'translateX(' + x + 'px)';
+    ink.classList.add('is-on');
   }
 
   function setActive(id) {
     if (!id) id = 'top';
-    if (activeId === id) return;
+    var changed = activeId !== id;
     activeId = id;
     var nodes = document.querySelectorAll('[data-nav-key]');
     for (var i = 0; i < nodes.length; i++) {
       var n = nodes[i];
-      var on = n.getAttribute('data-nav-key') === id;
-      if (on) n.classList.add('is-active');
+      if (n.getAttribute('data-nav-key') === id) n.classList.add('is-active');
       else n.classList.remove('is-active');
     }
-  }
-
-  function pickActiveFromIO(entries) {
-    // Prefer the section closest to the upper third of the viewport
-    var best = null;
-    var bestDist = Infinity;
-    var marker = window.innerHeight * 0.28;
-    for (var i = 0; i < SECTION_IDS.length; i++) {
-      var el = document.getElementById(SECTION_IDS[i]);
-      if (!el) continue;
-      var r = el.getBoundingClientRect();
-      if (r.bottom < 80 || r.top > window.innerHeight) continue;
-      var dist = Math.abs(r.top - marker);
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = SECTION_IDS[i];
-      }
-    }
-    if (best) setActive(best);
-  }
-
-  function onScrollCompact() {
-    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-    setCompact(y > 48);
+    if (changed) moveInk();
+    else requestAnimationFrame(moveInk);
   }
 
   function syncActiveNow() {
-    var y = (window.pageYOffset || document.documentElement.scrollTop || 0) + 130;
+    var y = (window.pageYOffset || document.documentElement.scrollTop || 0) + 120;
     var cur = 'top';
     for (var i = 0; i < SECTION_IDS.length; i++) {
       var id = SECTION_IDS[i];
@@ -1976,24 +2000,9 @@ class Component extends DCLogic {
     setActive(cur);
   }
 
-  function wireIO() {
-    if (io) { try { io.disconnect(); } catch (e) {} }
-    if (!('IntersectionObserver' in window)) {
-      syncActiveNow();
-      return;
-    }
-    io = new IntersectionObserver(function () {
-      pickActiveFromIO();
-    }, {
-      root: null,
-      rootMargin: '-18% 0px -55% 0px',
-      threshold: [0, 0.15, 0.35, 0.55, 0.8]
-    });
-    for (var i = 0; i < SECTION_IDS.length; i++) {
-      var el = document.getElementById(SECTION_IDS[i]);
-      if (el) io.observe(el);
-    }
-    syncActiveNow();
+  function onScrollCompact() {
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    setCompact(y > 48);
   }
 
   var ticking = false;
@@ -2011,23 +2020,28 @@ class Component extends DCLogic {
     activeId = '';
     compact = false;
     onScrollCompact();
-    wireIO();
+    syncActiveNow();
+    moveInk();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function () { wireIO(); onScrollCompact(); });
+    window.addEventListener('resize', function () {
+      syncActiveNow();
+      onScrollCompact();
+      moveInk();
+    });
     window.addEventListener('hashchange', function () {
-      setTimeout(function () { syncActiveNow(); onScrollCompact(); }, 40);
+      setTimeout(function () { syncActiveNow(); onScrollCompact(); moveInk(); }, 50);
     });
     window.addEventListener('ps-nav-boot', function () {
-      setTimeout(function () { wireIO(); onScrollCompact(); }, 50);
-      setTimeout(function () { syncActiveNow(); }, 400);
+      setTimeout(function () { syncActiveNow(); onScrollCompact(); moveInk(); }, 60);
+      setTimeout(moveInk, 400);
     });
     window.addEventListener('ps-nav-refresh', function () {
       activeId = '';
       syncActiveNow();
       onScrollCompact();
+      moveInk();
     });
 
-    // If React rebuilds nav links, re-stamp active after DOM settles
     var nav = navEl();
     if (nav && 'MutationObserver' in window) {
       var t = null;
@@ -2037,7 +2051,8 @@ class Component extends DCLogic {
           var keep = activeId;
           activeId = '';
           setActive(keep || 'top');
-        }, 30);
+          moveInk();
+        }, 40);
       });
       mo.observe(nav, { childList: true, subtree: true });
     }
