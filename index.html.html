@@ -238,6 +238,14 @@ input, textarea, button, select { font-family:inherit; }
       <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
         <a href="{{ item.href }}" target="{{ item.target }}" class="ps-nav-link" style="{{ item.style }}">{{ item.label }}</a>
       </sc-for>
+      <div class="ps-news-nav" style="display:flex; align-items:center;">
+        <button class="ps-news-nav-btn" style="{{ eventNavBtnStyle }}">{{ eventLabel }}<span style="font-size:8px; opacity:.5; margin-left:3px; line-height:1;">▾</span></button>
+        <div class="ps-news-dropdown" style="min-width:180px;">
+          <sc-for list="{{ eventDropItems }}" as="ei" hint-placeholder-count="1">
+            <a href="{{ ei.href }}" target="{{ ei.target }}" style="display:flex; align-items:center; justify-content:center; padding:13px 24px; font-size:13px; font-weight:500; color:#2B3A3C; border-bottom:1px solid #EEF3F3; white-space:nowrap; text-decoration:none; transition:background .15s;" style-hover="background:#F4F8F8; color:#005251;">{{ ei.label }}</a>
+          </sc-for>
+        </div>
+      </div>
     </div>
     <div style="display:flex; align-items:center; gap:10px; margin-left:20px;" class="ps-desktop-nav">
       <div class="ps-news-nav" style="display:flex; align-items:center;">
@@ -289,6 +297,12 @@ input, textarea, button, select { font-family:inherit; }
         <a href="{{ item.href }}" target="{{ item.target }}" onClick="{{ closeMenu }}" style="{{ item.drawerStyle }}">
           <span style="font-size:15px; font-weight:{{ item.drawerWeight }}; letter-spacing:0.1em; color:{{ item.drawerColor }};">{{ item.label }}</span>
           <span style="font-size:14px; color:{{ item.drawerChevron }};">›</span>
+        </a>
+      </sc-for>
+      <sc-for list="{{ eventDropItems }}" as="ei" hint-placeholder-count="1">
+        <a href="{{ ei.href }}" target="{{ ei.target }}" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff; text-decoration:none;">
+          <span style="font-size:15px; font-weight:500; letter-spacing:0.1em;">{{ ei.label }}</span>
+          <span style="font-size:14px; color:rgba(255,255,255,.3);">›</span>
         </a>
       </sc-for>
       <a href="https://steady-zabaione-c7993b.netlify.app/index.html" target="_blank" rel="noopener" onClick="{{ closeMenu }}" style="display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.07); color:#fff;">
@@ -1728,6 +1742,14 @@ class Component extends DCLogic {
       label,
       href: './board.dc.html#' + newsCatKeys[i]
     }));
+    const eventLabelMap = { ko:'EVENT', en:'EVENT', zh:'EVENT' };
+    const eventDropMap = [
+      {
+        label: ({ ko:'구로점 오픈 이벤트', en:'Guro Open Event', zh:'九老店开业活动' })[lang] || '구로점 오픈 이벤트',
+        href: './event.html',
+        target: '_blank'
+      }
+    ];
     const navItems = navDefs.map(d => ({
       href: d.href, label: d.label, target: d.target||'',
       style: 'font-size:13px; letter-spacing:0.14em; transition:color .2s;',
@@ -1737,6 +1759,7 @@ class Component extends DCLogic {
       drawerChevron: 'rgba(255,255,255,.3)'
     }));
     const newsNavBtnStyle = 'display:flex; align-items:center; gap:2px; font-size:13px; letter-spacing:0.14em; background:none; border:none; cursor:pointer; padding:4px 0; transition:color .2s;';
+    const eventNavBtnStyle = newsNavBtnStyle;
 
     const langOptions = [
       { id:'ko', label:'KO', flag:'🇰🇷' },
@@ -1803,6 +1826,9 @@ class Component extends DCLogic {
       newsLabel: newsLabelMap[lang] || 'NEWS',
       newsDropItems: newsDropMap,
       newsNavBtnStyle,
+      eventLabel: eventLabelMap[lang] || 'EVENT',
+      eventDropItems: eventDropMap,
+      eventNavBtnStyle,
       currentLangCode, langDropItems, langDropdownStyle, toggleLangDropdown,
       barStyle, navStyle, drawerStyle, navItems, langButtons,
       toggleMenu: this.toggleMenu, closeMenu: this.closeMenu,
