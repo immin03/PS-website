@@ -95,6 +95,60 @@ input,textarea,select,button{font-family:inherit;}
           </div>
         </sc-for>
       </div>
+
+      <div style="background:#fff; border-radius:12px; padding:22px 24px; box-shadow:0 1px 4px rgba(0,0,0,.04); margin-bottom:24px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+          <div>
+            <div style="font-size:15px; font-weight:700; color:#10181E;">방문자 통계</div>
+            <div style="margin-top:3px; font-size:12px; color:#8B9A9C;">가비아 API 연동 불가 · 배포 이후부터 자체 집계 (쿠키 기준 일별 순방문자)</div>
+          </div>
+          <button type="button" onClick="{{ refreshVisits }}" class="ab" style="height:34px; padding:0 14px; background:#F0F2F4; color:#46585A; font-size:12px;" style-hover="background:#E3EAEA;">↻ 새로고침</button>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;" class="g3">
+          <div style="background:#F4F8F8; border-radius:10px; padding:14px 16px;">
+            <div style="font-size:11px; font-weight:600; color:#8B9A9C; letter-spacing:0.06em;">오늘 방문자</div>
+            <div style="margin-top:6px; font-size:26px; font-weight:700; color:#005251;">{{ todayVisitors }}</div>
+          </div>
+          <div style="background:#F4F8F8; border-radius:10px; padding:14px 16px;">
+            <div style="font-size:11px; font-weight:600; color:#8B9A9C; letter-spacing:0.06em;">오늘 페이지뷰</div>
+            <div style="margin-top:6px; font-size:26px; font-weight:700; color:#005251;">{{ todayPageviews }}</div>
+          </div>
+          <div style="background:#F4F8F8; border-radius:10px; padding:14px 16px;">
+            <div style="font-size:11px; font-weight:600; color:#8B9A9C; letter-spacing:0.06em;">누적 방문자</div>
+            <div style="margin-top:6px; font-size:26px; font-weight:700; color:#005251;">{{ totalVisitors }}</div>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:13px; min-width:480px;">
+            <thead>
+              <tr style="border-bottom:1px solid #E6EDEB; text-align:left; color:#8B9A9C; font-size:11px; font-weight:600; letter-spacing:0.06em;">
+                <th style="padding:8px 6px;">날짜</th>
+                <th style="padding:8px 6px; text-align:right;">방문자</th>
+                <th style="padding:8px 6px; text-align:right;">페이지뷰</th>
+                <th style="padding:8px 6px; text-align:right;">메인</th>
+                <th style="padding:8px 6px; text-align:right;">이벤트</th>
+                <th style="padding:8px 6px; text-align:right;">소식</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ visitRows }}" as="vr" hint-placeholder-count="5">
+                <tr style="border-bottom:1px solid #F0F2F4;">
+                  <td style="padding:10px 6px; font-weight:600; color:#10181E;">{{ vr.date }}</td>
+                  <td style="padding:10px 6px; text-align:right; font-weight:700; color:#005251;">{{ vr.visitors }}</td>
+                  <td style="padding:10px 6px; text-align:right; color:#46585A;">{{ vr.pageviews }}</td>
+                  <td style="padding:10px 6px; text-align:right; color:#7C938F;">{{ vr.home }}</td>
+                  <td style="padding:10px 6px; text-align:right; color:#7C938F;">{{ vr.event }}</td>
+                  <td style="padding:10px 6px; text-align:right; color:#7C938F;">{{ vr.board }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <sc-if value="{{ visitsEmpty }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:28px 8px; text-align:center; color:#8B9A9C; font-size:13px;">아직 집계된 방문이 없습니다. 사이트 접속부터 카운트가 시작됩니다.</div>
+          </sc-if>
+        </div>
+      </div>
+
       <div style="display:flex; flex-direction:column; gap:8px;">
         <sc-for list="{{ adminPosts }}" as="p" hint-placeholder-count="4">
           <div class="ar">
@@ -215,6 +269,7 @@ class Component extends DCLogic {
     view: 'list',
     editId: null,
     adminCategory: 'all',
+    visitStats: null,
     form: {
       category: 'notice', date: '', pinned: false, active: true,
       titleKo: '', titleEn: '', titleZh: '',
@@ -235,7 +290,15 @@ class Component extends DCLogic {
         this.setState({ posts });
       })
       .catch(() => this.setState({ posts: this._load() }));
+    if (loggedIn) this.loadVisitStats();
   }
+
+  loadVisitStats = () => {
+    fetch('./visits.php?action=stats&pw=' + encodeURIComponent(this.ADMIN_PW) + '&t=' + Date.now())
+      .then(r => r.json())
+      .then(j => { if (j && j.ok) this.setState({ visitStats: j }); })
+      .catch(() => {});
+  };
 
   _load() {
     try { return JSON.parse(localStorage.getItem('ps_posts') || '[]'); } catch(e) { return []; }
@@ -256,6 +319,7 @@ class Component extends DCLogic {
     if (this.state.loginPw === this.ADMIN_PW) {
       sessionStorage.setItem('ps_admin', '1');
       this.setState({ loggedIn: true, loginError: false });
+      this.loadVisitStats();
     } else {
       this.setState({ loginError: true });
     }
@@ -351,7 +415,7 @@ class Component extends DCLogic {
   toggleActive = () => this.setState(s => ({ form: { ...s.form, active: !s.form.active } }));
 
   renderVals() {
-    const { loggedIn, posts, view, form, adminCategory, loginError, loginPw } = this.state;
+    const { loggedIn, posts, view, form, adminCategory, loginError, loginPw, visitStats } = this.state;
     const catLabel = { notice: '공지사항', press: '언론보도', hr: '채용공고' };
     const catColor = { notice: '#005251', press: '#007a73', hr: '#01C0A4' };
 
@@ -363,6 +427,15 @@ class Component extends DCLogic {
       return 'height:36px; padding:0 16px; border-radius:40px; border:1px solid ' + (on?'#005251':'#D5E0E0') + '; background:' + (on?'#005251':'#fff') + '; color:' + (on?'#fff':'#46585A') + '; font-size:13px; font-weight:' + (on?'600':'400') + '; cursor:pointer; transition:.2s; white-space:nowrap;';
     };
     const toggleBtn = (on) => 'height:36px; padding:0 16px; border-radius:40px; border:1.5px solid ' + (on?'#01C0A4':'#D5E0E0') + '; background:' + (on?'rgba(1,192,164,.1)':'#fff') + '; color:' + (on?'#005251':'#46585A') + '; font-size:13px; font-weight:500; cursor:pointer; transition:.2s;';
+
+    const visitRows = (visitStats && Array.isArray(visitStats.days) ? visitStats.days : []).slice(0, 60).map(d => ({
+      date: d.date,
+      visitors: d.visitors,
+      pageviews: d.pageviews,
+      home: d.home || 0,
+      event: d.event || 0,
+      board: d.board || 0
+    }));
 
     return {
       isLogin: !loggedIn,
@@ -415,7 +488,13 @@ class Component extends DCLogic {
         { label: '공지사항', value: counts.notice },
         { label: '언론보도', value: counts.press },
         { label: '채용공고', value: counts.hr }
-      ]
+      ],
+      todayVisitors: visitStats ? visitStats.todayVisitors : '—',
+      todayPageviews: visitStats ? visitStats.todayPageviews : '—',
+      totalVisitors: visitStats ? visitStats.totalVisitors : '—',
+      visitRows,
+      visitsEmpty: visitRows.length === 0,
+      refreshVisits: () => this.loadVisitStats()
     };
   }
 }

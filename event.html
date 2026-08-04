@@ -905,6 +905,32 @@ input, textarea, button, select { font-family:inherit; }
 </div>
 </sc-if>
 
+<!-- 방문자 통계 -->
+<sc-if value="{{ tabVisits }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:1000px; margin:20px auto 0; padding:0 20px;">
+<div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+<div><div style="font-size:14px; font-weight:700;">방문자 통계</div><div style="margin-top:3px; font-size:12px; color:#9DB3B1;">배포 이후부터 자체 집계 · 쿠키 기준 일별 순방문자</div></div>
+<button onClick="{{ refreshVisits }}" class="pz-btn" style="height:36px; padding:0 14px; border-radius:10px; background:#EFF6F4; border:1px solid #C9EFE6; color:#00786F; font-size:12.5px; font-weight:700; cursor:pointer;">↻ 새로고침</button>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr)); gap:10px; margin-bottom:14px;">
+<div style="padding:14px 16px; background:#fff; border:1px solid #E6EDEB; border-radius:14px;"><div style="font-size:12px; color:#7C938F; font-weight:600;">오늘 방문자</div><div style="margin-top:6px; font-size:24px; font-weight:800;">{{ todayVisitors }}</div></div>
+<div style="padding:14px 16px; background:#fff; border:1px solid #E6EDEB; border-radius:14px;"><div style="font-size:12px; color:#7C938F; font-weight:600;">오늘 페이지뷰</div><div style="margin-top:6px; font-size:24px; font-weight:800;">{{ todayPageviews }}</div></div>
+<div style="padding:14px 16px; background:#fff; border:1px solid #E6EDEB; border-radius:14px;"><div style="font-size:12px; color:#7C938F; font-weight:600;">누적 방문자</div><div style="margin-top:6px; font-size:24px; font-weight:800;">{{ totalVisitors }}</div></div>
+</div>
+<div style="overflow-x:auto; background:#fff; border:1px solid #E6EDEB; border-radius:14px;">
+<table style="width:100%; border-collapse:collapse; font-size:13px; min-width:460px;">
+<thead><tr style="border-bottom:1px solid #E6EDEB; color:#9DB3B1; font-size:11.5px; text-align:left;"><th style="padding:10px 12px;">날짜</th><th style="padding:10px 12px; text-align:right;">방문자</th><th style="padding:10px 12px; text-align:right;">페이지뷰</th><th style="padding:10px 12px; text-align:right;">메인</th><th style="padding:10px 12px; text-align:right;">이벤트</th><th style="padding:10px 12px; text-align:right;">소식</th></tr></thead>
+<tbody>
+<sc-for list="{{ visitRows }}" as="vr" hint-placeholder-count="5">
+<tr style="border-bottom:1px solid #F1F5F4;"><td style="padding:11px 12px; font-weight:700;">{{ vr.date }}</td><td style="padding:11px 12px; text-align:right; font-weight:800; color:#00786F;">{{ vr.visitors }}</td><td style="padding:11px 12px; text-align:right;">{{ vr.pageviews }}</td><td style="padding:11px 12px; text-align:right; color:#9DB3B1;">{{ vr.home }}</td><td style="padding:11px 12px; text-align:right; color:#9DB3B1;">{{ vr.event }}</td><td style="padding:11px 12px; text-align:right; color:#9DB3B1;">{{ vr.board }}</td></tr>
+</sc-for>
+</tbody>
+</table>
+<sc-if value="{{ visitsEmpty }}" hint-placeholder-val="{{ true }}"><div style="padding:36px; text-align:center; color:#9DB3B1; font-size:13.5px;">아직 집계된 방문이 없습니다.</div></sc-if>
+</div>
+</div>
+</sc-if>
+
 <!-- 데이터 관리 -->
 <sc-if value="{{ tabData }}" hint-placeholder-val="{{ false }}">
 <div style="max-width:1000px; margin:20px auto 0; padding:0 20px;">
@@ -1030,6 +1056,7 @@ class Component extends DCLogic {
     result: null, confirmKind: '',
     adminAuthed: false, adminPw: '', adminTab: 'reviews', verifyCode: '', verifyResult: null, previewRoulette: false,
     reviewSearch: '', adminOpenDate: '', adminInstaUrl: '', adminInstaReward: '',
+    visitStats: null,
     reviews: [], members: [], eventStatus: {}, roulettePrizes: [], gameBrands: [],
     gateEnabled: false, gateUnlocked: false, gatePw: '',
   };
@@ -1343,6 +1370,7 @@ class Component extends DCLogic {
     });
     if (!this.S('gateEnabled', true)) this.onHomeShown();
     this.syncCountdown();
+    try { fetch('./visits.php?action=hit&page=event&t=' + Date.now()).catch(() => {}); } catch (e) {}
     // referral is handled server-side ONLY (credits the SHARER, not the visitor)
     try { const ref0 = new URLSearchParams(location.search).get('ref'); const rid = ref0 ? String(ref0).replace(/\D/g,'') : ''; if (rid) this.W('pendingRef', rid); } catch (e) {}
     this.detectServer().then((on) => {
@@ -1637,6 +1665,7 @@ class Component extends DCLogic {
   }
   adminLogin() { if (this.state.adminPw === this.adminPassword()) { this.setState({ adminAuthed: true, adminPw: '' }); this.adminLoadAll(); } else this.toast('비밀번호가 올바르지 않습니다.'); }
   async adminLoadAll() {
+    this.loadVisitStats();
     if (!this.serverOn) return;
     try {
       const j = await this.apiGet('action=all&pw=1234');
@@ -1644,6 +1673,12 @@ class Component extends DCLogic {
       const membersArr = j.members ? Object.keys(j.members).map(k => j.members[k]) : [];
       this.setState({ srvReviews: j.reviews || [], srvMembers: membersArr, srvReferrals: j.referrals || [], srvLoaded: true });
     } catch (e) {}
+  }
+  loadVisitStats() {
+    fetch('./visits.php?action=stats&pw=' + encodeURIComponent(this.adminPassword()) + '&t=' + Date.now())
+      .then(r => r.json())
+      .then(j => { if (j && j.ok) this.setState({ visitStats: j }); })
+      .catch(() => {});
   }
   adminLogout() { this.setState({ adminAuthed: false }); this.go('home'); }
   deleteReview(i) { const arr = this.S('reviews', []).slice(); arr.splice(i, 1); this.W('reviews', arr); this.setState({ reviews: arr }); this.toast('기대평을 삭제했어요.'); }
@@ -2030,7 +2065,11 @@ class Component extends DCLogic {
       { label: '게임 참여', value: srvUp ? memberSource.reduce((n, m) => n + (parseInt(m.playsTotal, 10) || 0), 0) : glog.length },
       { label: '공유 유입', value: (s.serverOn && s.srvLoaded) ? s.srvReferrals.length : this.S('reflog', []).length },
     ];
-    const tabDefs = [['manual','운영 안내'],['reviews','기대평·회원'],['members','회원 명단'],['coupons','발급 쿠폰'],['game','게임 관리'],['stamps','스탬프 기록'],['verify','코드 확인'],['roulette','룰렛 혜택'],['settings','설정'],['data','데이터']];
+    const tabDefs = [['manual','운영 안내'],['visits','방문자'],['reviews','기대평·회원'],['members','회원 명단'],['coupons','발급 쿠폰'],['game','게임 관리'],['stamps','스탬프 기록'],['verify','코드 확인'],['roulette','룰렛 혜택'],['settings','설정'],['data','데이터']];
+    const visitRows = (s.visitStats && Array.isArray(s.visitStats.days) ? s.visitStats.days : []).slice(0, 60).map(d => ({
+      date: d.date, visitors: d.visitors, pageviews: d.pageviews,
+      home: d.home || 0, event: d.event || 0, board: d.board || 0
+    }));
     const _cq = (s.couponSearch || '').trim().toLowerCase();
     const _cpool = _cq ? allCoupons.filter(c => ((c.code||'')+' '+(c.title||'')+' '+(c.who||'')+' '+(c.brand||'')).toLowerCase().includes(_cq)) : allCoupons;
     const couponAdminRows = _cpool.slice().reverse().map(c => ({ name: c.title || '', who: c.who || '게스트', code: c.code || '', date: this.fmtDate(c.ts), brand: c.brand || '', source: c.source || '',
@@ -2278,13 +2317,18 @@ class Component extends DCLogic {
       adminLocked: !s.adminAuthed, adminOpen: s.adminAuthed,
       adminPw: s.adminPw, onAdminPw: e => this.setState({ adminPw: e.target.value }), onAdminKey: e => { if (e.key === 'Enter') this.adminLogin(); },
       adminLogin: () => this.adminLogin(), adminLogout: () => this.adminLogout(), statCards, adminTabs,
+      todayVisitors: s.visitStats ? s.visitStats.todayVisitors : '—',
+      todayPageviews: s.visitStats ? s.visitStats.todayPageviews : '—',
+      totalVisitors: s.visitStats ? s.visitStats.totalVisitors : '—',
+      visitRows, visitsEmpty: visitRows.length === 0,
+      refreshVisits: () => this.loadVisitStats(),
       serverOn: s.serverOn, srvLoaded: s.serverOn && s.srvLoaded,
       serverBadge: s.serverOn ? '🟢 서버 연결됨' : '🔴 오프라인(이 기기 저장)',
       serverBadgeStyle: 'font-size:11.5px; font-weight:700; padding:4px 11px; border-radius:40px; background:' + (s.serverOn ? '#E6F7F2' : '#FBF3EF') + '; color:' + (s.serverOn ? '#00786F' : '#C4573B') + ';',
       referralCount: (s.serverOn && s.srvLoaded) ? s.srvReferrals.length : this.S('reflog', []).length,
       adminRefresh: () => this.adminLoadAll(),
       previewRoulette: () => this.setState({ previewRoulette: true, view: 'roulette' }, () => { try { window.scrollTo(0,0); } catch (e) {} }),
-      tabManual: s.adminTab === 'manual', tabReviews: s.adminTab === 'reviews', tabMembersList: s.adminTab === 'members', tabCoupons: s.adminTab === 'coupons', tabGame: s.adminTab === 'game', tabStamps: s.adminTab === 'stamps', tabVerify: s.adminTab === 'verify', tabRoulette: s.adminTab === 'roulette', tabSettings: s.adminTab === 'settings', tabData: s.adminTab === 'data',
+      tabManual: s.adminTab === 'manual', tabVisits: s.adminTab === 'visits', tabReviews: s.adminTab === 'reviews', tabMembersList: s.adminTab === 'members', tabCoupons: s.adminTab === 'coupons', tabGame: s.adminTab === 'game', tabStamps: s.adminTab === 'stamps', tabVerify: s.adminTab === 'verify', tabRoulette: s.adminTab === 'roulette', tabSettings: s.adminTab === 'settings', tabData: s.adminTab === 'data',
       couponAdminRows, couponAdminCount: _cpool.length, hasCouponAdmin: _cpool.length > 0, couponSearch: s.couponSearch || '', onCouponSearch: e => this.setState({ couponSearch: e.target.value }), noCouponAdmin: allCoupons.length === 0, exportCoupons: () => this.exportCoupons(),
       reviewSearch: s.reviewSearch, onReviewSearch: e => this.setState({ reviewSearch: e.target.value }),
       reviewCount: filtered.length, hasReviews: filtered.length > 0, noReviews: filtered.length === 0, reviewRows, exportReviews: () => this.exportReviews(),

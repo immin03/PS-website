@@ -1055,6 +1055,7 @@ class Component extends DCLogic {
       if (Array.isArray(ps) && ps.length) this.setState({ newsPosts: ps });
     } catch(e) {}
     this._loadNewsPosts();
+    try { fetch('./visits.php?action=hit&page=home&t=' + Date.now()).catch(() => {}); } catch (e) {}
 
     // Nav is fixed only — no section tracking.
 
