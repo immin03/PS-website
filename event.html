@@ -656,7 +656,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="max-width:1000px; margin:0 auto; padding:26px 20px 60px;">
 <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
 <h2 style="font-size:24px; font-weight:800; letter-spacing:-.02em;">관리자 대시보드</h2>
-<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"><span style="{{ serverBadgeStyle }}">{{ serverBadge }}</span><sc-if value="{{ serverOn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ adminRefresh }}" class="pz-btn" style="height:34px; padding:0 13px; border-radius:40px; background:#EFF6F4; border:1px solid #C9EFE6; color:#00786F; font-size:12.5px; font-weight:700; cursor:pointer;">↻ 새로고침</button></sc-if><button onClick="{{ adminLogout }}" class="pz-btn" style="height:34px; padding:0 15px; border-radius:40px; background:#fff; border:1px solid #D3E0DD; color:#5C7570; font-size:12.5px; font-weight:600; cursor:pointer;">로그아웃</button></div>
+<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"><span style="{{ serverBadgeStyle }}">{{ serverBadge }}</span><button onClick="{{ adminRefresh }}" class="pz-btn" style="height:34px; padding:0 13px; border-radius:40px; background:#EFF6F4; border:1px solid #C9EFE6; color:#00786F; font-size:12.5px; font-weight:700; cursor:pointer;">↻ 서버 다시 연결</button><button onClick="{{ adminLogout }}" class="pz-btn" style="height:34px; padding:0 15px; border-radius:40px; background:#fff; border:1px solid #D3E0DD; color:#5C7570; font-size:12.5px; font-weight:600; cursor:pointer;">로그아웃</button></div>
 </div>
 
 <div style="margin-top:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr)); gap:12px;">
@@ -1126,10 +1126,62 @@ class Component extends DCLogic {
 
   // ---------- server sync (graceful offline fallback) ----------
   API = './events.php';
+  API_FALLBACKS = [
+    './events.php',
+    'https://www.phamasquare.com/events.php',
+    'https://phamasquare.com/events.php'
+  ];
   serverOn = false;
-  async apiGet(qs) { const r = await fetch(this.API + '?' + qs, { cache: 'no-store' }); if (!r.ok) throw new Error('http'); return r.json(); }
-  async apiPost(obj) { const r = await fetch(this.API, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: 'data=' + encodeURIComponent(JSON.stringify(obj)) }); if (!r.ok) throw new Error('http'); return r.json(); }
-  async detectServer() { try { const j = await this.apiGet('action=config'); this.serverOn = true; if (j && j.config) this.applyServerConfig(j.config); if (j && j.viewCounts) { this.W('viewCounts', j.viewCounts); this.setState({ viewCounts: j.viewCounts }); } this.setState({ serverOn: true }); this.loadPublicReviews(); if (this.state.adminAuthed) this.adminLoadAll(); return true; } catch (e) { this.serverOn = false; this.setState({ serverOn: false }); return false; } }
+  async apiGet(qs) {
+    const r = await fetch(this.API + '?' + qs + (qs ? '&' : '') + '_t=' + Date.now(), { cache: 'no-store', credentials: 'omit' });
+    if (!r.ok) throw new Error('http ' + r.status);
+    const j = await r.json();
+    if (!j || typeof j !== 'object') throw new Error('bad json');
+    return j;
+  }
+  async apiPost(obj) {
+    const r = await fetch(this.API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: 'data=' + encodeURIComponent(JSON.stringify(obj)),
+      cache: 'no-store',
+      credentials: 'omit'
+    });
+    if (!r.ok) throw new Error('http ' + r.status);
+    return r.json();
+  }
+  async probeApi(url) {
+    const r = await fetch(url + '?action=config&_t=' + Date.now(), { cache: 'no-store', credentials: 'omit' });
+    if (!r.ok) throw new Error('http');
+    const j = await r.json();
+    if (!j || typeof j !== 'object') throw new Error('bad json');
+    return j;
+  }
+  async detectServer(opts) {
+    const skipAdmin = !!(opts && opts.skipAdmin);
+    const tried = [];
+    const list = this.API_FALLBACKS.slice();
+    // Prefer same-origin first, then absolute Gabia hosts
+    for (let i = 0; i < list.length; i++) {
+      const url = list[i];
+      if (tried.indexOf(url) >= 0) continue;
+      tried.push(url);
+      try {
+        const j = await this.probeApi(url);
+        this.API = url;
+        this.serverOn = true;
+        if (j && j.config) this.applyServerConfig(j.config);
+        if (j && j.viewCounts) { this.W('viewCounts', j.viewCounts); this.setState({ viewCounts: j.viewCounts }); }
+        this.setState({ serverOn: true });
+        this.loadPublicReviews();
+        if (this.state.adminAuthed && !skipAdmin) this.adminLoadAll();
+        return true;
+      } catch (e) {}
+    }
+    this.serverOn = false;
+    this.setState({ serverOn: false });
+    return false;
+  }
   async loadPublicReviews() { try { const j = await this.apiGet('action=reviews'); if (j && Array.isArray(j.reviews)) this.setState({ srvReviews: j.reviews, srvLoaded: true }); } catch (e) {} }
   applyServerConfig(cfg) {
     try {
@@ -1663,19 +1715,32 @@ class Component extends DCLogic {
     } catch (e) { lines.push('재확인 실패 → ' + e.message); }
     this.setState({ diagText: lines.join('\n') });
   }
-  adminLogin() { if (this.state.adminPw === this.adminPassword()) { this.setState({ adminAuthed: true, adminPw: '' }); this.adminLoadAll(); } else this.toast('비밀번호가 올바르지 않습니다.'); }
-  async adminLoadAll() {
+  adminLogin() { if (this.state.adminPw === this.adminPassword()) { this.setState({ adminAuthed: true, adminPw: '' }); this.adminLoadAll(true); } else this.toast('비밀번호가 올바르지 않습니다.'); }
+  async adminLoadAll(forceReconnect) {
+    const wasOff = !this.serverOn;
+    if (forceReconnect || !this.serverOn) {
+      const on = await this.detectServer({ skipAdmin: true });
+      if (!on) {
+        this.toast('서버에 연결되지 않았습니다. 주소창이 www.phamasquare.com 인지 확인하세요.');
+        this.loadVisitStats();
+        return;
+      }
+    }
     this.loadVisitStats();
-    if (!this.serverOn) return;
     try {
-      const j = await this.apiGet('action=all&pw=1234');
+      const j = await this.apiGet('action=all&pw=' + encodeURIComponent(this.adminApiPw()));
       if (!j) return;
       const membersArr = j.members ? Object.keys(j.members).map(k => j.members[k]) : [];
       this.setState({ srvReviews: j.reviews || [], srvMembers: membersArr, srvReferrals: j.referrals || [], srvLoaded: true });
-    } catch (e) {}
+      if (forceReconnect || wasOff) this.toast('서버 연결됨 · 회원 ' + membersArr.length + ' · 기대평 ' + (j.reviews || []).length);
+    } catch (e) {
+      this.toast('서버 데이터를 불러오지 못했습니다. 다시 연결을 눌러주세요.');
+    }
   }
+  adminApiPw() { return '1234'; }
   loadVisitStats() {
-    fetch('./visits.php?action=stats&pw=' + encodeURIComponent(this.adminPassword()) + '&t=' + Date.now())
+    const base = (this.API || './events.php').replace(/events\.php$/i, 'visits.php');
+    fetch(base + '?action=stats&pw=' + encodeURIComponent(this.adminPassword()) + '&t=' + Date.now(), { cache: 'no-store' })
       .then(r => r.json())
       .then(j => { if (j && j.ok) this.setState({ visitStats: j }); })
       .catch(() => {});
@@ -2326,7 +2391,7 @@ class Component extends DCLogic {
       serverBadge: s.serverOn ? '🟢 서버 연결됨' : '🔴 오프라인(이 기기 저장)',
       serverBadgeStyle: 'font-size:11.5px; font-weight:700; padding:4px 11px; border-radius:40px; background:' + (s.serverOn ? '#E6F7F2' : '#FBF3EF') + '; color:' + (s.serverOn ? '#00786F' : '#C4573B') + ';',
       referralCount: (s.serverOn && s.srvLoaded) ? s.srvReferrals.length : this.S('reflog', []).length,
-      adminRefresh: () => this.adminLoadAll(),
+      adminRefresh: () => this.adminLoadAll(true),
       previewRoulette: () => this.setState({ previewRoulette: true, view: 'roulette' }, () => { try { window.scrollTo(0,0); } catch (e) {} }),
       tabManual: s.adminTab === 'manual', tabVisits: s.adminTab === 'visits', tabReviews: s.adminTab === 'reviews', tabMembersList: s.adminTab === 'members', tabCoupons: s.adminTab === 'coupons', tabGame: s.adminTab === 'game', tabStamps: s.adminTab === 'stamps', tabVerify: s.adminTab === 'verify', tabRoulette: s.adminTab === 'roulette', tabSettings: s.adminTab === 'settings', tabData: s.adminTab === 'data',
       couponAdminRows, couponAdminCount: _cpool.length, hasCouponAdmin: _cpool.length > 0, couponSearch: s.couponSearch || '', onCouponSearch: e => this.setState({ couponSearch: e.target.value }), noCouponAdmin: allCoupons.length === 0, exportCoupons: () => this.exportCoupons(),
