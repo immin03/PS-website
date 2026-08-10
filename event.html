@@ -12,6 +12,8 @@
 <link rel="icon" type="image/png" href="./assets/favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="ext-resource-dependency" content="./assets/icon-review.png" data-resource-id="iconReview" />
+<meta name="ext-resource-dependency" content="./assets/icon-naver.png" data-resource-id="iconNaver" />
+<meta name="ext-resource-dependency" content="./assets/naver-review-poster.png" data-resource-id="naverPoster" />
 <meta name="ext-resource-dependency" content="./assets/icon-insta.png" data-resource-id="iconInsta" />
 <meta name="ext-resource-dependency" content="./assets/icon-game.png" data-resource-id="iconGame" />
 <meta name="ext-resource-dependency" content="./assets/icon-roulette.svg" data-resource-id="iconRoulette" />
@@ -74,12 +76,17 @@ input, textarea, button, select { font-family:inherit; }
 <div style="max-width:1080px; margin:0 auto; padding:0 16px; height:56px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
 <button onClick="{{ goHome }}" class="pz-btn" style="flex:none; background:none; border:none; cursor:pointer; display:flex; align-items:center;"><img src="./assets/logo-teal.png" alt="PHAMA SQUARE" style="height:22px; width:auto; max-width:150px; object-fit:contain;" /></button>
 <div style="display:flex; align-items:center; gap:6px; flex:none;">
+<div role="group" aria-label="Language" style="display:flex; align-items:center; height:32px; padding:2px; border:1px solid #D7ECE7; border-radius:40px; background:#F7FCFB;">
+<button onClick="{{ setLangKo }}" class="pz-btn" style="{{ langKoStyle }}">KO</button>
+<button onClick="{{ setLangEn }}" class="pz-btn" style="{{ langEnStyle }}">EN</button>
+<button onClick="{{ setLangZh }}" class="pz-btn" style="{{ langZhStyle }}">中</button>
+</div>
 <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
 <button onClick="{{ onProfile }}" class="pz-btn" style="flex:none; display:flex; align-items:center; gap:5px; height:32px; padding:0 8px; border-radius:40px; border:1px solid #D7ECE7; background:#F1FBF8; cursor:pointer;"><span style="width:19px; height:19px; border-radius:50%; background:#01C0A4; color:#fff; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center;">{{ profileInitial }}</span><span style="font-size:12.5px; font-weight:700; color:#00786F; max-width:60px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ profileName }}</span></button>
 <button onClick="{{ logout }}" aria-label="로그아웃" class="pz-btn" style="flex:none; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:1px solid #E6EDEB; background:#fff; color:#9DB3B1; cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
 </sc-if>
 <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
-<button onClick="{{ goLogin }}" class="pz-btn" style="flex:none; height:32px; padding:0 14px; border-radius:40px; border:none; background:#01C0A4; color:#fff; font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap;">로그인</button>
+<button onClick="{{ goLogin }}" class="pz-btn" style="flex:none; height:32px; padding:0 14px; border-radius:40px; border:none; background:#01C0A4; color:#fff; font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap;">{{ txLogin }}</button>
 </sc-if>
 <button onClick="{{ goAdmin }}" aria-label="관리자" class="pz-btn" style="width:34px; height:34px; flex:none; display:flex; align-items:center; justify-content:center; background:none; border:none; cursor:pointer; color:#9DB3B1;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2l-.3-2.5H8.7l-.3 2.5a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.3 2.5h6.6l.3-2.5a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z"/></svg></button>
 </div>
@@ -333,8 +340,8 @@ input, textarea, button, select { font-family:inherit; }
 <p style="margin-top:9px; font-size:14px; color:#7C938F; line-height:1.6; white-space:pre-line;">{{ authSubtitle }}</p>
 </div>
 <div style="margin-top:20px; display:flex; gap:6px; padding:4px; background:#F1F5F4; border-radius:14px;">
-<button onClick="{{ setLoginMode }}" class="pz-btn" style="{{ loginTabStyle }}">로그인</button>
-<button onClick="{{ setSignupMode }}" class="pz-btn" style="{{ signupTabStyle }}">회원가입</button>
+<button onClick="{{ setLoginMode }}" class="pz-btn" style="{{ loginTabStyle }}">{{ txLogin }}</button>
+<button onClick="{{ setSignupMode }}" class="pz-btn" style="{{ signupTabStyle }}">{{ txSignup }}</button>
 </div>
 <div style="margin-top:20px; display:flex; flex-direction:column; gap:15px;">
 <div><label style="display:block; font-size:13px; font-weight:600; margin-bottom:7px;">이름 <span style="color:#FF6A3D;">*</span></label><input class="pz-in" value="{{ liName }}" onInput="{{ onLiName }}" placeholder="이름을 입력하세요" style="width:100%; height:50px; padding:0 15px; border:1px solid #D8E3E0; border-radius:12px; font-size:15px; background:#fff;" /></div>
@@ -371,7 +378,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="margin-bottom:9px; padding:12px 14px; background:#F1F7F5; border:1px solid #DDEBE7; border-radius:12px;"><div style="font-size:12px; font-weight:700; color:#00786F; margin-bottom:6px;">💬 이런 걸 적어주세요</div><div style="font-size:12.5px; color:#5C7570; line-height:1.7;">· 어떤 상품·브랜드가 입점하면 좋을까요?<br>· 구로점에 가장 기대되는 점은?<br>· 어떤 혜택·서비스가 있으면 좋겠어요?<br>· 평소 약국·건강관리에서 아쉬웠던 점은?<br>· 오픈을 응원하는 한마디!</div></div>
 <textarea class="pz-in" value="{{ vText }}" onInput="{{ onVText }}" placeholder="구로점 오픈에 대한 기대평을 자유롭게 남겨주세요 :)" style="width:100%; min-height:120px; padding:13px 15px; border:1px solid #D8E3E0; border-radius:12px; font-size:15px; background:#fff; resize:vertical; line-height:1.55;"></textarea>
 <div style="margin-top:7px; text-align:right; font-size:12px; font-weight:600; color:{{ vCountColor }};">{{ vCount }} / 25자</div></div>
-<button onClick="{{ submitReview }}" class="pz-btn" style="width:100%; margin-top:12px; height:54px; border-radius:40px; background:#01C0A4; color:#fff; font-size:16px; font-weight:700; border:none; cursor:pointer; box-shadow:0 10px 24px rgba(1,192,164,.32);">기대평 제출하기</button>
+<button onClick="{{ submitReview }}" class="pz-btn" style="width:100%; margin-top:12px; height:54px; border-radius:40px; background:#01C0A4; color:#fff; font-size:16px; font-weight:700; border:none; cursor:pointer; box-shadow:0 10px 24px rgba(1,192,164,.32);">{{ txReviewSubmit }}</button>
 </sc-if>
 
 <sc-if value="{{ reviewDone }}" hint-placeholder-val="{{ false }}">
@@ -419,7 +426,16 @@ input, textarea, button, select { font-family:inherit; }
 <p style="margin-top:10px; font-size:14px; color:#7C938F; line-height:1.65;">파마스퀘어 {{ storeName }}(2호점) 오픈을 기념해 다양한 이벤트를 준비했어요.<br>참여 방법과 혜택을 한눈에 확인하세요!</p>
 </div>
 
-<div style="margin-top:24px; display:flex; flex-direction:column; gap:14px;">
+<button onClick="{{ goReadybag }}" class="pz-btn" style="width:100%; margin-top:24px; padding:18px 20px; background:linear-gradient(135deg,#E6F7F2 0%,#D4F0EA 100%); border:1.5px solid #01C0A4; border-radius:18px; cursor:pointer; text-align:left; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+<div>
+<div style="font-size:11px; font-weight:800; color:#01C0A4; letter-spacing:.04em;">READY BAG</div>
+<div style="margin-top:4px; font-size:16px; font-weight:800; color:#00786F;">레디백 획득 가이드</div>
+<div style="margin-top:5px; font-size:12.5px; color:#4E6863; line-height:1.5;">스탬프 6개 또는 15만원 이상 구매 시 받는 방법</div>
+</div>
+<span style="font-size:20px; color:#01C0A4; flex:none;">→</span>
+</button>
+
+<div style="margin-top:14px; display:flex; flex-direction:column; gap:14px;">
 <sc-for list="{{ guideSections }}" as="g" hint-placeholder-count="5">
 <div style="padding:18px 18px; background:#fff; border:1px solid #E6EDEB; border-radius:18px;">
 <div style="display:flex; align-items:center; gap:10px;">{{ g.iconEl }}<div style="font-size:16px; font-weight:800;">{{ g.title }}</div></div>
@@ -433,6 +449,74 @@ input, textarea, button, select { font-family:inherit; }
 </sc-if>
 
 <p style="margin-top:20px; text-align:center; font-size:11.5px; color:#B7C7C4; line-height:1.6;">일부 혜택·사은품은 한정 수량으로 조기 소진될 수 있으며, 세부 구성은 변경될 수 있어요.</p>
+</div>
+</sc-if>
+
+<!-- ===================== READYBAG GUIDE ===================== -->
+<sc-if value="{{ isReadybag }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:560px; margin:0 auto; padding:28px 20px 60px;">
+<button onClick="{{ goGuide }}" class="pz-btn" style="background:none; border:none; color:#9DB3B1; font-size:13px; cursor:pointer; padding:0; margin-bottom:16px;">← 이벤트 안내</button>
+<div style="text-align:center;">
+<img src="./assets/readybag-guide.png" alt="파마스퀘어 레디백" style="width:100%; max-width:420px; border-radius:20px; display:block; margin:0 auto; box-shadow:0 10px 28px rgba(0,60,55,.08);" />
+<h2 style="margin-top:18px; font-size:24px; font-weight:800; letter-spacing:-.02em;">레디백 획득 가이드</h2>
+<p style="margin-top:10px; font-size:14px; color:#7C938F; line-height:1.65;">파마스퀘어 {{ storeName }} 오픈 기념 <b style="color:#00786F;">레디백</b>을 받는 두 가지 방법을 안내해요.<br>아래 조건 중 하나만 충족하면 매장 안내데스크에서 수령할 수 있어요.</p>
+<div style="display:inline-flex; align-items:center; margin-top:14px; padding:8px 16px; border-radius:40px; background:#E6F7F2; color:#00786F; font-size:13px; font-weight:800;">선착순 100명 · 한정 수량</div>
+</div>
+
+<div style="margin-top:28px; display:flex; flex-direction:column; gap:16px;">
+<div style="padding:20px 18px; background:#fff; border:1.5px solid #01C0A4; border-radius:18px; box-shadow:0 4px 14px rgba(1,192,164,.08);">
+<div style="display:inline-flex; align-items:center; height:26px; padding:0 11px; border-radius:40px; background:#01C0A4; color:#fff; font-size:11.5px; font-weight:800;">방법 1</div>
+<div style="display:flex; align-items:center; gap:10px; margin-top:12px;"><span style="font-size:18px;">⭐</span><div style="font-size:17px; font-weight:800; color:#10181E;">스탬프 카드 6개 달성</div></div>
+<p style="margin-top:10px; font-size:13.5px; color:#4E6863; line-height:1.7;">스탬프를 6개 모두 모으면 레디백을 드려요. 아래 방법으로 스탬프를 적립할 수 있어요.</p>
+<div style="margin-top:14px; padding:15px 16px; background:#F1F7F5; border-radius:14px; font-size:13.5px; color:#4E6863; line-height:1.75;">
+<div style="font-weight:800; color:#00786F; margin-bottom:8px;">스탬프 적립 방법</div>
+<div>· 오픈 기대평 작성 시 <b>1개</b></div>
+<div>· 브랜드 게임 성공 시 <b>1개</b></div>
+<div>· 매장 방문 시 <b>1개</b> (직원 확인)</div>
+<div>· 1만원 이상 구매 시 <b>1개</b></div>
+<div>· 2만원 이상 구매 시 <b>1개</b></div>
+</div>
+<div style="margin-top:12px; padding:12px 14px; background:#FFF6E6; border:1px solid #F0DBB0; border-radius:12px; font-size:12px; color:#8A6D2F; line-height:1.65;"><b>📌 같은 날 스탬프 규칙</b><br>· <b>방문 + 1만원</b> 또는 <b>방문 + 2만원</b>은 같은 날 함께 찍을 수 있어요.<br>· <b>1만원과 2만원</b> 구매 스탬프는 같은 날 둘 다 찍을 수 없어요. (둘 중 하나만)</div>
+<button onClick="{{ goStamp }}" class="pz-btn" style="margin-top:16px; width:100%; height:48px; border-radius:12px; border:none; background:#01C0A4; color:#fff; font-size:14.5px; font-weight:800; cursor:pointer;">내 스탬프 확인하기 →</button>
+</div>
+
+<div style="padding:20px 18px; background:#fff; border:1.5px solid #E6EDEB; border-radius:18px;">
+<div style="display:inline-flex; align-items:center; height:26px; padding:0 11px; border-radius:40px; background:#00786F; color:#fff; font-size:11.5px; font-weight:800;">방법 2</div>
+<div style="display:flex; align-items:center; gap:10px; margin-top:12px;"><span style="font-size:18px;">🛍️</span><div style="font-size:17px; font-weight:800; color:#10181E;">15만원 이상 구매 + 회원가입 + 카카오톡 채널 추가</div></div>
+<p style="margin-top:10px; font-size:13.5px; color:#4E6863; line-height:1.7;">매장에서 <b style="color:#00786F;">15만원 이상</b> 구매하고, 아래 조건을 모두 충족하면 레디백을 드려요.</p>
+<div style="margin-top:14px; display:flex; flex-direction:column; gap:10px;">
+<div style="display:flex; align-items:flex-start; gap:12px; padding:14px 15px; background:#F8FAF9; border:1px solid #E6EDEB; border-radius:14px;"><span style="flex:none; width:28px; height:28px; border-radius:50%; background:#01C0A4; color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center;">1</span><div><div style="font-size:14.5px; font-weight:700;">15만원 이상 구매</div><div style="margin-top:3px; font-size:12.5px; color:#7C938F; line-height:1.5;">매장에서 15만원 이상 결제 후 직원에게 영수증을 보여주세요.</div></div></div>
+<div style="display:flex; align-items:flex-start; gap:12px; padding:14px 15px; background:#F8FAF9; border:1px solid #E6EDEB; border-radius:14px;"><span style="flex:none; width:28px; height:28px; border-radius:50%; background:#01C0A4; color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center;">2</span><div><div style="font-size:14.5px; font-weight:700;">회원가입 완료</div><div style="margin-top:3px; font-size:12.5px; color:#7C938F; line-height:1.5;">이벤트 페이지에서 이름·휴대폰 번호로 회원가입을 해주세요.</div></div></div>
+<div style="display:flex; align-items:flex-start; gap:12px; padding:14px 15px; background:#F8FAF9; border:1px solid #E6EDEB; border-radius:14px;"><span style="flex:none; width:28px; height:28px; border-radius:50%; background:#01C0A4; color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center;">3</span><div><div style="font-size:14.5px; font-weight:700;">카카오톡 채널 추가</div><div style="margin-top:3px; font-size:12.5px; color:#7C938F; line-height:1.5;">파마스퀘어 카카오톡 채널을 추가해주세요.</div></div></div>
+</div>
+<div style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
+<button onClick="{{ goSignup }}" class="pz-btn" style="width:100%; height:48px; border-radius:12px; border:none; background:#00786F; color:#fff; font-size:14.5px; font-weight:800; cursor:pointer;">회원가입 하러 가기 →</button>
+<a href="{{ kakaoUrl }}" target="_blank" rel="noopener" class="pz-btn" style="display:flex; align-items:center; justify-content:center; width:100%; height:48px; border-radius:12px; background:#FEE500; color:#191600; font-size:14.5px; font-weight:800; text-decoration:none;">💬 카카오톡 채널 추가하기</a>
+</div>
+</div>
+</div>
+
+<div style="margin-top:18px; padding:15px 17px; background:#FFF8EE; border:1px solid #F0DBB0; border-radius:14px; font-size:12.5px; color:#9A7D42; line-height:1.65;">※ 레디백은 <b>선착순 100명</b> 한정이며, 소진 시 조기 마감됩니다.<br>※ 두 방법 중 <b>하나만</b> 충족하면 수령 가능해요. (중복 수령 불가)<br>※ 수령 시 매장 안내데스크에서 직원 확인 후 지급됩니다.</div>
+</div>
+</sc-if>
+
+<!-- ===================== NAVER REVIEW EVENT ===================== -->
+<sc-if value="{{ isNaver }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:560px; margin:0 auto; padding:30px 20px 60px;">
+<button onClick="{{ goHome }}" class="pz-btn" style="background:none; border:none; color:#9DB3B1; font-size:13px; cursor:pointer; padding:0; margin-bottom:14px;">← 홈으로</button>
+<div style="text-align:center;">
+<img src="{{ naverPosterSrc }}" alt="네이버 영수증 리뷰 이벤트" style="width:100%; max-width:520px; border-radius:18px; border:1px solid #E6EDEB; box-shadow:0 10px 28px rgba(0,60,55,.08); display:block; margin:0 auto;" />
+</div>
+<div style="margin-top:22px; padding:18px 18px; background:#fff; border:1px solid #E6EDEB; border-radius:18px;">
+<div style="display:inline-flex; align-items:center; height:28px; padding:0 12px; border-radius:40px; background:#E8F8EE; color:#03C75A; font-size:12px; font-weight:800;">리뷰 작성 방법</div>
+<div style="margin-top:14px; display:flex; flex-direction:column; gap:11px;">
+<div style="display:flex; align-items:flex-start; gap:12px;"><span style="flex:none; width:28px; height:28px; border-radius:50%; background:#03C75A; color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center;">1</span><div style="font-size:14px; font-weight:700; line-height:1.55; padding-top:3px;">네이버 <b style="color:#03C75A;">MY플레이스</b>에 들어가요</div></div>
+<div style="display:flex; align-items:flex-start; gap:12px;"><span style="flex:none; width:28px; height:28px; border-radius:50%; background:#03C75A; color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center;">2</span><div style="font-size:14px; font-weight:700; line-height:1.55; padding-top:3px;"><b style="color:#03C75A;">리뷰 쓰기</b>를 눌러요</div></div>
+<div style="display:flex; align-items:flex-start; gap:12px;"><span style="flex:none; width:28px; height:28px; border-radius:50%; background:#03C75A; color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center;">3</span><div style="font-size:14px; font-weight:700; line-height:1.55; padding-top:3px;"><b style="color:#03C75A;">영수증으로 인증</b>한 뒤 리뷰를 작성해요</div></div>
+<div style="display:flex; align-items:flex-start; gap:12px;"><span style="flex:none; width:28px; height:28px; border-radius:50%; background:#005251; color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center;">4</span><div style="font-size:14px; font-weight:700; line-height:1.55; padding-top:3px;">작성 화면을 직원에게 보여주시면 <b style="color:#00786F;">즉시 사은품 증정</b></div></div>
+</div>
+</div>
+<p style="margin-top:14px; text-align:center; font-size:11.5px; color:#9DB3B1; line-height:1.6;">※ 네이버 영수증 리뷰에 한해 참여 가능 · 당일 구매 영수증 기준 · 재고 소진 시 조기 종료<br>※ 타 이벤트 중복 참여 불가 · 매장 운영 정책에 따라 변경될 수 있어요</p>
 </div>
 </sc-if>
 
@@ -489,7 +573,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="display:flex; align-items:center; gap:9px; font-size:13px; color:#C4573B; font-weight:600;"><span style="font-size:16px;">⚠️</span> 게임은 1인 최대 {{ maxPlaysLabel }}회까지 참여할 수 있어요</div>
 </div>
 <div style="margin-top:14px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:40px; background:#fff; border:1px solid #C9EFE6; font-size:13.5px; font-weight:700; color:#00786F;">지금 남은 기회 <span style="font-size:16px;">{{ availablePlaysLabel }}</span>회</div>
-<button onClick="{{ startGame }}" class="pz-btn" style="width:100%; margin-top:18px; height:56px; border-radius:40px; background:#01C0A4; color:#fff; font-size:17px; font-weight:800; border:none; cursor:pointer; box-shadow:0 12px 26px rgba(1,192,164,.32);">게임 시작하기</button>
+<button onClick="{{ startGame }}" class="pz-btn" style="width:100%; margin-top:18px; height:56px; border-radius:40px; background:#01C0A4; color:#fff; font-size:17px; font-weight:800; border:none; cursor:pointer; box-shadow:0 12px 26px rgba(1,192,164,.32);">{{ txGameStart }}</button>
 <div style="margin-top:14px; padding:16px; background:#fff; border:1px solid #E6EDEB; border-radius:16px; text-align:left;">
 <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:18px;">🎁</span><span style="font-size:14px; font-weight:800;">친구에게 공유하고 기회 +1</span></div>
 <p style="margin-top:6px; font-size:12.5px; color:#7C938F; line-height:1.5;">아래 링크로 친구가 접속하면 <b style="color:#00786F;">나에게</b> 게임 기회가 1회 추가돼요.</p>
@@ -609,7 +693,7 @@ input, textarea, button, select { font-family:inherit; }
 </button>
 </sc-for>
 </div>
-<div style="margin-top:14px; padding:14px 16px; background:#FFF6E6; border:1px solid #F0DBB0; border-radius:14px; font-size:12px; line-height:1.7; color:#8A6D2F;"><b style="color:#B8791A;">📌 같은 날 스탬프 규칙</b><br>· 매장 방문 / 1만원·2만원 구매 스탬프는 <b>같은 날 1개만</b> 찍혀요.<br>· 오픈 기대평 스탬프와 <b>매장 방문</b> 스탬프도 같은 날 함께 찍을 수 없어요.<br>· 단, 기대평 받은 날 <b>구매(1·2만원) 스탬프는 추가로</b> 찍을 수 있어요.<br>· 날짜가 다르면 계속 쌓여요!</div>
+<div style="margin-top:14px; padding:14px 16px; background:#FFF6E6; border:1px solid #F0DBB0; border-radius:14px; font-size:12px; line-height:1.7; color:#8A6D2F;"><b style="color:#B8791A;">📌 같은 날 스탬프 규칙</b><br>· <b>방문 + 1만원</b> 또는 <b>방문 + 2만원</b>은 같은 날 함께 찍을 수 있어요.<br>· <b>1만원과 2만원</b> 구매 스탬프는 같은 날 둘 다 찍을 수 없어요. (둘 중 하나만)<br>· 오픈 기대평 스탬프와 <b>매장 방문</b> 스탬프는 같은 날 함께 찍을 수 없어요.<br>· 기대평 받은 날에도 <b>구매(1·2만원) 스탬프는</b> 추가로 찍을 수 있어요.</div>
 </div>
 </sc-if>
 
@@ -629,6 +713,11 @@ input, textarea, button, select { font-family:inherit; }
 <div style="text-align:right; flex:none;"><div style="font-size:10px; color:#9DB3B1; font-weight:600;">코드</div><div style="{{ c.codeStyle }}">{{ c.code }}</div><div style="{{ c.tagStyle }}">{{ c.tag }}</div></div>
 </div>
 <div style="margin-top:11px; padding-top:10px; border-top:1px dashed #E1EAE8; font-size:11px; color:#9DB3B1; line-height:1.5;">발급 {{ c.date }}<br>{{ c.note }}</div>
+<sc-if value="{{ c.canStaffUse }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:10px; display:flex; justify-content:flex-end;">
+<button onClick="{{ c.onStaffUse }}" class="pz-btn" style="height:30px; padding:0 12px; border-radius:999px; border:1px solid #D3E0DD; background:#F7FBFA; color:#5C7570; font-size:11.5px; font-weight:700; cursor:pointer;">관리자 확인</button>
+</div>
+</sc-if>
 </div>
 </div>
 </sc-for>
@@ -656,7 +745,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="max-width:1000px; margin:0 auto; padding:26px 20px 60px;">
 <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
 <h2 style="font-size:24px; font-weight:800; letter-spacing:-.02em;">관리자 대시보드</h2>
-<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"><span style="{{ serverBadgeStyle }}">{{ serverBadge }}</span><button onClick="{{ adminRefresh }}" class="pz-btn" style="height:34px; padding:0 13px; border-radius:40px; background:#EFF6F4; border:1px solid #C9EFE6; color:#00786F; font-size:12.5px; font-weight:700; cursor:pointer;">↻ 서버 다시 연결</button><button onClick="{{ adminLogout }}" class="pz-btn" style="height:34px; padding:0 15px; border-radius:40px; background:#fff; border:1px solid #D3E0DD; color:#5C7570; font-size:12.5px; font-weight:600; cursor:pointer;">로그아웃</button></div>
+<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"><span style="{{ serverBadgeStyle }}">{{ serverBadge }}</span><sc-if value="{{ serverOn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ adminRefresh }}" class="pz-btn" style="height:34px; padding:0 13px; border-radius:40px; background:#EFF6F4; border:1px solid #C9EFE6; color:#00786F; font-size:12.5px; font-weight:700; cursor:pointer;">↻ 새로고침</button></sc-if><button onClick="{{ adminLogout }}" class="pz-btn" style="height:34px; padding:0 15px; border-radius:40px; background:#fff; border:1px solid #D3E0DD; color:#5C7570; font-size:12.5px; font-weight:600; cursor:pointer;">로그아웃</button></div>
 </div>
 
 <div style="margin-top:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr)); gap:12px;">
@@ -830,8 +919,9 @@ input, textarea, button, select { font-family:inherit; }
 <div style="font-size:13.5px; color:#26403D;">
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>상시 · 구매 사은품</b><br>3만원 이상 구매 시 미니 굿즈(키캡) 증정 — 100개 한정</div>
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>오픈 기대평</b><br>기대평 작성 + 카카오채널 추가 후 <b>매장 방문 시</b> 1,000원 웰컴 할인 쿠폰 + 스탬프 1개</div>
-<div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>인스타 이벤트</b><br>팔로우·좋아요·친구 태그·스토리 공유 → 추첨으로 사은품</div>
+<div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>네이버 영수증 리뷰</b><br>네이버 MY플레이스 → 리뷰 쓰기 → 영수증 인증 후 작성 → 직원 확인 시 사은품 즉시 증정</div>
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>브랜드 게임</b><br>종근당·함소아 퀴즈 정답 시 브랜드 사은품 쿠폰 (1인 최대 2회 · 한정 수량). 공유 시 스탬프 1개</div>
+<div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>인스타 이벤트</b><br>팔로우·좋아요·친구 태그·스토리 공유 → 추첨으로 사은품</div>
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>럭키 룰렛 (오픈 후)</b><br>오픈 시 기본 1회 + 매장 방문마다 1회 추가. 할인권·사은품</div>
 <div style="padding:9px 0;"><b>스탬프 카드</b><br>스탬프 6개 = 굿즈(레디백, 100개 한정)</div>
 </div>
@@ -844,7 +934,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="padding:7px 0; border-bottom:1px solid #EEF3F1;">1만원 이상 구매 — <b>+1</b> (직원 확인)</div>
 <div style="padding:7px 0;">2만원 이상 구매 — <b>+1</b> (직원 확인)</div>
 </div>
-<div style="margin-top:11px; background:#FDF3F0; border:1px solid #F3D6CC; border-radius:12px; padding:12px 15px; font-size:12.5px; color:#A8452C;"><b>같은 날 중복 규칙</b><br>· 매장 방문 · 1만원 구매 · 2만원 구매는 같은 날 <b>하나만</b> 적립<br>· 오픈 기대평 스탬프와 매장 방문 스탬프도 같은 날 중복 불가<br>· 단, 오픈 기대평 받은 날에 1만원/2만원 구매 스탬프는 추가 적립 가능<br>→ 중복으로 찍으면 "같은 날짜에 이미 적립됐어요" 안내가 떠요</div>
+<div style="margin-top:11px; background:#FDF3F0; border:1px solid #F3D6CC; border-radius:12px; padding:12px 15px; font-size:12.5px; color:#A8452C;"><b>같은 날 중복 규칙</b><br>· <b>방문 + 1만원</b> 또는 <b>방문 + 2만원</b>은 같은 날 함께 적립 가능<br>· <b>1만원과 2만원</b>은 같은 날 둘 다 불가 (구매 스탬프는 하루 1개)<br>· 오픈 기대평 스탬프와 매장 방문 스탬프는 같은 날 중복 불가<br>· 오픈 기대평 받은 날에도 1만원/2만원 구매 스탬프는 추가 적립 가능<br>→ 중복으로 찍으면 "이미 적립됐어요" 안내가 떠요</div>
 <div style="font-size:15px; font-weight:800; color:#00524F; margin:26px 0 9px; padding-bottom:7px; border-bottom:2px solid #01C0A4;">3. 관리자 사용법</div>
 <div style="font-size:13.5px; color:#26403D;">
 <div style="font-weight:700; margin-bottom:4px;">① 고객이 매장에 왔을 때 — 스탬프 찍기</div>
@@ -852,7 +942,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="font-weight:700; margin-bottom:4px;">② 오픈 기대평 웰컴 쿠폰 지급</div>
 <div style="margin-bottom:12px; color:#4A625E;">기대평·회원 탭 → 고객 확인 → <b>리워드 지급</b> 버튼 (쿠폰+스탬프 자동)</div>
 <div style="font-weight:700; margin-bottom:4px;">③ 사은품 지급할 때 (쿠폰 사용 처리)</div>
-<div style="margin-bottom:12px; color:#4A625E;">발급 쿠폰 탭 → <b>검색창에 쿠폰번호 입력</b>(예: PS1552) → <b>사용 처리</b> 버튼 → 사은품 전달<br><b style="color:#A8452C;">※ 사용 처리를 먼저</b> 하고 사은품을 주세요. 순서가 바뀌면 같은 쿠폰이 중복 사용될 수 있어요.<br>고객 화면에도 사용완료로 바로 반영되며, 사용완료 쿠폰은 다시 지급하지 않습니다.</div>
+<div style="margin-bottom:12px; color:#4A625E;">발급 쿠폰 탭 → <b>검색창에 쿠폰번호 입력</b>(예: PS1552) → <b>사용 처리</b> 버튼 → 사은품 전달<br><b>또는</b> 고객 쿠폰함에서 <b>관리자 확인</b> → PIN <b>PS1234</b> 입력 → 즉시 사용완료<br><b style="color:#A8452C;">※ 사용 처리를 먼저</b> 하고 사은품을 주세요. 순서가 바뀌면 같은 쿠폰이 중복 사용될 수 있어요.<br>고객 화면에도 사용완료로 바로 반영되며, 사용완료 쿠폰은 다시 지급하지 않습니다.</div>
 <div style="font-weight:700; margin-bottom:4px;">④ 잘못 처리했을 때 (취소)</div>
 <div style="margin-bottom:12px; color:#4A625E;">· 사용 처리를 잘못했으면: 발급 쿠폰 탭 → <b>사용 취소</b> (다시 사용 가능해짐)<br>· 쿠폰을 잘못 발급했으면: 발급 쿠폰 탭 → <b>삭제</b> (미사용만). 웰컴 쿠폰이면 다시 받을 수 있게 복구<br>· 스탬프: 회원 명단 → <b>오늘 방문/구매 스탬프 취소</b></div>
 <div style="font-weight:700; margin-bottom:4px;">⑤ 그 밖에</div>
@@ -901,32 +991,6 @@ input, textarea, button, select { font-family:inherit; }
 <sc-for list="{{ eventAdminRows }}" as="e" hint-placeholder-count="3">
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 17px; background:#fff; border:1px solid #E6EDEB; border-radius:14px;"><div style="display:flex; align-items:center; gap:11px;"><span style="font-size:22px;">{{ e.icon }}</span><div style="font-size:14.5px; font-weight:700;">{{ e.title }}</div></div><button onClick="{{ e.onToggle }}" class="pz-btn" style="{{ e.toggleStyle }}">{{ e.statusLabel }}</button></div>
 </sc-for>
-</div>
-</div>
-</sc-if>
-
-<!-- 방문자 통계 -->
-<sc-if value="{{ tabVisits }}" hint-placeholder-val="{{ false }}">
-<div style="max-width:1000px; margin:20px auto 0; padding:0 20px;">
-<div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
-<div><div style="font-size:14px; font-weight:700;">방문자 통계</div><div style="margin-top:3px; font-size:12px; color:#9DB3B1;">배포 이후부터 자체 집계 · 쿠키 기준 일별 순방문자</div></div>
-<button onClick="{{ refreshVisits }}" class="pz-btn" style="height:36px; padding:0 14px; border-radius:10px; background:#EFF6F4; border:1px solid #C9EFE6; color:#00786F; font-size:12.5px; font-weight:700; cursor:pointer;">↻ 새로고침</button>
-</div>
-<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr)); gap:10px; margin-bottom:14px;">
-<div style="padding:14px 16px; background:#fff; border:1px solid #E6EDEB; border-radius:14px;"><div style="font-size:12px; color:#7C938F; font-weight:600;">오늘 방문자</div><div style="margin-top:6px; font-size:24px; font-weight:800;">{{ todayVisitors }}</div></div>
-<div style="padding:14px 16px; background:#fff; border:1px solid #E6EDEB; border-radius:14px;"><div style="font-size:12px; color:#7C938F; font-weight:600;">오늘 페이지뷰</div><div style="margin-top:6px; font-size:24px; font-weight:800;">{{ todayPageviews }}</div></div>
-<div style="padding:14px 16px; background:#fff; border:1px solid #E6EDEB; border-radius:14px;"><div style="font-size:12px; color:#7C938F; font-weight:600;">누적 방문자</div><div style="margin-top:6px; font-size:24px; font-weight:800;">{{ totalVisitors }}</div></div>
-</div>
-<div style="overflow-x:auto; background:#fff; border:1px solid #E6EDEB; border-radius:14px;">
-<table style="width:100%; border-collapse:collapse; font-size:13px; min-width:460px;">
-<thead><tr style="border-bottom:1px solid #E6EDEB; color:#9DB3B1; font-size:11.5px; text-align:left;"><th style="padding:10px 12px;">날짜</th><th style="padding:10px 12px; text-align:right;">방문자</th><th style="padding:10px 12px; text-align:right;">페이지뷰</th><th style="padding:10px 12px; text-align:right;">메인</th><th style="padding:10px 12px; text-align:right;">이벤트</th><th style="padding:10px 12px; text-align:right;">소식</th></tr></thead>
-<tbody>
-<sc-for list="{{ visitRows }}" as="vr" hint-placeholder-count="5">
-<tr style="border-bottom:1px solid #F1F5F4;"><td style="padding:11px 12px; font-weight:700;">{{ vr.date }}</td><td style="padding:11px 12px; text-align:right; font-weight:800; color:#00786F;">{{ vr.visitors }}</td><td style="padding:11px 12px; text-align:right;">{{ vr.pageviews }}</td><td style="padding:11px 12px; text-align:right; color:#9DB3B1;">{{ vr.home }}</td><td style="padding:11px 12px; text-align:right; color:#9DB3B1;">{{ vr.event }}</td><td style="padding:11px 12px; text-align:right; color:#9DB3B1;">{{ vr.board }}</td></tr>
-</sc-for>
-</tbody>
-</table>
-<sc-if value="{{ visitsEmpty }}" hint-placeholder-val="{{ true }}"><div style="padding:36px; text-align:center; color:#9DB3B1; font-size:13.5px;">아직 집계된 방문이 없습니다.</div></sc-if>
 </div>
 </div>
 </sc-if>
@@ -1000,6 +1064,22 @@ input, textarea, button, select { font-family:inherit; }
 </div>
 </sc-if>
 
+<!-- ===== STAFF PIN MODAL ===== -->
+<sc-if value="{{ staffPinOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed; inset:0; z-index:85; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(6,32,30,.5); backdrop-filter:blur(3px);">
+<div style="width:100%; max-width:340px; background:#fff; border-radius:22px; padding:26px 22px 20px; text-align:center; animation:psPop .35s cubic-bezier(.2,.9,.3,1.2); box-shadow:0 30px 70px rgba(0,0,0,.35);">
+<div style="width:48px; height:48px; margin:0 auto; border-radius:14px; background:#EFF6F4; display:flex; align-items:center; justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#01C0A4" stroke-width="1.9"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+<h3 style="margin-top:12px; font-size:18px; font-weight:800;">관리자 확인</h3>
+<p style="margin-top:8px; font-size:13px; color:#7C938F; line-height:1.55;">PIN을 입력하면<br><b style="color:#00786F;">{{ staffPinTitle }}</b> 쿠폰이 사용완료 처리돼요.</p>
+<input class="pz-in" type="password" value="{{ staffPin }}" onInput="{{ onStaffPin }}" onKeyDown="{{ onStaffPinKey }}" placeholder="관리자 PIN" autofocus style="width:100%; margin-top:16px; height:48px; padding:0 14px; border:1px solid #D8E3E0; border-radius:12px; font-size:16px; background:#fff; text-align:center; letter-spacing:.08em;" />
+<div style="display:flex; gap:10px; margin-top:14px;">
+<button onClick="{{ cancelStaffPin }}" class="pz-btn" style="flex:1; height:46px; border-radius:12px; background:#F1F5F4; border:none; color:#5C7570; font-size:14px; font-weight:700; cursor:pointer;">취소</button>
+<button onClick="{{ submitStaffPin }}" class="pz-btn" style="flex:1; height:46px; border-radius:12px; background:#01C0A4; border:none; color:#fff; font-size:14px; font-weight:700; cursor:pointer;">확인</button>
+</div>
+</div>
+</div>
+</sc-if>
+
 <!-- ===== REFERRAL POPUP ===== -->
 <sc-if value="{{ refPopup }}" hint-placeholder-val="{{ false }}">
 <div style="position:fixed; inset:0; z-index:80; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(6,32,30,.5); backdrop-filter:blur(3px);">
@@ -1035,6 +1115,65 @@ input, textarea, button, select { font-family:inherit; }
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1120,&quot;height&quot;:900},&quot;storeName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;구로점&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;이벤트 설정&quot;},&quot;openDate&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2026-08-01&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;이벤트 설정&quot;}}">
+const I18N = {
+  ko: {
+    'nav.home':'홈', 'nav.guide':'이벤트 안내', 'nav.stamp':'스탬프', 'nav.coupon':'쿠폰함',
+    'login':'로그인', 'signup':'회원가입', 'logout':'로그아웃', 'backHome':'← 홈으로', 'home':'홈으로',
+    'profile':'내 정보 수정', 'save':'저장하기', 'name':'이름', 'phone':'휴대폰 번호', 'birth':'생년월일',
+    'event.review.title':'오픈 기대평 이벤트', 'event.review.desc':'기대평 작성 + 카카오채널 추가!\n매장 방문 시 웰컴 쿠폰을 드려요.', 'event.review.tag':'웰컴 쿠폰', 'event.review.cta':'참여하기 →',
+    'event.naver.title':'네이버 리뷰 이벤트', 'event.naver.desc':'네이버 리뷰 이벤트를 작성하면\n사은품 증정!', 'event.naver.tag':'사은품 증정', 'event.naver.cta':'자세히 보기 →',
+    'event.insta.title':'인스타 이벤트', 'event.insta.desc':'인스타그램 팔로우 + 친구 태그!\n참여하면 누구나 선물 팡팡!', 'event.insta.tag':'선물 증정', 'event.insta.cta':'바로가기 →',
+    'event.game.title':'파마스퀘어 입점 브랜드', 'event.game.desc':'브랜드 퀴즈를 맞히면 브랜드 특별 사은품 제공!\n공유하면 한 번 더 참여할 수 있어요.', 'event.game.tag':'브랜드 특별 사은품 제공', 'event.game.cta':'게임하기 →',
+    'toast.loginFirst':'먼저 로그인해주세요.', 'toast.ready':'준비 중인 이벤트예요.', 'toast.name':'이름을 입력해주세요.', 'toast.phone':'휴대폰 번호를 정확히 입력해주세요.',
+    'toast.saved':'내 정보를 저장했어요.', 'toast.copy':'공유 링크가 복사되었어요.', 'toast.copyManual':'링크를 길게 눌러 복사해주세요.', 'toast.error':'실패. 다시 시도해주세요.',
+    'toast.reviewMin':'기대평은 최소 25자 이상 작성해주세요. (현재 {count}자)', 'toast.reviewDone':'기대평이 등록됐어요! 매장 방문 시 웰컴 혜택을 드려요.',
+    'toast.correct':'정답이에요! 🎉', 'toast.wrong':'아쉬워요!', 'toast.logout':'로그아웃되었어요. 다른 분이 이용하려면 로그인해주세요.',
+    'auth.login.sub':'이미 가입하셨다면 이름과 휴대폰 번호만 입력하면 내 기록이 이어져요.', 'auth.signup.sub':'이름·휴대폰 번호와 약관 동의로 가입하면,\n내 스탬프·쿠폰·게임이 나에게만 저장돼요.',
+    'auth.login.hint':'처음이신가요? 위 회원가입 탭을 눌러주세요.', 'auth.signup.hint':'가입 시 받은 정보는 매장 회원 혜택 연동에 사용돼요.', 'auth.signup.btn':'동의하고 회원가입',
+    'stamp.game':'브랜드 게임 성공', 'stamp.review':'오픈 기대평 작성', 'stamp.visit':'매장 방문', 'stamp.buy1':'1만원 이상 구매', 'stamp.buy2':'2만원 이상 구매',
+    'coupon.available':'사용 가능', 'coupon.used':'사용완료', 'coupon.gift':'사은품', 'coupon.discount':'할인권', 'coupon.event':'이벤트',
+    'game.title':'브랜드 빈칸 게임', 'game.start':'게임 시작하기', 'game.go':'게임하러 가기', 'game.copy':'복사', 'game.share':'공유 링크 만들기',
+    'roulette.title':'오픈 기념 럭키 룰렛', 'roulette.spin':'룰렛 돌리기', 'roulette.spinning':'돌아가는 중...', 'roulette.none':'오늘 기회를 모두 사용했어요',
+  },
+  en: {
+    'nav.home':'Home', 'nav.guide':'Event Guide', 'nav.stamp':'Stamps', 'nav.coupon':'Coupons',
+    'login':'Log in', 'signup':'Sign up', 'logout':'Log out', 'backHome':'← Back to home', 'home':'Home',
+    'profile':'Edit profile', 'save':'Save', 'name':'Name', 'phone':'Mobile number', 'birth':'Date of birth',
+    'event.review.title':'Opening Review Event', 'event.review.desc':'Leave a review and add our Kakao channel!\nGet a welcome coupon when you visit.', 'event.review.tag':'Welcome coupon', 'event.review.cta':'Join now →',
+    'event.naver.title':'Naver Review Event', 'event.naver.desc':'Write a Naver review and\nreceive a free gift!', 'event.naver.tag':'Gift giveaway', 'event.naver.cta':'See details →',
+    'event.insta.title':'Instagram Event', 'event.insta.desc':'Follow us on Instagram and tag a friend!\nEveryone who joins gets a gift!', 'event.insta.tag':'Gift giveaway', 'event.insta.cta':'Go now →',
+    'event.game.title':'PHAMA SQUARE Brands', 'event.game.desc':'Answer the brand quiz and receive a special gift!\nShare for one extra chance.', 'event.game.tag':'Special brand gift', 'event.game.cta':'Play now →',
+    'toast.loginFirst':'Please log in first.', 'toast.ready':'This event is coming soon.', 'toast.name':'Please enter your name.', 'toast.phone':'Please enter a valid mobile number.',
+    'toast.saved':'Your information has been saved.', 'toast.copy':'Share link copied.', 'toast.copyManual':'Press and hold the link to copy it.', 'toast.error':'Something went wrong. Please try again.',
+    'toast.reviewMin':'Please write at least 25 characters. ({count} entered)', 'toast.reviewDone':'Your review has been submitted! Visit the store for your welcome benefit.',
+    'toast.correct':'Correct! 🎉', 'toast.wrong':'Not quite!', 'toast.logout':'You have been logged out. Please log in for the next guest.',
+    'auth.login.sub':'If you have joined before, enter your name and mobile number to continue.', 'auth.signup.sub':'Sign up with your name, mobile number, and consent,\nand your stamps, coupons, and games stay with you.',
+    'auth.login.hint':'New here? Tap the Sign up tab above.', 'auth.signup.hint':'Your information is used to connect your in-store member benefits.', 'auth.signup.btn':'Agree and sign up',
+    'stamp.game':'Complete brand game', 'stamp.review':'Write opening review', 'stamp.visit':'Visit the store', 'stamp.buy1':'Spend ₩10,000+', 'stamp.buy2':'Spend ₩20,000+',
+    'coupon.available':'Available', 'coupon.used':'Used', 'coupon.gift':'Gift', 'coupon.discount':'Discount', 'coupon.event':'Event',
+    'game.title':'Brand Blank Quiz', 'game.start':'Start game', 'game.go':'Play game', 'game.copy':'Copy', 'game.share':'Create share link',
+    'roulette.title':'Grand Opening Lucky Roulette', 'roulette.spin':'Spin the roulette', 'roulette.spinning':'Spinning...', 'roulette.none':'You have used all chances today',
+  },
+  zh: {
+    'nav.home':'首页', 'nav.guide':'活动指南', 'nav.stamp':'集章', 'nav.coupon':'优惠券',
+    'login':'登录', 'signup':'注册', 'logout':'退出登录', 'backHome':'← 返回首页', 'home':'首页',
+    'profile':'编辑个人资料', 'save':'保存', 'name':'姓名', 'phone':'手机号', 'birth':'出生日期',
+    'event.review.title':'开业期待评论活动', 'event.review.desc':'留下期待评论并添加 Kakao 频道！\n到店即可获得欢迎优惠券。', 'event.review.tag':'欢迎优惠券', 'event.review.cta':'立即参加 →',
+    'event.naver.title':'Naver 评论活动', 'event.naver.desc':'撰写 Naver 评论即可\n获赠礼品！', 'event.naver.tag':'赠送礼物', 'event.naver.cta':'查看详情 →',
+    'event.insta.title':'Instagram 活动', 'event.insta.desc':'关注 Instagram 并@好友！\n参加即可获得礼物！', 'event.insta.tag':'赠送礼物', 'event.insta.cta':'立即前往 →',
+    'event.game.title':'PHAMA SQUARE 入驻品牌', 'event.game.desc':'答对品牌问答即可获得特别礼物！\n分享可多获得一次机会。', 'event.game.tag':'品牌特别礼物', 'event.game.cta':'开始游戏 →',
+    'toast.loginFirst':'请先登录。', 'toast.ready':'活动正在准备中。', 'toast.name':'请输入姓名。', 'toast.phone':'请输入正确的手机号。',
+    'toast.saved':'个人资料已保存。', 'toast.copy':'分享链接已复制。', 'toast.copyManual':'请长按链接复制。', 'toast.error':'操作失败，请重试。',
+    'toast.reviewMin':'请至少填写 25 个字符。（当前 {count} 个）', 'toast.reviewDone':'期待评论已提交！到店即可获得欢迎福利。',
+    'toast.correct':'回答正确！🎉', 'toast.wrong':'很遗憾！', 'toast.logout':'您已退出登录。下一位使用者请登录。',
+    'auth.login.sub':'如果您已注册，请输入姓名和手机号继续。', 'auth.signup.sub':'填写姓名、手机号并同意条款后注册，\n您的集章、优惠券和游戏记录将专属于您。',
+    'auth.login.hint':'首次使用？请点击上方“注册”标签。', 'auth.signup.hint':'注册信息用于关联门店会员福利。', 'auth.signup.btn':'同意并注册',
+    'stamp.game':'完成品牌游戏', 'stamp.review':'撰写开业期待评论', 'stamp.visit':'到店访问', 'stamp.buy1':'消费满 ₩10,000', 'stamp.buy2':'消费满 ₩20,000',
+    'coupon.available':'可使用', 'coupon.used':'已使用', 'coupon.gift':'礼品', 'coupon.discount':'折扣券', 'coupon.event':'活动',
+    'game.title':'品牌填空游戏', 'game.start':'开始游戏', 'game.go':'去玩游戏', 'game.copy':'复制', 'game.share':'创建分享链接',
+    'roulette.title':'开业幸运转盘', 'roulette.spin':'转动转盘', 'roulette.spinning':'转动中...', 'roulette.none':'今天的机会已全部用完',
+  }
+};
 class Component extends DCLogic {
   KP = 'ps_promo_';
   STAMP_GOAL = 6;
@@ -1042,7 +1181,7 @@ class Component extends DCLogic {
   MAX_SHARE = 1;
   kakaoUrl = 'https://pf.kakao.com/_xlxkrxgn';
   state = {
-    view: 'home', toast: '', refBanner: '',
+    view: 'home', toast: '', refBanner: '', lang: 'ko',
     uid: '', liName: '', liPhone: '', liBirth: '', liConsent: false, liTransfer: false, liMarketing: false, loginReturn: '', authMode: 'login',
     peName: '', pePhone: '', peBirth: '',
     now: Date.now(), serverOn: false, serverBusy: false, mktWarn: false, refPopup: 0, confettiOn: false, openBadgeOn: false, heroSlide: 0,
@@ -1054,18 +1193,110 @@ class Component extends DCLogic {
     spinsUsedToday: 0, spinBonus: 0, angle: 0, spinning: false,
     shareOpen: false, shareLink: '',
     result: null, confirmKind: '',
+    staffPinCode: '', staffPinTitle: '', staffPin: '',
     adminAuthed: false, adminPw: '', adminTab: 'reviews', verifyCode: '', verifyResult: null, previewRoulette: false,
     reviewSearch: '', adminOpenDate: '', adminInstaUrl: '', adminInstaReward: '',
-    visitStats: null,
     reviews: [], members: [], eventStatus: {}, roulettePrizes: [], gameBrands: [],
     gateEnabled: false, gateUnlocked: false, gatePw: '',
   };
 
   R(id, path) { try { return (window.__resources && window.__resources[id]) || path; } catch (e) { return path; } }
+  t(key, vars) {
+    const lang = this.state.view === 'admin' ? 'ko' : (this.state.lang || 'ko');
+    let value = (I18N[lang] && I18N[lang][key]) || I18N.ko[key] || key;
+    return String(value).replace(/\{(\w+)\}/g, (_, name) => vars && vars[name] != null ? vars[name] : '');
+  }
+  setLang(lang) {
+    if (['ko','en','zh'].indexOf(lang) < 0) return;
+    try { localStorage.setItem('ps_lang', lang); } catch (e) {}
+    this.setState({ lang });
+  }
+  langStyle(lang) {
+    const active = (this.state.lang || 'ko') === lang;
+    return 'height:26px; min-width:30px; padding:0 7px; border:none; border-radius:20px; cursor:pointer; font-size:10.5px; font-weight:800; background:' + (active ? '#01C0A4' : 'transparent') + '; color:' + (active ? '#fff' : '#6E8580') + ';';
+  }
+  localizeCustomerDom() {
+    // Admin content deliberately stays Korean; this also restores the shared header on entry.
+    const lang = this.state.view === 'admin' ? 'ko' : (this.state.lang || 'ko');
+    const copy = {
+      en: {
+        '이벤트 안내':'Event Guide', '스탬프 카드':'Stamp Card', '내 스탬프':'My Stamps', '이렇게 적립돼요':'How to earn stamps',
+        '쿠폰함':'Coupon Wallet', '아직 받은 쿠폰이 없어요':'No coupons yet', '게임에 참여하고 리워드를 모아보세요.':'Play games and collect rewards.',
+        '게임하러 가기':'Play a game', '기대평 제출하기':'Submit review', '참여 완료!':'Participation complete!',
+        '다른 분들의 기대평':'Reviews from other guests', '오픈 기대평 이벤트':'Opening Review Event',
+        '이벤트에 참여할 때마다 스탬프가 적립돼요. 오픈 후에는 매장 방문 시에도 쌓여요.':'Earn a stamp whenever you join an event. You can also earn them when visiting after opening.',
+        '획득한 리워드는 오픈 후 매장에서 직원에게 코드를 보여주면 사용할 수 있어요.':'Show your code to the staff in store after opening to use your rewards.',
+        '브랜드 빈칸 게임':'Brand Blank Quiz', '게임 시작하기':'Start game', '공유 링크 만들기':'Create share link', '복사':'Copy',
+        '오픈 기념 럭키 룰렛':'Grand Opening Lucky Roulette', '룰렛 돌리기':'Spin the roulette',
+        '오픈일에 열려요!':'Available on opening day!', '오늘 남은 기회':'Chances left today', '확인해 주세요!':'Please note!',
+        '인스타 이벤트':'Instagram Event', '인스타그램에서 참여하기':'Join on Instagram',
+        '네이버 리뷰 이벤트':'Naver Review Event', '리뷰 작성 방법':'How to write a review',
+        '관리자 확인':'Staff confirm',
+        '내 정보 수정':'Edit profile', '저장하기':'Save', '로그아웃':'Log out', '로그인':'Log in', '회원가입':'Sign up',
+        '← 홈으로':'← Back to home', '홈으로':'Home', '이름':'Name', '휴대폰 번호':'Mobile number', '생년월일':'Date of birth',
+        '약관 전체 동의':'Agree to all terms', '기대평':'Review', '참여 완료 번호':'Participation number',
+        '카카오톡 채널 추가하기 (필수)':'Add Kakao channel (required)', '✓ 카카오톡 채널 추가 완료':'✓ Kakao channel added',
+        '스탬프 6개를 모두 모으면 특별 굿즈를 드려요!':'Collect all 6 stamps to receive a special gift!',
+        '내 적립 내역':'My stamp history', '사용 가능':'Available', '사용완료':'Used', '코드':'Code', '발급':'Issued',
+        '상시 이벤트 · 구매 사은품':'Always-on event · Purchase gift', '오픈 기대평 작성':'Write an opening review', '인스타 친구 태그 이벤트':'Instagram friend tag event',
+        '브랜드 게임 & 공유':'Brand game & sharing', '오픈 기념 럭키 룰렛 (오픈 후)':'Grand opening lucky roulette (after opening)',
+        '스탬프 카드 (6개 달성 시 굿즈 증정)':'Stamp card (gift after 6 stamps)',
+        '3만원 이상 구매하시면 미니 굿즈(키캡)를 드려요. (한정 수량, 소진 시 조기 마감)':'Spend ₩30,000+ to receive a mini gift (keycap). Limited quantities; may end early.',
+        '기대평 작성 + 카카오톡 채널 추가 후 매장 방문 시,\n1,000원 웰컴 할인 쿠폰을 드려요.':'Write a review, add the Kakao channel, and visit the store\nto receive a ₩1,000 welcome discount coupon.',
+        '브랜드 퀴즈를 맞히면 브랜드 사은품을 드려요.\n기본 1회 참여 + 친구에게 공유하면 1회 더! (최대 2회)':'Answer the brand quiz to receive a brand gift.\nOne basic chance + one more when a friend joins via your share link (max. 2).',
+        '오픈 시 기본 1회 제공, 이후 매장 방문할 때마다 1회씩 추가돼요.\n다양한 소소한 혜택이 준비되어 있어요.':'One chance is provided at opening; earn another with each store visit.\nA variety of benefits are waiting for you.',
+        '📌 같은 날 스탬프 규칙':'📌 Same-day stamp rules',
+        '일부 혜택·사은품은 한정 수량으로 조기 소진될 수 있으며, 세부 구성은 변경될 수 있어요.':'Some benefits and gifts are limited and may end early. Details may change.'
+      },
+      zh: {
+        '이벤트 안내':'活动指南', '스탬프 카드':'集章卡', '내 스탬프':'我的集章', '이렇게 적립돼요':'集章方式',
+        '쿠폰함':'优惠券包', '아직 받은 쿠폰이 없어요':'暂未获得优惠券', '게임에 참여하고 리워드를 모아보세요.':'参加游戏并收集奖励吧。',
+        '게임하러 가기':'去玩游戏', '기대평 제출하기':'提交期待评论', '참여 완료!':'参加完成！',
+        '다른 분들의 기대평':'其他顾客的期待评论', '오픈 기대평 이벤트':'开业期待评论活动',
+        '이벤트에 참여할 때마다 스탬프가 적립돼요. 오픈 후에는 매장 방문 시에도 쌓여요.':'每次参加活动都可获得印章。开业后到店也可积累。',
+        '획득한 리워드는 오픈 후 매장에서 직원에게 코드를 보여주면 사용할 수 있어요.':'开业后向店员出示代码即可使用已获得的奖励。',
+        '브랜드 빈칸 게임':'品牌填空游戏', '게임 시작하기':'开始游戏', '공유 링크 만들기':'创建分享链接', '복사':'复制',
+        '오픈 기념 럭키 룰렛':'开业幸运转盘', '룰렛 돌리기':'转动转盘',
+        '오픈일에 열려요!':'开业当天开启！', '오늘 남은 기회':'今日剩余机会', '확인해 주세요!':'请确认！',
+        '인스타 이벤트':'Instagram 活动', '인스타그램에서 참여하기':'在 Instagram 参加活动',
+        '네이버 리뷰 이벤트':'Naver 评论活动', '리뷰 작성 방법':'撰写评论方法',
+        '관리자 확인':'管理员确认',
+        '네이버 영수증 리뷰 이벤트':'Naver 小票评论活动',
+        '네이버 MY플레이스에서 리뷰 쓰기 → 영수증 인증 후 작성!\n작성 화면을 직원에게 보여주시면 사은품을 즉시 드려요.':'进入 Naver MY Place → 写评论 → 用小票认证后完成！\n向店员出示完成画面即可立即获赠礼品。',
+        '내 정보 수정':'编辑个人资料', '저장하기':'保存', '로그아웃':'退出登录', '로그인':'登录', '회원가입':'注册',
+        '← 홈으로':'← 返回首页', '홈으로':'首页', '이름':'姓名', '휴대폰 번호':'手机号', '생년월일':'出生日期',
+        '약관 전체 동의':'同意全部条款', '기대평':'期待评论', '참여 완료 번호':'参加完成编号',
+        '카카오톡 채널 추가하기 (필수)':'添加 Kakao 频道（必填）', '✓ 카카오톡 채널 추가 완료':'✓ 已添加 Kakao 频道',
+        '스탬프 6개를 모두 모으면 특별 굿즈를 드려요!':'集齐 6 个印章即可获得特别礼品！',
+        '내 적립 내역':'我的集章记录', '사용 가능':'可使用', '사용완료':'已使用', '코드':'代码', '발급':'发放',
+        '상시 이벤트 · 구매 사은품':'常规活动 · 购物礼品', '오픈 기대평 작성':'撰写开业期待评论', '인스타 친구 태그 이벤트':'Instagram 好友@活动',
+        '브랜드 게임 & 공유':'品牌游戏与分享', '오픈 기념 럭키 룰렛 (오픈 후)':'开业幸运转盘（开业后）',
+        '스탬프 카드 (6개 달성 시 굿즈 증정)':'集章卡（集齐 6 个赠礼）',
+        '3만원 이상 구매하시면 미니 굿즈(키캡)를 드려요. (한정 수량, 소진 시 조기 마감)':'消费满 ₩30,000 即赠迷你礼品（键帽）。数量有限，送完即止。',
+        '기대평 작성 + 카카오톡 채널 추가 후 매장 방문 시,\n1,000원 웰컴 할인 쿠폰을 드려요.':'撰写期待评论、添加 Kakao 频道并到店后，\n即可获得 ₩1,000 欢迎折扣券。',
+        '브랜드 퀴즈를 맞히면 브랜드 사은품을 드려요.\n기본 1회 참여 + 친구에게 공유하면 1회 더! (최대 2회)':'答对品牌问答即可获得品牌礼品。\n基础 1 次，朋友通过分享链接访问后再加 1 次（最多 2 次）。',
+        '오픈 시 기본 1회 제공, 이후 매장 방문할 때마다 1회씩 추가돼요.\n다양한 소소한 혜택이 준비되어 있어요.':'开业时赠送 1 次机会，之后每次到店可再获得 1 次。\n多种惊喜福利等您来拿。',
+        '📌 같은 날 스탬프 규칙':'📌 同日集章规则',
+        '일부 혜택·사은품은 한정 수량으로 조기 소진될 수 있으며, 세부 구성은 변경될 수 있어요.':'部分优惠和礼品数量有限，可能提前结束，内容也可能调整。'
+      }
+    }[lang] || {};
+    try {
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(node => {
+        const parent = node.parentElement;
+        if (!parent || /^(SCRIPT|STYLE)$/i.test(parent.tagName)) return;
+        const original = node.__psKo || node.nodeValue;
+        if (!node.__psKo && copy[original]) node.__psKo = original;
+        if (node.__psKo) node.nodeValue = (lang === 'ko' ? node.__psKo : (copy[node.__psKo] || node.__psKo));
+      });
+    } catch (e) {}
+  }
   get events() { return [
-    { id:'review', icon:'📝', iconSrc:this.R('iconReview','./assets/icon-review.png'), title:'오픈 기대평 이벤트', desc:'기대평 작성 + 카카오채널 추가!\n매장 방문 시 웰컴 쿠폰을 드려요.', tag:'웰컴 쿠폰', tagIcon:'🎫', cta:'참여하기 →', color:'#01C0A4', status:'live', kind:'action', view:'review' },
-    { id:'insta', icon:'📷', iconSrc:this.R('iconInsta','./assets/icon-insta.png'), title:'인스타 이벤트', desc: this.S('instaDesc', null) || '인스타그램 팔로우 + 친구 태그!\n참여하면 누구나 선물 팡팡!', tag: this.S('instaTag', null) || '선물 증정', tagIcon:'🎀', cta:'바로가기 →', color:'#E1306C', status:'live', kind:'insta' },
-    { id:'game', icon:'🎮', iconSrc:this.R('iconGame','./assets/icon-game.png'), title:'파마스퀘어 입점 브랜드', desc:'브랜드 퀴즈를 맞히면 브랜드 특별 사은품 제공!\n공유하면 한 번 더 참여할 수 있어요.', tag:'브랜드 특별 사은품 제공', tagIcon:'🛍️', cta:'게임하기 →', color:'#F5A623', status:'live', kind:'action', view:'game' },
+    { id:'review', icon:'📝', iconSrc:this.R('iconReview','./assets/icon-review.png'), title:this.t('event.review.title'), desc:this.t('event.review.desc'), tag:this.t('event.review.tag'), tagIcon:'🎫', cta:this.t('event.review.cta'), color:'#01C0A4', status:'live', kind:'action', view:'review' },
+    { id:'naver', icon:'N', iconSrc:this.R('iconNaver','./assets/icon-naver.png?v=2'), title:this.t('event.naver.title'), desc:this.t('event.naver.desc'), tag:this.t('event.naver.tag'), tagIcon:'🎁', cta:this.t('event.naver.cta'), color:'#03C75A', status:'live', kind:'naver', view:'naver' },
+    { id:'game', icon:'🎮', iconSrc:this.R('iconGame','./assets/icon-game.png'), title:this.t('event.game.title'), desc:this.t('event.game.desc'), tag:this.t('event.game.tag'), tagIcon:'🛍️', cta:this.t('event.game.cta'), color:'#F5A623', status:'live', kind:'action', view:'game' },
+    { id:'insta', icon:'📷', iconSrc:this.R('iconInsta','./assets/icon-insta.png'), title:this.t('event.insta.title'), desc: this.S('instaDesc', null) || this.t('event.insta.desc'), tag: this.S('instaTag', null) || this.t('event.insta.tag'), tagIcon:'🎀', cta:this.t('event.insta.cta'), color:'#E1306C', status:'live', kind:'insta' },
   ]; }
 
   GBV = 8;
@@ -1126,62 +1357,10 @@ class Component extends DCLogic {
 
   // ---------- server sync (graceful offline fallback) ----------
   API = './events.php';
-  API_FALLBACKS = [
-    './events.php',
-    'https://www.phamasquare.com/events.php',
-    'https://phamasquare.com/events.php'
-  ];
   serverOn = false;
-  async apiGet(qs) {
-    const r = await fetch(this.API + '?' + qs + (qs ? '&' : '') + '_t=' + Date.now(), { cache: 'no-store', credentials: 'omit' });
-    if (!r.ok) throw new Error('http ' + r.status);
-    const j = await r.json();
-    if (!j || typeof j !== 'object') throw new Error('bad json');
-    return j;
-  }
-  async apiPost(obj) {
-    const r = await fetch(this.API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-      body: 'data=' + encodeURIComponent(JSON.stringify(obj)),
-      cache: 'no-store',
-      credentials: 'omit'
-    });
-    if (!r.ok) throw new Error('http ' + r.status);
-    return r.json();
-  }
-  async probeApi(url) {
-    const r = await fetch(url + '?action=config&_t=' + Date.now(), { cache: 'no-store', credentials: 'omit' });
-    if (!r.ok) throw new Error('http');
-    const j = await r.json();
-    if (!j || typeof j !== 'object') throw new Error('bad json');
-    return j;
-  }
-  async detectServer(opts) {
-    const skipAdmin = !!(opts && opts.skipAdmin);
-    const tried = [];
-    const list = this.API_FALLBACKS.slice();
-    // Prefer same-origin first, then absolute Gabia hosts
-    for (let i = 0; i < list.length; i++) {
-      const url = list[i];
-      if (tried.indexOf(url) >= 0) continue;
-      tried.push(url);
-      try {
-        const j = await this.probeApi(url);
-        this.API = url;
-        this.serverOn = true;
-        if (j && j.config) this.applyServerConfig(j.config);
-        if (j && j.viewCounts) { this.W('viewCounts', j.viewCounts); this.setState({ viewCounts: j.viewCounts }); }
-        this.setState({ serverOn: true });
-        this.loadPublicReviews();
-        if (this.state.adminAuthed && !skipAdmin) this.adminLoadAll();
-        return true;
-      } catch (e) {}
-    }
-    this.serverOn = false;
-    this.setState({ serverOn: false });
-    return false;
-  }
+  async apiGet(qs) { const r = await fetch(this.API + '?' + qs, { cache: 'no-store' }); if (!r.ok) throw new Error('http'); return r.json(); }
+  async apiPost(obj) { const r = await fetch(this.API, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: 'data=' + encodeURIComponent(JSON.stringify(obj)) }); if (!r.ok) throw new Error('http'); return r.json(); }
+  async detectServer() { try { const j = await this.apiGet('action=config'); this.serverOn = true; if (j && j.config) this.applyServerConfig(j.config); if (j && j.viewCounts) { this.W('viewCounts', j.viewCounts); this.setState({ viewCounts: j.viewCounts }); } this.setState({ serverOn: true }); this.loadPublicReviews(); if (this.state.adminAuthed) this.adminLoadAll(); return true; } catch (e) { this.serverOn = false; this.setState({ serverOn: false }); return false; } }
   async loadPublicReviews() { try { const j = await this.apiGet('action=reviews'); if (j && Array.isArray(j.reviews)) this.setState({ srvReviews: j.reviews, srvLoaded: true }); } catch (e) {} }
   applyServerConfig(cfg) {
     try {
@@ -1211,13 +1390,18 @@ class Component extends DCLogic {
       bonusPlays: this.S('bonusPlays', 0), spinBonus: this.S('spinBonus', 0),
       gameStampDone: this.S('gameStampDone', false), gameDate: this.S('gameDate', ''),
       playsTotal: this.S('playsTotal', 0), shareEarned: this.S('shareEarned', 0), playedBrands: this.S('playedBrands', []),
-      welcomeIssued: this.S('welcomeIssued', false), updatedTs: new Date().toISOString(),
+      welcomeIssued: this.S('welcomeIssued', false), deletedCoupons: this.S('deletedCoupons', []),
+      updatedTs: new Date().toISOString(),
     });
   }
   applyPersonal(m) {
     if (!m) return;
-    if (m.name || m.phone) this.W('member', { name: m.name, phone: m.phone, kakaoAdded: !!m.kakaoAdded, rewarded: !!m.rewarded, marketing: !!m.marketing, transfer: !!m.transfer, ts: m.ts || new Date().toISOString() });
-    if (Array.isArray(m.coupons)) this.W('coupons', m.coupons);
+    if (m.name || m.phone) this.W('member', { name: m.name, phone: m.phone, birth: m.birth || ((this.S('member', null) || {}).birth) || '', kakaoAdded: !!m.kakaoAdded, rewarded: !!m.rewarded, marketing: !!m.marketing, transfer: !!m.transfer, ts: m.ts || new Date().toISOString() });
+    if (Array.isArray(m.deletedCoupons)) this.W('deletedCoupons', m.deletedCoupons);
+    if (Array.isArray(m.coupons)) {
+      const deleted = this.S('deletedCoupons', []);
+      this.W('coupons', m.coupons.filter(c => !c || !c.code || deleted.indexOf(c.code) < 0));
+    }
     if (Array.isArray(m.stamplog)) this.W('stamplog', m.stamplog);
     if (m.gameplays) this.W('gameplays', m.gameplays);
     if (m.spins) this.W('spins', m.spins);
@@ -1307,7 +1491,7 @@ class Component extends DCLogic {
   }
   logout() { this.uid = ''; this._pendingQ = null; this._gBrand = null; this.stopReferralPoll(); try { localStorage.removeItem(this.KP + 'currentUid'); } catch (e) {}
     this.setState({ uid: '', member: null, coupons: [], stampLog: [], gamePlaysUsedToday: 0, bonusPlays: 0, spinsUsedToday: 0, spinBonus: 0, gStep: 0, gCorrect: 0, gQuestions: [], gGift: '', gBrandName: '', adminAuthed: false, view: 'home' });
-    this.toast('로그아웃되었어요. 다른 분이 이용하려면 로그인해주세요.'); try { window.scrollTo(0,0); } catch (e) {} }
+    this.toast(this.t('toast.logout')); try { window.scrollTo(0,0); } catch (e) {} }
   requireLogin(view) { if (this.uid) this.go(view); else { this.setState({ loginReturn: view, view: 'login', authMode: 'login' }); try { window.scrollTo(0,0); } catch (e) {} } }
   setLoginMode() { this.setState({ authMode: 'login' }); }
   setSignupMode() { this.setState({ authMode: 'signup' }); }
@@ -1315,8 +1499,8 @@ class Component extends DCLogic {
   async submitLoginOnly() {
     const name = (this.state.liName || '').trim();
     const digits = (this.state.liPhone || '').replace(/\D/g, '');
-    if (!name) return this.toast('이름을 입력해주세요.');
-    if (digits.length < 10) return this.toast('휴대폰 번호를 정확히 입력해주세요.');
+    if (!name) return this.toast(this.t('toast.name'));
+    if (digits.length < 10) return this.toast(this.t('toast.phone'));
     // when server is available, require existing membership; otherwise (offline preview) allow
     if (this.serverOn) {
       let exists = false;
@@ -1336,8 +1520,8 @@ class Component extends DCLogic {
   submitLogin() {
     const name = (this.state.liName || '').trim();
     const digits = (this.state.liPhone || '').replace(/\D/g, '');
-    if (!name) return this.toast('이름을 입력해주세요.');
-    if (digits.length < 10) return this.toast('휴대폰 번호를 정확히 입력해주세요.');
+    if (!name) return this.toast(this.t('toast.name'));
+    if (digits.length < 10) return this.toast(this.t('toast.phone'));
     if (!this.state.liConsent) return this.toast('[필수] 개인정보 수집·이용 및 회원가입에 동의해주세요.');
     if (!this.state.liTransfer) return this.toast('[필수] 매장 회원 연동(개인정보 이관)에 동의해주세요.');
     if (!this.state.liBirth) return this.toast('생년월일을 입력해주세요.');
@@ -1357,14 +1541,14 @@ class Component extends DCLogic {
   }
   saveProfile() {
     const name = (this.state.peName || '').trim();
-    if (!name) return this.toast('이름을 입력해주세요.');
+    if (!name) return this.toast(this.t('toast.name'));
     const m = Object.assign({}, this.S('member', null) || {}, { name: name, birth: this.state.peBirth || '' });
     this.W('member', m);
     const members = this.S('members', []).map(x => String(x.phone).replace(/\D/g,'') === this.uid ? m : x);
     this.W('members', members);
     this.setState({ member: m, members: members });
     if (this.serverOn) { this.apiPost({ action: 'sync', uid: this.uid, member: this.personalBlob() }).catch(()=>{}); }
-    this.toast('내 정보를 저장했어요.');
+    this.toast(this.t('toast.saved'));
     this.go('home');
   }
   genCode() { return 'PS' + String(Math.floor(1000 + Math.random() * 9000)); }
@@ -1372,7 +1556,7 @@ class Component extends DCLogic {
   fmtDate(iso) { try { const d = new Date(iso); return d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0') + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); } catch (e) { return ''; } }
   openDate() { return this.S('openDate', null) || (this.props && this.props.openDate) || '2026-08-01'; }
   componentWillUnmount() { try { clearInterval(this._cd); clearInterval(this._galleryTimer); } catch (e) {} }
-  componentDidUpdate() {}
+  componentDidUpdate() { this.localizeCustomerDom(); }
   syncCountdown() { this.startCountdown(); }
   startCountdown() {
     if (this._cd) return;
@@ -1393,6 +1577,14 @@ class Component extends DCLogic {
 
   componentDidMount() {
     const today = this.todayStr();
+    let lang = 'ko';
+    try {
+      const requested = new URLSearchParams(location.search).get('lang');
+      const saved = localStorage.getItem('ps_lang');
+      lang = ['ko','en','zh'].indexOf(requested) >= 0 ? requested : (['ko','en','zh'].indexOf(saved) >= 0 ? saved : 'ko');
+      if (requested && ['ko','en','zh'].indexOf(requested) >= 0) localStorage.setItem('ps_lang', requested);
+    } catch (e) {}
+    this.setState({ lang });
     this.uid = this.S('currentUid', '') || '';
     this._galleryTimerGlobal = setInterval(() => { if (this.state.view !== 'home' || this.state.heroSlide !== 1) return; var map = {'./assets/store-front.jpeg':'store1','./assets/store-guide.png':'storeGuide','./assets/store-aisle.jpeg':'store2','./assets/store-checkout.jpeg':'store3'}; var imgs = Object.keys(map).map(p => this.R(map[p], p)); var cur = this.state.introGalleryImg || imgs[0]; var idx = imgs.indexOf(cur); if (idx < 0) idx = 0; this.setState({ introGalleryImg: imgs[(idx+1) % imgs.length] }); }, 3000);
     const _vc = this.S('viewCounts', {}); this.setState({ viewCounts: _vc });
@@ -1422,7 +1614,6 @@ class Component extends DCLogic {
     });
     if (!this.S('gateEnabled', true)) this.onHomeShown();
     this.syncCountdown();
-    try { fetch('./visits.php?action=hit&page=event&t=' + Date.now()).catch(() => {}); } catch (e) {}
     // referral is handled server-side ONLY (credits the SHARER, not the visitor)
     try { const ref0 = new URLSearchParams(location.search).get('ref'); const rid = ref0 ? String(ref0).replace(/\D/g,'') : ''; if (rid) this.W('pendingRef', rid); } catch (e) {}
     this.detectServer().then((on) => {
@@ -1476,7 +1667,35 @@ class Component extends DCLogic {
     this.setState(patch); try { window.scrollTo(0, 0); } catch (e) {}
     if (view === 'home') this.onHomeShown();
   }
-  toast(msg) { this.setState({ toast: msg }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 2800); }
+  toast(msg) {
+    const common = {
+      en: {
+        '가입 내역이 없어요. 회원가입을 먼저 진행해주세요.':'No membership was found. Please sign up first.',
+        '생년월일을 입력해주세요.':'Please enter your date of birth.', '먼저 로그인해주세요.':'Please log in first.',
+        '기대평이 등록됐어요! 매장 방문 시 웰컴 혜택을 드려요.':'Your review has been submitted! Visit the store for your welcome benefit.',
+        '카카오톡 채널 추가 완료! 매장에서 혜택을 받으세요.':'Kakao channel added! Receive your benefit in store.',
+        '공유 링크가 복사되었어요.':'Share link copied.', '링크를 길게 눌러 복사해주세요.':'Press and hold the link to copy it.',
+        '실패. 다시 시도해주세요.':'Something went wrong. Please try again.', '준비 중인 이벤트예요.':'This event is coming soon.',
+        '오픈 후 매장에서 직원이 적립해드려요!':'A staff member will add this after opening.', '매장에서 구매 확인 후 적립돼요!':'A staff member will add this after confirming your purchase.'
+      },
+      zh: {
+        '가입 내역이 없어요. 회원가입을 먼저 진행해주세요.':'未找到注册记录，请先注册。', '생년월일을 입력해주세요.':'请输入出生日期。', '먼저 로그인해주세요.':'请先登录。',
+        '기대평이 등록됐어요! 매장 방문 시 웰컴 혜택을 드려요.':'期待评论已提交！到店即可获得欢迎福利。',
+        '카카오톡 채널 추가 완료! 매장에서 혜택을 받으세요.':'已添加 Kakao 频道！请到店领取福利。',
+        '공유 링크가 복사되었어요.':'分享链接已复制。', '링크를 길게 눌러 복사해주세요.':'请长按链接复制。',
+        '실패. 다시 시도해주세요.':'操作失败，请重试。', '준비 중인 이벤트예요.':'活动正在准备中。',
+        '오픈 후 매장에서 직원이 적립해드려요!':'开业后由店员为您添加。', '매장에서 구매 확인 후 적립돼요!':'店员确认购买后会为您添加。'
+      }
+    };
+    if (this.state.view !== 'admin') {
+      const lang = this.state.lang || 'ko';
+      if (lang !== 'ko') {
+        const min = /^기대평은 최소 25자 이상 작성해주세요\. \(현재 (\d+)자\)$/.exec(msg);
+        msg = min ? this.t('toast.reviewMin', { count:min[1] }) : ((common[lang] && common[lang][msg]) || msg);
+      }
+    }
+    this.setState({ toast: msg }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 2800);
+  }
 
   stampCount() { return Math.min(this.STAMP_GOAL, this.state.stampLog.length); }
   who() { return this.state.member ? (this.state.member.name + ' ' + this.tail(this.state.member.phone)) : '게스트'; }
@@ -1518,24 +1737,110 @@ class Component extends DCLogic {
       this.setState({ coupons: pc }); this.toast('사용 취소 완료.');
     }
   }
+  couponDateSeoul(ts) {
+    try {
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ts));
+    } catch (e) {
+      try { return String(ts || '').slice(0, 10); } catch (e2) { return this.todayStr(); }
+    }
+  }
+  rollbackLocalAfterCouponDelete(coupon) {
+    if (!coupon) return [];
+    const src = String(coupon.source || '');
+    const cDate = this.couponDateSeoul(coupon.ts);
+    const notes = [];
+    const removeStamps = (sources, matchDate) => {
+      const prev = this.S('stamplog', []);
+      const next = prev.filter(e => {
+        const hitSrc = sources.indexOf(e.source) >= 0;
+        const hitDate = !matchDate || e.date === matchDate;
+        return !(hitSrc && hitDate);
+      });
+      const removed = prev.length - next.length;
+      this.W('stamplog', next);
+      return removed;
+    };
+
+    if (src.indexOf('기대평') >= 0) {
+      this.W('welcomeIssued', false);
+      const m = this.S('member', null);
+      if (m) { m.rewarded = false; this.W('member', m); }
+      let removed = removeStamps(['review'], cDate);
+      if (!removed) removed = removeStamps(['review'], '');
+      notes.push('웰컴 지급 가능');
+      if (removed) notes.push('기대평 스탬프 취소');
+    }
+    if (src.indexOf('룰렛') >= 0) {
+      const sp = this.S('spins', null) || {};
+      let restoredDaily = false;
+      if (sp.date === cDate && (sp.used || 0) > 0) {
+        const used = Math.max(0, (sp.used || 0) - 1);
+        this.W('spins', { date: sp.date, used });
+        this.setState({ spinsUsedToday: (sp.date === this.todayStr()) ? used : this.state.spinsUsedToday });
+        restoredDaily = true;
+      }
+      if (!restoredDaily) {
+        const b = (this.S('spinBonus', 0) || 0) + 1;
+        this.W('spinBonus', b);
+        this.setState({ spinBonus: b });
+      }
+      notes.push('룰렛 기회 복구');
+    }
+    if (src.indexOf('브랜드 게임') >= 0 || src.indexOf('게임') >= 0) {
+      const pt = Math.max(0, (this.S('playsTotal', 0) || 0) - 1);
+      this.W('playsTotal', pt);
+      const m = src.match(/\(([^)]+)\)/);
+      if (m && m[1]) {
+        const bn = m[1].trim();
+        this.W('playedBrands', (this.S('playedBrands', []) || []).filter(x => x !== bn));
+      }
+      let removed = removeStamps(['game'], cDate);
+      if (!removed) removeStamps(['game'], '');
+      this.W('gameStampDone', false);
+      notes.push('게임 기회·스탬프 복구');
+    }
+    this.setState({ stampLog: this.S('stamplog', []), coupons: this.S('coupons', []) });
+    return notes;
+  }
   async deleteCoupon(uid, code, title) {
     if (!code) return;
-    if (!confirm('이 쿠폰을 삭제(취소)할까요?\n\n회원 쿠폰함에서도 사라지고, 해당 혜택을 다시 받을 수 있게 됩니다.')) return;
+    if (!confirm('이 쿠폰을 삭제(취소)할까요?\n\n회원 쿠폰함에서 사라지고, 관련 스탬프·룰렛/게임 기회도 함께 복구됩니다.')) return;
+    const pool = this.collectAdminCoupons();
+    const target = pool.find(c => String(c.code || '') === String(code)) || { title: title, code: code, source: '', ts: '' };
+    const src = String(target.source || '');
     if (this.serverOn && uid) {
-      try { await this.apiPost({ action: 'delcoupon', pw: '1234', uid: uid, code: code }); } catch (e) { return this.toast('삭제 실패. 다시 시도해주세요.'); }
-      const saved = this.uid; this.uid = uid;
-      const cp = this.S('coupons', []).filter(x => x.code !== code); this.W('coupons', cp);
-      const src0 = (this.S('coupons', []).find(x => x.code === code) || {});
-      this.W('welcomeIssued', false);
-      if (uid === saved) this.setState({ coupons: cp });
+      let restored = [];
+      try {
+        const res = await this.apiPost({ action: 'delcoupon', pw: '1234', uid: uid, code: code });
+        if (res && Array.isArray(res.restored)) restored = res.restored;
+      } catch (e) { return this.toast('삭제 실패. 다시 시도해주세요.'); }
+      // 서버가 스탬프/기회까지 복구함. 로컬은 pull로 맞추고, 빈 로컬 sync는 하지 않음.
+      const saved = this.uid;
+      this.uid = uid;
+      const dead = this.S('deletedCoupons', []);
+      if (dead.indexOf(code) < 0) { dead.push(code); this.W('deletedCoupons', dead); }
       this.uid = saved;
       await this.adminLoadAll();
-      this.toast((title || '쿠폰') + ' 삭제 완료 · 다시 받을 수 있어요.');
+      await this.pullMember(uid);
+      if (saved === uid) this.loadPersonal(this.S('member', null));
+      const tips = [];
+      if (restored.indexOf('welcome') >= 0 || restored.indexOf('review_stamp') >= 0) tips.push('웰컴/스탬프 복구');
+      if (restored.indexOf('roulette') >= 0) tips.push('룰렛 기회 복구');
+      if (restored.indexOf('game') >= 0) tips.push('게임 기회 복구');
+      if (!tips.length && src) {
+        if (src.indexOf('기대평') >= 0) tips.push('웰컴/스탬프 복구');
+        if (src.indexOf('룰렛') >= 0) tips.push('룰렛 기회 복구');
+        if (src.indexOf('게임') >= 0) tips.push('게임 기회 복구');
+      }
+      this.toast((title || target.title || '쿠폰') + ' 삭제 완료' + (tips.length ? (' · ' + tips.join(', ')) : ''));
     } else {
       const gc = this.S('allCoupons', []).filter(x => x.code !== code); this.W('allCoupons', gc);
+      const dead = this.S('deletedCoupons', []);
+      if (dead.indexOf(code) < 0) { dead.push(code); this.W('deletedCoupons', dead); }
       const cp = this.S('coupons', []).filter(x => x.code !== code); this.W('coupons', cp);
-      this.W('welcomeIssued', false);
-      this.setState({ coupons: cp }); this.toast((title || '쿠폰') + ' 삭제 완료.');
+      const localNotes = this.rollbackLocalAfterCouponDelete(target);
+      this.setState({ coupons: this.S('coupons', []), stampLog: this.S('stamplog', []) });
+      this.toast((title || '쿠폰') + ' 삭제 완료' + (localNotes.length ? (' · ' + localNotes.join(', ')) : ''));
     }
   }
   issueCoupon(title, desc, source, brand, kind) {
@@ -1715,35 +2020,15 @@ class Component extends DCLogic {
     } catch (e) { lines.push('재확인 실패 → ' + e.message); }
     this.setState({ diagText: lines.join('\n') });
   }
-  adminLogin() { if (this.state.adminPw === this.adminPassword()) { this.setState({ adminAuthed: true, adminPw: '' }); this.adminLoadAll(true); } else this.toast('비밀번호가 올바르지 않습니다.'); }
-  async adminLoadAll(forceReconnect) {
-    const wasOff = !this.serverOn;
-    if (forceReconnect || !this.serverOn) {
-      const on = await this.detectServer({ skipAdmin: true });
-      if (!on) {
-        this.toast('서버에 연결되지 않았습니다. 주소창이 www.phamasquare.com 인지 확인하세요.');
-        this.loadVisitStats();
-        return;
-      }
-    }
-    this.loadVisitStats();
+  adminLogin() { if (this.state.adminPw === this.adminPassword()) { this.setState({ adminAuthed: true, adminPw: '' }); this.adminLoadAll(); } else this.toast('비밀번호가 올바르지 않습니다.'); }
+  async adminLoadAll() {
+    if (!this.serverOn) return;
     try {
-      const j = await this.apiGet('action=all&pw=' + encodeURIComponent(this.adminApiPw()));
+      const j = await this.apiGet('action=all&pw=1234');
       if (!j) return;
       const membersArr = j.members ? Object.keys(j.members).map(k => j.members[k]) : [];
       this.setState({ srvReviews: j.reviews || [], srvMembers: membersArr, srvReferrals: j.referrals || [], srvLoaded: true });
-      if (forceReconnect || wasOff) this.toast('서버 연결됨 · 회원 ' + membersArr.length + ' · 기대평 ' + (j.reviews || []).length);
-    } catch (e) {
-      this.toast('서버 데이터를 불러오지 못했습니다. 다시 연결을 눌러주세요.');
-    }
-  }
-  adminApiPw() { return '1234'; }
-  loadVisitStats() {
-    const base = (this.API || './events.php').replace(/events\.php$/i, 'visits.php');
-    fetch(base + '?action=stats&pw=' + encodeURIComponent(this.adminPassword()) + '&t=' + Date.now(), { cache: 'no-store' })
-      .then(r => r.json())
-      .then(j => { if (j && j.ok) this.setState({ visitStats: j }); })
-      .catch(() => {});
+    } catch (e) {}
   }
   adminLogout() { this.setState({ adminAuthed: false }); this.go('home'); }
   deleteReview(i) { const arr = this.S('reviews', []).slice(); arr.splice(i, 1); this.W('reviews', arr); this.setState({ reviews: arr }); this.toast('기대평을 삭제했어요.'); }
@@ -1795,11 +2080,17 @@ class Component extends DCLogic {
     const uid = String(phone || '').replace(/\D/g, '');
     if (!uid) return this.toast('휴대폰 번호가 없어 지급할 수 없어요.');
     source = source || 'visit';
-    var block = source === 'visit' ? 'visit,buy1,buy2,review' : 'visit,buy1,buy2';
+    // 방문 + (1만 또는 2만)은 같은 날 가능. 1만과 2만은 같은 날 서로 불가. 방문은 기대평과 같은 날 중복 불가.
+    var block = source === 'visit' ? 'visit,review' : (source === 'buy1' || source === 'buy2' ? 'buy1,buy2' : source);
     if (this.serverOn) {
       this.apiPost({ action: 'addstamp', pw: '1234', uid: uid, source: source, daily: 1, block: block })
         .then((r) => {
-          if (r && r.blocked) { this.toast('같은 날짜에 방문/구매 스탬프가 이미 적립됐어요.'); return; }
+          if (r && r.blocked) {
+            var msg = '같은 날짜에 이미 적립된 스탬프예요.';
+            if (source === 'visit') msg = '같은 날짜에 방문(또는 기대평) 스탬프가 이미 적립됐어요.';
+            else if (source === 'buy1' || source === 'buy2') msg = '같은 날짜에 구매 스탬프(1만원/2만원)가 이미 적립됐어요.';
+            this.toast(msg); return;
+          }
           this.adminLoadAll(); if (uid === this.uid) this.pullMember(uid);
           this.toast((name || '') + '님 ' + (label || '방문 스탬프') + ' 적립 완료.');
         })
@@ -1808,7 +2099,13 @@ class Component extends DCLogic {
       const saved = this.uid; this.uid = uid;
       const today = this.todayStr();
       const blk = block.split(',');
-      if (this.S('stamplog', []).some(e => e.date === today && blk.indexOf(e.source) >= 0)) { this.uid = saved; return this.toast('같은 날짜에 방문/구매 스탬프가 이미 적립됐어요.'); }
+      if (this.S('stamplog', []).some(e => e.date === today && blk.indexOf(e.source) >= 0)) {
+        this.uid = saved;
+        var msg2 = '같은 날짜에 이미 적립된 스탬프예요.';
+        if (source === 'visit') msg2 = '같은 날짜에 방문(또는 기대평) 스탬프가 이미 적립됐어요.';
+        else if (source === 'buy1' || source === 'buy2') msg2 = '같은 날짜에 구매 스탬프(1만원/2만원)가 이미 적립됐어요.';
+        return this.toast(msg2);
+      }
       this.addStamp(source); this.uid = saved;
       this.toast((name || '') + '님 ' + (label || '방문 스탬프') + ' 적립 완료.');
     }
@@ -1842,8 +2139,33 @@ class Component extends DCLogic {
     ordered.forEach((m, i) => { csv += '"' + (i+1) + '","' + (m.name||'') + '","' + (m.birth||'') + '","' + (function(p){ var d=String(p||'').replace(/\D/g,''); return d.length===11 ? d.slice(0,3)+'-'+d.slice(3,7)+'-'+d.slice(7) : (d.length===10 ? d.slice(0,3)+'-'+d.slice(3,6)+'-'+d.slice(6) : String(p||'')); })(m.phone) + '","' + (m.marketing?'true':'false') + '","' + (m.ts ? this.fmtDate(m.ts) : '') + '","' + (m.consent!==false?'O':'X') + '","' + (m.transfer?'O':'X') + '"\n'; });
     try { const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'phamasquare_members.csv'; a.click(); this.toast('회원 명단 CSV를 내보냈어요.'); } catch (e) { this.toast('내보내기에 실패했어요.'); }
   }
+  // 관리자용 전체 쿠폰: 서버 연결 시 회원별 coupons를 모으고 발급시각 최신순으로 정렬
+  collectAdminCoupons() {
+    if (this.serverOn && this.state.srvLoaded) {
+      const members = this.state.srvMembers || [];
+      const localMembers = this.state.members || [];
+      const seen = {};
+      const out = [];
+      const pushFrom = (list) => {
+        (list || []).forEach(m => {
+          const uid = String(m.phone || m.uid || '').replace(/\D/g, '');
+          (m.coupons || []).forEach(c => {
+            const code = c && c.code ? String(c.code) : '';
+            if (!code || seen[code]) return;
+            seen[code] = 1;
+            out.push(Object.assign({ who: m.name || '게스트', uid: uid }, c));
+          });
+        });
+      };
+      pushFrom(members);
+      pushFrom(localMembers);
+      out.sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
+      return out;
+    }
+    return (this.S('allCoupons', []) || []).slice().sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
+  }
   exportCoupons() {
-    const rows = this.S('allCoupons', []);
+    const rows = this.collectAdminCoupons();
     if (!rows.length) return this.toast('내보낼 쿠폰이 없습니다.');
     let csv = '\uFEFF쿠폰명,고객,코드,브랜드,획득경로,사용여부,발급일시\n';
     rows.forEach(c => { csv += '"' + (c.title||'') + '","' + (c.who||'') + '","' + (c.code||'') + '","' + (c.brand||'') + '","' + (c.source||'') + '","' + (c.used?'사용완료':'미사용') + '","' + this.fmtDate(c.ts) + '"\n'; });
@@ -1858,17 +2180,58 @@ class Component extends DCLogic {
   }
   doVerify() {
     const code = this.state.verifyCode.trim().toUpperCase(); if (!code) return;
-    const c = this.S('allCoupons', []).find(x => x.code === code);
-    if (c) this.setState({ verifyResult: { ok: true, used: c.used, name: c.title, desc: c.desc, who: c.who || '', brand: c.brand || '', code, canUse: !c.used } });
+    const c = this.collectAdminCoupons().find(x => String(x.code || '').toUpperCase() === code);
+    if (c) this.setState({ verifyResult: { ok: true, used: c.used, name: c.title, desc: c.desc, who: c.who || '', brand: c.brand || '', code, canUse: !c.used, uid: c.uid || '' } });
     else this.setState({ verifyResult: { ok: false } });
   }
-  markUsed() {
+  async markUsed() {
     const code = this.state.verifyResult && this.state.verifyResult.code;
+    if (!code) return;
+    const owner = this.collectAdminCoupons().find(x => String(x.code || '') === String(code));
+    const uid = String((this.state.verifyResult && this.state.verifyResult.uid) || (owner && owner.uid) || '').replace(/\D/g, '');
+    const title = (owner && owner.title) || (this.state.verifyResult && this.state.verifyResult.name) || '';
+    if (!confirm((title || '쿠폰') + ' — 사용 처리할까요?\n\n고객 쿠폰함에도 사용완료로 표시됩니다.')) return;
+    if (this.serverOn && uid) {
+      try { await this.apiPost({ action: 'setused', pw: '1234', uid: uid, code: code, used: true }); } catch (e) { return this.toast('실패. 다시 시도해주세요.'); }
+      await this.adminLoadAll();
+      this.setState({ verifyResult: Object.assign({}, this.state.verifyResult, { used: true, canUse: false }) });
+      this.toast('사용 처리 완료 (서버 반영)');
+      return;
+    }
     const gc = this.S('allCoupons', []).map(x => x.code === code ? Object.assign({}, x, { used: true }) : x); this.W('allCoupons', gc);
-    const owner = gc.find(x => x.code === code);
-    if (owner && owner.uid != null) { const saved = this.uid; this.uid = owner.uid; const pc = this.S('coupons', []).map(x => x.code === code ? Object.assign({}, x, { used: true }) : x); this.W('coupons', pc); if (this.serverOn) { this.apiPost({ action: 'sync', uid: String(owner.uid), member: this.personalBlob() }).then(() => this.adminLoadAll()).catch(() => {}); } this.uid = saved; if (owner.uid === this.uid) this.setState({ coupons: pc }); }
+    if (uid) { const saved = this.uid; this.uid = uid; const pc = this.S('coupons', []).map(x => x.code === code ? Object.assign({}, x, { used: true }) : x); this.W('coupons', pc); this.uid = saved; if (uid === this.uid) this.setState({ coupons: pc }); }
     this.setState({ verifyResult: Object.assign({}, this.state.verifyResult, { used: true, canUse: false }) });
     this.toast('사용 처리했어요.');
+  }
+  openStaffPin(code, title) {
+    if (!code) return;
+    if (!this.uid) return this.toast('로그인 후 이용해주세요.');
+    this.setState({ staffPinCode: code, staffPinTitle: title || '쿠폰', staffPin: '' });
+  }
+  cancelStaffPin() { this.setState({ staffPinCode: '', staffPinTitle: '', staffPin: '' }); }
+  async submitStaffPin() {
+    const code = this.state.staffPinCode;
+    const title = this.state.staffPinTitle;
+    const pin = String(this.state.staffPin || '').trim();
+    if (!code) return;
+    if (!pin) return this.toast('PIN을 입력해주세요.');
+    if (pin !== 'PS1234') return this.toast('PIN이 올바르지 않습니다.');
+    const cur = this.S('coupons', []).find(x => String(x.code || '') === String(code));
+    if (!cur) { this.cancelStaffPin(); return this.toast('쿠폰을 찾을 수 없습니다.'); }
+    if (cur.used) { this.cancelStaffPin(); return this.toast('이미 사용 완료된 쿠폰입니다.'); }
+    if (this.serverOn) {
+      try { await this.apiPost({ action: 'setused', pw: '1234', uid: this.uid, code: code, used: true }); } catch (e) { return this.toast('실패. 다시 시도해주세요.'); }
+    }
+    const pc = this.S('coupons', []).map(x => String(x.code || '') === String(code) ? Object.assign({}, x, { used: true }) : x);
+    this.W('coupons', pc);
+    const gc = this.S('allCoupons', []).map(x => String(x.code || '') === String(code) ? Object.assign({}, x, { used: true }) : x);
+    this.W('allCoupons', gc);
+    this.setState({ coupons: pc, staffPinCode: '', staffPinTitle: '', staffPin: '' });
+    this.scheduleSync();
+    this.toast((title || '쿠폰') + ' · 사용 처리 완료');
+  }
+  async staffUseCoupon(code, title) {
+    this.openStaffPin(code, title);
   }
   toggleEvent(id) {
     const cur = this.state.eventStatus; const def = (this.events.find(e => e.id === id) || {}).status;
@@ -1976,7 +2339,7 @@ class Component extends DCLogic {
     const opened = this.isOpened();
     const openDateLabel = (() => { try { const d = new Date(this.openDate() + 'T00:00:00'); return (d.getMonth()+1) + '월 ' + d.getDate() + '일 오픈'; } catch (e) { return ''; } })();
 
-    const navDefs = [['home','홈'],['guide','이벤트 안내'],['stamp','스탬프'],['coupon','쿠폰함']];
+    const navDefs = [['home',this.t('nav.home')],['guide',this.t('nav.guide')],['stamp',this.t('nav.stamp')],['coupon',this.t('nav.coupon')]];
     const _navSvg = {
       home: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="CC" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg>',
       guide: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="CC" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r="0.7" fill="CC" stroke="none"/></svg>',
@@ -1989,6 +2352,7 @@ class Component extends DCLogic {
     const hex2rgba = (h, a) => { const n = h.replace('#',''); const r = parseInt(n.slice(0,2),16), g = parseInt(n.slice(2,4),16), b = parseInt(n.slice(4,6),16); return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'; };
     const gradMap = {
       review: 'linear-gradient(155deg,#04CBAE 0%,#01A88F 55%,#018679 100%)',
+      naver: 'linear-gradient(155deg,#2FE075 0%,#03C75A 55%,#02A84C 100%)',
       insta: 'linear-gradient(155deg,#F58529 0%,#E1306C 55%,#C13584 100%)',
       game: 'linear-gradient(155deg,#FFB443 0%,#F5A623 52%,#F08215 100%)',
       roulette: 'linear-gradient(155deg,#8FA0B6 0%,#7A8AA0 55%,#63728A 100%)',
@@ -1996,7 +2360,7 @@ class Component extends DCLogic {
     const eventCards = this.events.map(e => {
       const raw = this.evStatus(e);
       let live, badge, cta = e.cta, locked = false;
-      const evNum = { review:'이벤트 1', insta:'이벤트 2', game:'이벤트 3' };
+      const evNum = { review:'이벤트 1', naver:'이벤트 2', game:'이벤트 3', insta:'이벤트 4' };
       if (e.id === 'roulette') { live = opened && raw !== 'off'; locked = !live; badge = live ? '진행 중' : '오픈일 공개'; cta = live ? '룰렛 돌리기 →' : ('D-' + dday + ' 공개'); }
       else if (e.id === 'guide') { live = raw === 'live'; locked = !live; badge = '가이드'; }
       else { live = raw === 'live'; locked = !live; badge = live ? (evNum[e.id] || '진행 중') : '준비 중'; }
@@ -2011,16 +2375,16 @@ class Component extends DCLogic {
         orbShadow: e.id === 'roulette' ? 'display:none;' : 'position:absolute; z-index:1; bottom:2px; left:50%; transform:translateX(-50%); width:66px; height:13px; border-radius:50%; background:rgba(0,40,36,.05); filter:blur(7px);',
         cardStyle: 'position:relative; overflow:hidden; border:1px solid #E6EDEB; border-radius:24px; background:#fff; box-shadow:0 6px 18px rgba(0,60,55,.05);', titleColor: '#10181E', descColor: '#7C938F', tagBg: hex2rgba(locked ? '#9DB3B1' : col, .10), tagFg: locked ? '#7C938F' : col,
         btnStyle: 'margin-top:18px; width:100%; height:50px; border-radius:14px; border:none; cursor:pointer; font-size:15px; font-weight:800; background:' + (locked ? '#F1F5F4' : col) + '; color:' + (locked ? '#9DB3B1' : '#fff') + ';',
-        onClick: () => { this.incViewCount(e.id); if (e.kind === 'insta') return this.go('insta'); if (e.id === 'roulette' && !live) return this.go('roulette'); if (!live) return this.toast('준비 중인 이벤트예요.'); this.requireLogin(e.view); } };
+        onClick: () => { this.incViewCount(e.id); if (e.kind === 'insta') return this.go('insta'); if (e.kind === 'naver') return this.go('naver'); if (e.id === 'roulette' && !live) return this.go('roulette'); if (!live) return this.toast('준비 중인 이벤트예요.'); this.requireLogin(e.view); } };
     });
 
     const rLive = opened && this.evStatus({ id:'roulette', status:'auto' }) !== 'off';
     const rouletteCard = {
-      title: '오픈 기념 럭키 룰렛',
+      title: this.t('roulette.title'),
       desc: rLive ? '방문할 때마다 룰렛을 돌려 다양한 혜택을 받아보세요.' : '오픈일에 열려요!\n방문할 때마다 룰렛을 돌려 다양한 혜택을 받아보세요.',
       badge: rLive ? '진행 중' : ('D-' + dday + ' 공개'),
       badgeStyle: rLive ? 'font-size:11px; font-weight:800; padding:5px 13px; border-radius:40px; background:rgba(1,192,164,.18); color:#00786F;' : 'font-size:11px; font-weight:800; padding:5px 13px; border-radius:40px; background:rgba(157,179,177,.14); color:#7C938F;',
-      cta: rLive ? '룰렛 돌리기 →' : '오픈일 공개',
+      cta: rLive ? this.t('roulette.spin') + ' →' : '오픈일 공개',
       cardStyle: 'overflow:hidden; border:1px solid #E6EDEB; border-radius:24px; background:#fff; box-shadow:0 6px 18px rgba(0,60,55,.05);',
       iconEl: React.createElement('img', { src: this.R('iconRoulette','./assets/icon-roulette.svg'), alt: '', style: { width:'80px', height:'80px', objectFit:'contain', filter:'drop-shadow(0 4px 8px rgba(0,60,55,.14))' } }),
       orbWrap: 'flex:none; width:90px; height:82px; display:flex; align-items:center; justify-content:center;',
@@ -2062,7 +2426,7 @@ class Component extends DCLogic {
     });
     const prizeRangeText = '약 2,500원 ~ 13,900원 상당 · 총 ' + prizeShowcase.length + '종';
     const prizeNamesText = (s.roulettePrizes || []).map(p => String(p.title || '').replace(/^\[[^\]]*\]\s*/, '')).join(' · ');
-    const spinBtnLabel = s.spinning ? '돌아가는 중...' : (availSpins <= 0 ? '오늘 기회를 모두 사용했어요' : '룰렛 돌리기');
+    const spinBtnLabel = s.spinning ? this.t('roulette.spinning') : (availSpins <= 0 ? this.t('roulette.none') : this.t('roulette.spin'));
     const spinBtnStyle = 'width:100%; margin-top:26px; height:56px; border-radius:40px; border:none; font-size:17px; font-weight:800; cursor:' + (spinDisabled ? 'default' : 'pointer') + '; color:#fff; background:' + (spinDisabled ? '#B7C7C4' : '#01C0A4') + '; box-shadow:' + (spinDisabled ? 'none' : '0 12px 28px rgba(1,192,164,.34)') + ';';
     const _ico = (svg, bg) => React.createElement('span', { style: { width:'38px', height:'38px', borderRadius:'10px', background: bg, display:'inline-flex', flexShrink:0, alignItems:'center', justifyContent:'center' } }, React.createElement('span', { dangerouslySetInnerHTML: { __html: svg } }));
     const _sico = (svg, bg) => React.createElement('span', { style: { width:'40px', height:'40px', borderRadius:'10px', background: bg||'#E6F7F2', display:'inline-flex', flexShrink:0, alignItems:'center', justifyContent:'center' } }, React.createElement('span', { dangerouslySetInnerHTML: { __html: svg } }));
@@ -2083,9 +2447,9 @@ class Component extends DCLogic {
     const stampWays = [
       { icon:'🎮', iconEl:_sico(svgs.game,'#FFF2DF'), title:'브랜드 게임 성공', desc: this.S('gameStampDone', false) ? '완료 · 스탬프 적립됨' : '게임을 모두 맞히면 +1', tag: this.S('gameStampDone', false) ? '완료' : '+1', done: this.S('gameStampDone', false), onClick: () => this.go('game') },
       { icon:'📝', iconEl:_sico(svgs.pencil,'#E6F7F2'), title:'오픈 기대평 작성', desc:'기대평 작성 + 카카오채널 추가 후 매장 방문 시 +1 (웰컴 쿠폰도 함께)', tag:'+1', done:false, onClick: () => this.go('review') },
-      { icon:'🏬', iconEl:_sico(svgs.pin,'#E6F7F2'), title:'매장 방문', desc:'오픈 후 방문 시 직원 확인 후 +1 · 오픈 기대평 스탬프와 같은 날 중복 불가 (다른 날 방문 시 가능)', tag:'+1', done:false, onClick: () => this.toast('오픈 후 매장에서 직원이 적립해드려요!') },
-      { icon:'🧾', iconEl:_sico(svgs.receipt,'#E6F7F2'), title:'1만원 이상 구매', desc:'1만원 이상 구매 시 직원 확인 후 +1', tag:'+1', done:false, onClick: () => this.toast('매장에서 구매 확인 후 적립돼요!') },
-      { icon:'🛍️', iconEl:_sico(svgs.cart,'#E6F7F2'), title:'2만원 이상 구매', desc:'2만원 이상 구매 시 직원 확인 후 +1', tag:'+1', done:false, onClick: () => this.toast('매장에서 구매 확인 후 적립돼요!') },
+      { icon:'🏬', iconEl:_sico(svgs.pin,'#E6F7F2'), title:'매장 방문', desc:'오픈 후 방문 시 직원 확인 후 +1 · 1만원 또는 2만원 구매 스탬프와 같은 날 함께 가능 · 기대평 스탬프와는 같은 날 중복 불가', tag:'+1', done:false, onClick: () => this.toast('오픈 후 매장에서 직원이 적립해드려요!') },
+      { icon:'🧾', iconEl:_sico(svgs.receipt,'#E6F7F2'), title:'1만원 이상 구매', desc:'1만원 이상 구매 시 직원 확인 후 +1 · 방문과 같은 날 가능 · 2만원 스탬프와는 같은 날 불가', tag:'+1', done:false, onClick: () => this.toast('매장에서 구매 확인 후 적립돼요!') },
+      { icon:'🛍️', iconEl:_sico(svgs.cart,'#E6F7F2'), title:'2만원 이상 구매', desc:'2만원 이상 구매 시 직원 확인 후 +1 · 방문과 같은 날 가능 · 1만원 스탬프와는 같은 날 불가', tag:'+1', done:false, onClick: () => this.toast('매장에서 구매 확인 후 적립돼요!') },
     ].map(w => ({ icon: w.icon, iconEl: w.iconEl, title: w.title, desc: w.desc, tag: w.tag, onClick: w.onClick,
       style: 'display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; padding:15px 17px; background:#fff; border:1px solid ' + (w.done ? '#D7F0E8' : '#E6EDEB') + '; border-radius:15px; cursor:pointer;' + (w.done ? ' opacity:.8;' : ''),
       tagStyle: 'flex:none; font-size:12px; font-weight:800; padding:5px 12px; border-radius:40px; background:' + (w.done ? '#EFF3F2' : '#E6F7F2') + '; color:' + (w.done ? '#9DB3B1' : '#00786F') + ';' }));
@@ -2104,6 +2468,7 @@ class Component extends DCLogic {
         ? '한정 수량 · 매장에서 사은품으로 교환'
         : '중복 적용 불가 · 1회 결제 시 1매 사용';
       return { name: c.title, desc: c.desc || '', code: c.code, date: this.fmtDate(c.ts), tag: c.used ? '사용완료' : '사용 가능', source: c.source || '이벤트', note: note, kindLabel: isGift ? '사은품' : '할인권',
+      canStaffUse: !c.used, onStaffUse: () => this.staffUseCoupon(c.code, c.title),
       wrapStyle: 'position:relative; display:flex; border-radius:18px; overflow:hidden; background:#fff; border:1px solid ' + (c.used ? '#E6EDEB' : accentBg) + '; box-shadow:' + (c.used ? 'none' : '0 8px 20px rgba(0,82,81,.10)') + '; opacity:' + (c.used ? '.6' : '1') + ';',
       stubStyle: 'flex:none; width:66px; background:' + accent + '; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:14px 6px;',
       stubIcon: isGift ? '🎁' : '%',
@@ -2114,14 +2479,14 @@ class Component extends DCLogic {
       tagStyle: 'font-size:10.5px; font-weight:700; color:' + (c.used ? '#B7C7C4' : accent) + ';' };
     });
 
-    // admin (aggregated across all users)
+    // admin (aggregated across all users) — 발급시각 최신순
     const glog = this.S('gamelog', []);
     const srvUp = s.serverOn;
     const mergeBy = (a, b, keyFn) => { const out = (a || []).slice(); const seen = {}; out.forEach(x => { seen[keyFn(x)] = 1; }); (b || []).forEach(x => { if (!seen[keyFn(x)]) out.push(x); }); return out; };
     const reviewSource = srvUp ? mergeBy(s.srvReviews, s.reviews, r => (r.uid || '') + '|' + (r.ts || '')) : s.reviews;
     const memberSource = (srvUp ? mergeBy(s.srvMembers, s.members, m => String(m.phone || '').replace(/\D/g, '')) : s.members).filter(m => (m && ((m.name && m.name.trim()) || String(m.phone||'').replace(/\D/g,''))));
-    const allCoupons = srvUp ? memberSource.reduce((arr, m) => { (m.coupons || []).forEach(c => arr.push(Object.assign({ who: m.name, uid: String(m.phone||'').replace(/\D/g,'') }, c))); return arr; }, []) : this.S('allCoupons', []);
-    const allStamps = srvUp ? memberSource.reduce((arr, m) => { (m.stamplog || []).forEach(e => arr.push(Object.assign({ who: m.name || e.who }, e))); return arr; }, []) : this.S('allStamps', []);
+    const allCoupons = this.collectAdminCoupons();
+    const allStamps = (srvUp ? memberSource.reduce((arr, m) => { (m.stamplog || []).forEach(e => arr.push(Object.assign({ who: m.name || e.who }, e))); return arr; }, []) : this.S('allStamps', [])).slice().sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
     const statCards = [
       { label: '등록 회원', value: memberSource.length },
       { label: '기대평', value: reviewSource.length },
@@ -2130,14 +2495,10 @@ class Component extends DCLogic {
       { label: '게임 참여', value: srvUp ? memberSource.reduce((n, m) => n + (parseInt(m.playsTotal, 10) || 0), 0) : glog.length },
       { label: '공유 유입', value: (s.serverOn && s.srvLoaded) ? s.srvReferrals.length : this.S('reflog', []).length },
     ];
-    const tabDefs = [['manual','운영 안내'],['visits','방문자'],['reviews','기대평·회원'],['members','회원 명단'],['coupons','발급 쿠폰'],['game','게임 관리'],['stamps','스탬프 기록'],['verify','코드 확인'],['roulette','룰렛 혜택'],['settings','설정'],['data','데이터']];
-    const visitRows = (s.visitStats && Array.isArray(s.visitStats.days) ? s.visitStats.days : []).slice(0, 60).map(d => ({
-      date: d.date, visitors: d.visitors, pageviews: d.pageviews,
-      home: d.home || 0, event: d.event || 0, board: d.board || 0
-    }));
+    const tabDefs = [['manual','운영 안내'],['reviews','기대평·회원'],['members','회원 명단'],['coupons','발급 쿠폰'],['game','게임 관리'],['stamps','스탬프 기록'],['verify','코드 확인'],['roulette','룰렛 혜택'],['settings','설정'],['data','데이터']];
     const _cq = (s.couponSearch || '').trim().toLowerCase();
     const _cpool = _cq ? allCoupons.filter(c => ((c.code||'')+' '+(c.title||'')+' '+(c.who||'')+' '+(c.brand||'')).toLowerCase().includes(_cq)) : allCoupons;
-    const couponAdminRows = _cpool.slice().reverse().map(c => ({ name: c.title || '', who: c.who || '게스트', code: c.code || '', date: this.fmtDate(c.ts), brand: c.brand || '', source: c.source || '',
+    const couponAdminRows = _cpool.map(c => ({ name: c.title || '', who: c.who || '게스트', code: c.code || '', date: this.fmtDate(c.ts), brand: c.brand || '', source: c.source || '',
       onDelete: () => this.deleteCoupon(c.uid || '', c.code || '', c.title || ''), canDelete: !c.used, used: !!c.used, unused: !c.used, onUnuse: () => this.unuseCoupon(c.uid || '', c.code || ''), onUse: () => this.useCouponAdmin(c.uid || '', c.code || '', c.title || ''),
       tag: c.used ? '사용완료' : '미사용', tagStyle: 'font-size:11px; font-weight:700; padding:2px 9px; border-radius:20px; background:' + (c.used ? '#F3F4F5' : '#E6F7F2') + '; color:' + (c.used ? '#9DB3B1' : '#00786F') + ';' }));
     const adminTabs = tabDefs.map(([t, label]) => ({ label, onClick: () => this.setState({ adminTab: t }),
@@ -2158,7 +2519,7 @@ class Component extends DCLogic {
         onReward: () => this.rewardByReview(r), onDelete: () => this.deleteByReview(r) };
     });
     const srcLabel = { game: '게임 성공', visit: '매장 방문', review: '기대평' };
-    const stampRows = allStamps.slice().reverse().map(e => ({ who: e.who || '게스트', source: srcLabel[e.source] || e.source, ts: this.fmtDate(e.ts) }));
+    const stampRows = allStamps.map(e => ({ who: e.who || '게스트', source: srcLabel[e.source] || e.source, ts: this.fmtDate(e.ts) }));
     const eventAdminRows = this.events.filter(e => e.id !== 'roulette').map(e => { const live = this.evStatus(e) === 'live'; return { icon: e.icon, title: e.title, statusLabel: live ? '진행 중' : '중지',
       toggleStyle: 'height:34px; padding:0 15px; border-radius:40px; border:none; cursor:pointer; font-size:12.5px; font-weight:700; background:' + (live ? '#E6F7F2' : '#F0F2F1') + '; color:' + (live ? '#00786F' : '#9DB3B1') + ';', onToggle: () => this.toggleEvent(e.id) }; });
     const roulettePrizeRows = s.roulettePrizes.map((p, i) => ({ label: p.label, title: p.title, desc: p.desc, kind: p.kind, w: p.w,
@@ -2264,8 +2625,9 @@ class Component extends DCLogic {
       showHeroArrows: !opened, heroPrev: () => this.goHeroSlide(Math.max(0, s.heroSlide - 1)), heroNext: () => this.goHeroSlide(Math.min(1, s.heroSlide + 1)),
       heroPrevStyle: 'position:absolute; top:0; bottom:0; z-index:4; width:54px; border:none; background:none; font-size:52px; font-weight:200; line-height:1; padding-bottom:6px; display:flex; align-items:center; justify-content:center; text-shadow:0 2px 10px rgba(0,40,36,.3);' + 'left:6px; color:rgba(255,255,255,' + (s.heroSlide > 0 ? '.92' : '.28') + '); cursor:' + (s.heroSlide > 0 ? 'pointer' : 'default') + ';',
       heroNextStyle: 'position:absolute; top:0; bottom:0; z-index:4; width:54px; border:none; background:none; font-size:52px; font-weight:200; line-height:1; padding-bottom:6px; display:flex; align-items:center; justify-content:center; text-shadow:0 2px 10px rgba(0,40,36,.3);' + 'right:6px; color:rgba(255,255,255,' + (s.heroSlide < 1 ? '.92' : '.28') + '); cursor:' + (s.heroSlide < 1 ? 'pointer' : 'default') + ';',
-      isReview: s.view === 'review', isInsta: s.view === 'insta', isGuide: s.view === 'guide', isGame: s.view === 'game', isRoulette: s.view === 'roulette', isStamp: s.view=== 'stamp', isCoupon: s.view === 'coupon', isAdmin: s.view === 'admin',
+      isReview: s.view === 'review', isNaver: s.view === 'naver', isInsta: s.view === 'insta', isGuide: s.view === 'guide', isReadybag: s.view === 'readybag', isGame: s.view === 'game', isRoulette: s.view === 'roulette', isStamp: s.view=== 'stamp', isCoupon: s.view === 'coupon', isAdmin: s.view === 'admin',
       instaHref: this.instaUrl(),
+      naverPosterSrc: this.R('naverPoster','./assets/naver-review-poster.png'),
       storeSlides: [        { img: this.R('store1','./assets/store-front.jpeg'), title: '국내 최초의 대형 웰니스 플랫폼', desc: '독립 약국을 중심으로 건강기능식품·뷰티·펫·라이프스타일 제품이 한자리에.' },
         { img: this.R('store2','./assets/store-aisle.jpeg'), title: '약 3,000여 종의 큐레이션', desc: '검증된 브랜드 제품을 한 공간에서 편하게 만나보세요.' },
         { img: this.R('store3','./assets/store-checkout.jpeg'), title: '건강 상담과 함께', desc: '약사와 전문 스태프가 나에게 맞는 제품을 찾아드려요.' },
@@ -2278,12 +2640,13 @@ class Component extends DCLogic {
       guideSections: [
         { iconEl:_ico(svgs.bag,'#EAF6F3'), title:'상시 이벤트 · 구매 사은품', body:'3만원 이상 구매하시면 미니 굿즈(키캡)를 드려요. (한정 수량, 소진 시 조기 마감)' },
         { iconEl:_ico(svgs.pencil,'#E6F7F2'), title:'오픈 기대평 이벤트', body:'기대평 작성 + 카카오톡 채널 추가 후 매장 방문 시,\n1,000원 웰컴 할인 쿠폰을 드려요.' },
-        { iconEl:_ico(svgs.insta,'#FCEAF1'), title:'인스타 친구 태그 이벤트', body:'인스타그램 팔로우 + 게시물 좋아요 + 댓글에 친구 태그!\n참여하신 분들께 선을 드려요. (공유 시 당첨 확률 UP)' },
+        { iconEl:_ico(svgs.receipt,'#E8F8EE'), title:'네이버 영수증 리뷰 이벤트', body:'네이버 MY플레이스에서 리뷰 쓰기 → 영수증 인증 후 작성!\n작성 화면을 직원에게 보여주시면 사은품을 즉시 드려요.' },
         { iconEl:_ico(svgs.game,'#FFF2DF'), title:'브랜드 게임 & 공유', body:'브랜드 퀴즈를 맞히면 브랜드 사은품을 드려요.\n기본 1회 참여 + 친구에게 공유하면 1회 더! (최대 2회)' },
+        { iconEl:_ico(svgs.insta,'#FCEAF1'), title:'인스타 친구 태그 이벤트', body:'인스타그램 팔로우 + 게시물 좋아요 + 댓글에 친구 태그!\n참여하신 분들께 선물을 드려요. (공유 시 당첨 확률 UP)' },
         { iconEl:_ico(svgs.wheel,'#EEF1F6'), title:'오픈 기념 럭키 룰렛 (오픈 후)', body:'오픈 시 기본 1회 제공, 이후 매장 방문할 때마다 1회씩 추가돼요.\n다양한 소소한 혜택이 준비되어 있어요.' },
-        { iconEl:_ico(svgs.star,'#F1F7F5'), title:'스탬프 카드 (6개 달성 시 굿즈 증정)', body:'· 오픈 기대평 작성 시 1개\n· 브랜드 게임 성공 시 1개\n· 매장 방문 시 1개 (직원 확인)\n· 1만원 이상 구매 시 1개\n· 2만원 이상 구매 시 1개\n방문·구매 스탬프는 같은 날 1개만, 날짜가 다르면 계속 쌓여요!' },
+        { iconEl:_ico(svgs.star,'#F1F7F5'), title:'스탬프 카드 (6개 달성 시 굿즈 증정)', body:'· 오픈 기대평 작성 시 1개\n· 브랜드 게임 성공 시 1개\n· 매장 방문 시 1개 (직원 확인)\n· 1만원 이상 구매 시 1개\n· 2만원 이상 구매 시 1개\n방문+1만원 또는 방문+2만원은 같은 날 가능, 1만원과 2만원은 같은 날 불가!' },
       ],
-      goGuide: () => this.go('guide'),
+      goGuide: () => this.go('guide'), goReadybag: () => this.go('readybag'),
       instaReward: this.instaReward(),
       openNotice: this.openNotice(), hasOpenNotice: !!(this.openNotice() || '').trim(),
       adminOpenNotice: s.adminOpenNotice != null ? s.adminOpenNotice : this.openNotice(), onAdminOpenNotice: e => this.setState({ adminOpenNotice: e.target.value }), saveOpenNotice: () => this.saveOpenNotice(),
@@ -2294,8 +2657,11 @@ class Component extends DCLogic {
         const left = Math.round(Math.random()*100), dur = (2.6+Math.random()*2.4).toFixed(2), delay = (Math.random()*2.2).toFixed(2), sz = 7+Math.round(Math.random()*7), col = cols[i%cols.length], rnd = Math.random()>.5?'50%':'2px';
         return { style: 'position:absolute; top:-12vh; left:'+left+'%; width:'+sz+'px; height:'+(sz+Math.round(Math.random()*6))+'px; background:'+col+'; border-radius:'+rnd+'; animation:psConfetti '+dur+'s linear '+delay+'s 1 forwards;' };
       }) : [],
-      showFooter: s.view !== 'game' && s.view !== 'roulette' && s.view !== 'admin' && s.view !== 'login' && s.view !== 'insta' && s.view !== 'guide',
+      showFooter: s.view !== 'game' && s.view !== 'roulette' && s.view !== 'admin' && s.view !== 'login' && s.view !== 'insta' && s.view !== 'naver' && s.view !== 'guide' && s.view !== 'readybag',
       navItems, refBanner: s.refBanner,
+      lang: s.lang, setLangKo: () => this.setLang('ko'), setLangEn: () => this.setLang('en'), setLangZh: () => this.setLang('zh'),
+      langKoStyle: this.langStyle('ko'), langEnStyle: this.langStyle('en'), langZhStyle: this.langStyle('zh'),
+      txLogin: this.t('login'), txSignup: this.t('signup'), txReviewSubmit: this.t('event.review.cta').replace(' →',''), txGameStart: this.t('game.start'),
       menuOpen: !!s.menuOpen,
       toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
       closeMenu: () => this.setState({ menuOpen: false }),
@@ -2331,10 +2697,10 @@ class Component extends DCLogic {
       mktWarn: s.mktWarn, mktAgree: () => this.mktAgree(), mktSkip: () => this.mktSkip(),
       refPopup: s.refPopup, closeRefPopup: () => { this.setState({ refPopup: 0 }); if (this.uid) this.go('game'); else this.requireLogin('game'); },
       signupMode: s.authMode === 'signup',
-      authTitle: s.authMode === 'signup' ? '회원가입' : '로그인',
-      authSubtitle: s.authMode === 'signup' ? '이름·휴대폰 번호와 약관 동의로 가입하면,\n내 스탬프·쿠폰·게임이 나에게만 저장돼요.' : '이미 가입하셨다면 이름과 휴대폰 번호만 입력하면 내 기록이 이어져요.',
-      authBtnLabel: s.authMode === 'signup' ? '동의하고 회원가입' : '로그인',
-      authHint: s.authMode === 'signup' ? '가입 시 받은 정보는 매장 회원 혜택 연동에 사용돼요.' : '처음이신가요? 위 회원가입 탭을 눌러주세요.',
+      authTitle: s.authMode === 'signup' ? this.t('signup') : this.t('login'),
+      authSubtitle: s.authMode === 'signup' ? this.t('auth.signup.sub') : this.t('auth.login.sub'),
+      authBtnLabel: s.authMode === 'signup' ? this.t('auth.signup.btn') : this.t('login'),
+      authHint: s.authMode === 'signup' ? this.t('auth.signup.hint') : this.t('auth.login.hint'),
       loginTabStyle: 'flex:1; height:42px; border-radius:11px; border:none; cursor:pointer; font-size:14px; font-weight:700; background:' + (s.authMode === 'login' ? '#fff' : 'transparent') + '; color:' + (s.authMode === 'login' ? '#00786F' : '#9DB3B1') + '; box-shadow:' + (s.authMode === 'login' ? '0 2px 6px rgba(0,60,55,.1)' : 'none') + ';',
       signupTabStyle: 'flex:1; height:42px; border-radius:11px; border:none; cursor:pointer; font-size:14px; font-weight:700; background:' + (s.authMode === 'signup' ? '#fff' : 'transparent') + '; color:' + (s.authMode === 'signup' ? '#00786F' : '#9DB3B1') + '; box-shadow:' + (s.authMode === 'signup' ? '0 2px 6px rgba(0,60,55,.1)' : 'none') + ';',
       setLoginMode: () => this.setLoginMode(), setSignupMode: () => this.setSignupMode(), submitAuth: () => this.submitAuth(),
@@ -2382,18 +2748,13 @@ class Component extends DCLogic {
       adminLocked: !s.adminAuthed, adminOpen: s.adminAuthed,
       adminPw: s.adminPw, onAdminPw: e => this.setState({ adminPw: e.target.value }), onAdminKey: e => { if (e.key === 'Enter') this.adminLogin(); },
       adminLogin: () => this.adminLogin(), adminLogout: () => this.adminLogout(), statCards, adminTabs,
-      todayVisitors: s.visitStats ? s.visitStats.todayVisitors : '—',
-      todayPageviews: s.visitStats ? s.visitStats.todayPageviews : '—',
-      totalVisitors: s.visitStats ? s.visitStats.totalVisitors : '—',
-      visitRows, visitsEmpty: visitRows.length === 0,
-      refreshVisits: () => this.loadVisitStats(),
       serverOn: s.serverOn, srvLoaded: s.serverOn && s.srvLoaded,
       serverBadge: s.serverOn ? '🟢 서버 연결됨' : '🔴 오프라인(이 기기 저장)',
       serverBadgeStyle: 'font-size:11.5px; font-weight:700; padding:4px 11px; border-radius:40px; background:' + (s.serverOn ? '#E6F7F2' : '#FBF3EF') + '; color:' + (s.serverOn ? '#00786F' : '#C4573B') + ';',
       referralCount: (s.serverOn && s.srvLoaded) ? s.srvReferrals.length : this.S('reflog', []).length,
-      adminRefresh: () => this.adminLoadAll(true),
+      adminRefresh: () => this.adminLoadAll(),
       previewRoulette: () => this.setState({ previewRoulette: true, view: 'roulette' }, () => { try { window.scrollTo(0,0); } catch (e) {} }),
-      tabManual: s.adminTab === 'manual', tabVisits: s.adminTab === 'visits', tabReviews: s.adminTab === 'reviews', tabMembersList: s.adminTab === 'members', tabCoupons: s.adminTab === 'coupons', tabGame: s.adminTab === 'game', tabStamps: s.adminTab === 'stamps', tabVerify: s.adminTab === 'verify', tabRoulette: s.adminTab === 'roulette', tabSettings: s.adminTab === 'settings', tabData: s.adminTab === 'data',
+      tabManual: s.adminTab === 'manual', tabReviews: s.adminTab === 'reviews', tabMembersList: s.adminTab === 'members', tabCoupons: s.adminTab === 'coupons', tabGame: s.adminTab === 'game', tabStamps: s.adminTab === 'stamps', tabVerify: s.adminTab === 'verify', tabRoulette: s.adminTab === 'roulette', tabSettings: s.adminTab === 'settings', tabData: s.adminTab === 'data',
       couponAdminRows, couponAdminCount: _cpool.length, hasCouponAdmin: _cpool.length > 0, couponSearch: s.couponSearch || '', onCouponSearch: e => this.setState({ couponSearch: e.target.value }), noCouponAdmin: allCoupons.length === 0, exportCoupons: () => this.exportCoupons(),
       reviewSearch: s.reviewSearch, onReviewSearch: e => this.setState({ reviewSearch: e.target.value }),
       reviewCount: filtered.length, hasReviews: filtered.length > 0, noReviews: filtered.length === 0, reviewRows, exportReviews: () => this.exportReviews(),
@@ -2449,6 +2810,14 @@ class Component extends DCLogic {
       confirmText: s.confirmKind === 'all' ? '모든 참여 데이터(회원·기대평·쿠폰·스탬프)를 초기화할까요? 되돌릴 수 없어요.' : '이 데이터를 모두 삭제할까요? 되돌릴 수 없어요.',
       doClear: () => this.guardedClear(s.confirmKind), cancelClear: () => this.cancelClear(),
       confirmPw: s.confirmPw || '', onConfirmPw: e => this.setState({ confirmPw: e.target.value }),
+
+      staffPinOpen: !!s.staffPinCode,
+      staffPinTitle: s.staffPinTitle || '쿠폰',
+      staffPin: s.staffPin || '',
+      onStaffPin: e => this.setState({ staffPin: e.target.value }),
+      onStaffPinKey: e => { if (e.key === 'Enter') this.submitStaffPin(); },
+      cancelStaffPin: () => this.cancelStaffPin(),
+      submitStaffPin: () => this.submitStaffPin(),
 
       toast: s.toast,
     };
