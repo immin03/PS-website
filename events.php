@@ -212,8 +212,8 @@ if ($method === 'POST') {
       $d['members'][$uid]['stamplog'][] = array('date' => $today, 'source' => $source, 'who' => $who, 'ts' => date('c'));
       if (!isset($d['allStamps']) || !is_array($d['allStamps'])) $d['allStamps'] = array();
       $d['allStamps'][] = array('uid' => $uid, 'date' => $today, 'source' => $source, 'who' => $who, 'ts' => date('c'));
-      // 방문/구매 스탬프마다 룰렛 기회 1회 추가
-      if (in_array($source, array('visit','buy1','buy2'))) {
+      // 방문 스탬프마다 룰렛 기회 1회 추가
+      if ($source === 'visit') {
         $cur = isset($d['members'][$uid]['spinBonus']) ? intval($d['members'][$uid]['spinBonus']) : 0;
         $d['members'][$uid]['spinBonus'] = $cur + 1;
       }
@@ -341,7 +341,7 @@ if ($method === 'POST') {
           $dt = isset($e['date']) ? $e['date'] : '';
           $matchSrc = empty($srcList) ? true : in_array($s, $srcList);
           $matchDate = ($date === '') ? true : ($dt === $date);
-          if ($matchSrc && $matchDate) { if ($s === 'game') $removedGame = true; if (in_array($s, array('visit','buy1','buy2'))) $removedSpin++; continue; }
+          if ($matchSrc && $matchDate) { if ($s === 'game') $removedGame = true; if ($s === 'visit') $removedSpin++; continue; }
           $kept[] = $e;
         }
         $d['members'][$uid]['stamplog'] = array_values($kept);

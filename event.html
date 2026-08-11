@@ -629,7 +629,7 @@ input, textarea, button, select { font-family:inherit; }
 </sc-if>
 <h2 style="font-size:26px; font-weight:800; letter-spacing:-.02em;">오픈 기념 럭키 룰렛</h2>
 <p style="margin-top:9px; font-size:14px; color:#5C7570; line-height:1.55;">버튼을 누르면 룰렛이 돌아가요. 멈춘 자리의 리워드가 바로 당첨!</p>
-<div style="display:inline-flex; align-items:center; gap:8px; margin-top:15px; padding:8px 16px; border-radius:40px; background:#fff; border:1px solid #C9EFE6; box-shadow:0 4px 14px rgba(1,192,164,.12); font-size:13.5px; font-weight:700; color:#00786F;">오늘 남은 기회 <span style="font-size:16px;">{{ availableSpins }}</span>회</div>
+<div style="display:inline-flex; align-items:center; gap:8px; margin-top:15px; padding:8px 16px; border-radius:40px; background:#fff; border:1px solid #C9EFE6; box-shadow:0 4px 14px rgba(1,192,164,.12); font-size:13.5px; font-weight:700; color:#00786F;">남은 기회 <span style="font-size:16px;">{{ availableSpins }}</span>회</div>
 <div style="position:relative; width:308px; height:308px; margin:26px auto 0;">
 <div style="position:absolute; top:-2px; left:50%; transform:translateX(-50%); width:0; height:0; border-left:14px solid transparent; border-right:14px solid transparent; border-top:26px solid #005251; z-index:6; filter:drop-shadow(0 3px 5px rgba(0,82,81,.28));"></div>
 <div style="width:308px; height:308px; border-radius:50%; position:absolute; inset:0; background:{{ wheelGradient }}; box-shadow:inset 0 0 0 11px #fff, 0 0 0 2px #DFF6F0, 0 22px 55px rgba(1,192,164,.30); transition:transform 4.6s cubic-bezier(.15,.62,.22,1); transform:rotate({{ angle }}deg);">
@@ -640,7 +640,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:74px; height:74px; border-radius:50%; overflow:hidden; box-shadow:0 4px 16px rgba(1,192,164,.30); z-index:5; border:4px solid #fff;"><img src="./assets/favicon.png" alt="" style="width:100%; height:100%; object-fit:cover;" /></div>
 </div>
 <button onClick="{{ spin }}" disabled="{{ spinDisabled }}" class="pz-btn" style="{{ spinBtnStyle }}">{{ spinBtnLabel }}</button>
-<p style="margin-top:16px; font-size:11.5px; color:#9DB3B1; line-height:1.5;">룰렛은 방문할 때마다 1회씩 참여할 수 있어요.<br>당첨 상품은 쿠폰함에 저장되고, 매장에서 수령하세요.</p>
+<p style="margin-top:16px; font-size:11.5px; color:#9DB3B1; line-height:1.5;">오픈 후 회원가입 시 1회, 이후 매장 방문(방문 스탬프)마다 1회씩 참여할 수 있어요.<br>당첨 상품은 쿠폰함에 저장되고, 매장에서 수령하세요.</p>
 </sc-if>
 <div style="margin-top:34px; text-align:center;">
 <div style="font-size:11px; font-weight:800; letter-spacing:.12em; color:#01C0A4;">GIFT LINE-UP</div>
@@ -922,7 +922,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>네이버 영수증 리뷰</b><br>네이버 MY플레이스 → 리뷰 쓰기 → 영수증 인증 후 작성 → 직원 확인 시 사은품 즉시 증정</div>
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>브랜드 게임</b><br>종근당·함소아 퀴즈 정답 시 브랜드 사은품 쿠폰 (1인 최대 2회 · 한정 수량). 공유 시 스탬프 1개</div>
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>인스타 이벤트</b><br>팔로우·좋아요·친구 태그·스토리 공유 → 추첨으로 사은품</div>
-<div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>럭키 룰렛 (오픈 후)</b><br>오픈 시 기본 1회 + 매장 방문마다 1회 추가. 할인권·사은품</div>
+<div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>럭키 룰렛 (오픈 후)</b><br>오픈 후 회원가입 시 1회 + 매장 방문(방문 스탬프)마다 1회. 할인권·사은품</div>
 <div style="padding:9px 0;"><b>스탬프 카드</b><br>스탬프 6개 = 굿즈(레디백, 100개 한정)</div>
 </div>
 <div style="font-size:15px; font-weight:800; color:#00524F; margin:26px 0 9px; padding-bottom:7px; border-bottom:2px solid #01C0A4;">2. 스탬프 적립 규칙 (6개 = 굿즈)</div>
@@ -1133,7 +1133,7 @@ const I18N = {
     'stamp.game':'브랜드 게임 성공', 'stamp.review':'오픈 기대평 작성', 'stamp.visit':'매장 방문', 'stamp.buy1':'1만원 이상 구매', 'stamp.buy2':'2만원 이상 구매',
     'coupon.available':'사용 가능', 'coupon.used':'사용완료', 'coupon.gift':'사은품', 'coupon.discount':'할인권', 'coupon.event':'이벤트',
     'game.title':'브랜드 빈칸 게임', 'game.start':'게임 시작하기', 'game.go':'게임하러 가기', 'game.copy':'복사', 'game.share':'공유 링크 만들기',
-    'roulette.title':'오픈 기념 럭키 룰렛', 'roulette.spin':'룰렛 돌리기', 'roulette.spinning':'돌아가는 중...', 'roulette.none':'오늘 기회를 모두 사용했어요',
+    'roulette.title':'오픈 기념 럭키 룰렛', 'roulette.spin':'룰렛 돌리기', 'roulette.spinning':'돌아가는 중...', 'roulette.none':'룰렛 기회가 없어요',
   },
   en: {
     'nav.home':'Home', 'nav.guide':'Event Guide', 'nav.stamp':'Stamps', 'nav.coupon':'Coupons',
@@ -1390,7 +1390,7 @@ class Component extends DCLogic {
       bonusPlays: this.S('bonusPlays', 0), spinBonus: this.S('spinBonus', 0),
       gameStampDone: this.S('gameStampDone', false), gameDate: this.S('gameDate', ''),
       playsTotal: this.S('playsTotal', 0), shareEarned: this.S('shareEarned', 0), playedBrands: this.S('playedBrands', []),
-      welcomeIssued: this.S('welcomeIssued', false), deletedCoupons: this.S('deletedCoupons', []),
+      welcomeIssued: this.S('welcomeIssued', false), rouletteSignupGranted: this.S('rouletteSignupGranted', false), deletedCoupons: this.S('deletedCoupons', []),
       updatedTs: new Date().toISOString(),
     });
   }
@@ -1413,6 +1413,7 @@ class Component extends DCLogic {
     if (m.playedBrands != null) this.W('playedBrands', m.playedBrands);
     if (m.shareEarned != null) this.W('shareEarned', m.shareEarned);
     if (m.welcomeIssued != null) this.W('welcomeIssued', m.welcomeIssued);
+    if (m.rouletteSignupGranted != null) this.W('rouletteSignupGranted', m.rouletteSignupGranted);
   }
   async pullMember(uid) {
     if (!this.serverOn || !uid) return;
@@ -1468,9 +1469,12 @@ class Component extends DCLogic {
     else { m = Object.assign({}, m); if (name) m.name = name; if (opts.birth) m.birth = opts.birth; if (opts.marketing != null) m.marketing = !!opts.marketing; if (opts.transfer != null) m.transfer = !!opts.transfer; this.W('member', m); }
     const members = this.S('members', []);
     const idx = members.findIndex(x => String(x.phone).replace(/\D/g, '') === digits);
+    const isNewMember = idx < 0;
     if (idx < 0) members.push(m); else members[idx] = m;
     this.W('members', members);
-    this.loadPersonal(m); this.setState({ members: this.S('members', []) });
+    this.loadPersonal(m);
+    if (opts.signup && isNewMember) this.grantSignupRouletteIfEligible();
+    this.setState({ members: this.S('members', []) });
     // cross-device: pull my server record, then push merged. Retry until server detected (fixes race where login happens before detectServer resolves).
     this.ensureLoginSync(digits, 0, !!opts.signup, m);
   }
@@ -1712,7 +1716,7 @@ class Component extends DCLogic {
     const entry = { date: this.todayStr(), source, who: whoOverride || this.stampWhoLabel(), ts: new Date().toISOString() };
     const log = this.S('stamplog', []); log.push(entry); this.W('stamplog', log);
     const gl = this.S('allStamps', []); gl.push(Object.assign({ uid: this.uid }, entry)); this.W('allStamps', gl);
-    if (['visit','buy1','buy2'].indexOf(source) >= 0) { const b = this.S('spinBonus', 0) + 1; this.W('spinBonus', b); this.setState({ spinBonus: b }); }
+    if (source === 'visit') { const b = this.S('spinBonus', 0) + 1; this.W('spinBonus', b); this.setState({ spinBonus: b }); }
     this.setState({ stampLog: log }); this.scheduleSync();
   }
   async useCouponAdmin(uid, code, title) {
@@ -1780,19 +1784,9 @@ class Component extends DCLogic {
       if (removed) notes.push('기대평 스탬프 취소');
     }
     if (src.indexOf('룰렛') >= 0) {
-      const sp = this.S('spins', null) || {};
-      let restoredDaily = false;
-      if (sp.date === cDate && (sp.used || 0) > 0) {
-        const used = Math.max(0, (sp.used || 0) - 1);
-        this.W('spins', { date: sp.date, used });
-        this.setState({ spinsUsedToday: (sp.date === this.todayStr()) ? used : this.state.spinsUsedToday });
-        restoredDaily = true;
-      }
-      if (!restoredDaily) {
-        const b = (this.S('spinBonus', 0) || 0) + 1;
-        this.W('spinBonus', b);
-        this.setState({ spinBonus: b });
-      }
+      const b = (this.S('spinBonus', 0) || 0) + 1;
+      this.W('spinBonus', b);
+      this.setState({ spinBonus: b });
       notes.push('룰렛 기회 복구');
     }
     if (src.indexOf('브랜드 게임') >= 0 || src.indexOf('게임') >= 0) {
@@ -1964,7 +1958,9 @@ class Component extends DCLogic {
 
   // ----- roulette -----
   isOpened() { try { const od = new Date(this.openDate() + 'T00:00:00'); const now = new Date(this.todayStr() + 'T00:00:00'); return (od - now) <= 0; } catch (e) { return false; } }
-  availableSpins() { return Math.max(0, 1 - this.state.spinsUsedToday) + this.state.spinBonus; }
+  grantRouletteSpin() { const b = this.S('spinBonus', 0) + 1; this.W('spinBonus', b); this.setState({ spinBonus: b }); this.scheduleSync(); }
+  grantSignupRouletteIfEligible() { if (!this.isOpened() || this.S('rouletteSignupGranted', false)) return; this.W('rouletteSignupGranted', true); this.grantRouletteSpin(); }
+  availableSpins() { return Math.max(0, this.state.spinBonus); }
   spin() {
     if (this.state.spinning || this.availableSpins() <= 0) return;
     const prizes = this.state.roulettePrizes; const n = prizes.length; if (!n) return;
@@ -1975,8 +1971,7 @@ class Component extends DCLogic {
     const center = idx * seg + seg / 2;
     const base = this.state.angle;
     const final = base - (base % 360) + 360 * 5 + (360 - center);
-    if (1 - this.state.spinsUsedToday > 0) { const used = this.state.spinsUsedToday + 1; this.W('spins', { date: this.state.today, used }); this.setState({ spinsUsedToday: used }); }
-    else { const b = this.state.spinBonus - 1; this.W('spinBonus', b); this.setState({ spinBonus: b }); }
+    const b = this.state.spinBonus - 1; this.W('spinBonus', b); this.setState({ spinBonus: b });
     this.setState({ spinning: true, angle: final });
     clearTimeout(this._spinT);
     this._spinT = setTimeout(() => {
@@ -2070,18 +2065,18 @@ class Component extends DCLogic {
     if (this.serverOn) {
       try { await this.apiPost({ action: 'delstamp', pw: '1234', uid: uid, sources: 'visit,buy1,buy2', date: today }); } catch (e) { return this.toast('취소 실패. 다시 시도해주세요.'); }
       const saved = this.uid; this.uid = uid;
-      const prev = this.S('stamplog', []); const removed = prev.filter(e => e.date === today && ['visit','buy1','buy2'].indexOf(e.source) >= 0).length;
+      const prev = this.S('stamplog', []); const removedVisit = prev.filter(e => e.date === today && e.source === 'visit').length;
       const log = prev.filter(e => !(e.date === today && ['visit','buy1','buy2'].indexOf(e.source) >= 0)); this.W('stamplog', log);
-      if (removed > 0) { const b = Math.max(0, this.S('spinBonus', 0) - removed); this.W('spinBonus', b); if (uid === saved) this.setState({ spinBonus: b }); }
+      if (removedVisit > 0) { const b = Math.max(0, this.S('spinBonus', 0) - removedVisit); this.W('spinBonus', b); if (uid === saved) this.setState({ spinBonus: b }); }
       if (uid === saved) this.setState({ stampLog: log });
       this.uid = saved;
       await this.adminLoadAll();
-      this.toast((name || '') + '님 오늘 스탬프 취소 완료. (룰렛 기회도 함께 취소)');
+      this.toast((name || '') + '님 오늘 스탬프 취소 완료. (방문 스탬프 취소 시 룰렛 기회도 함께 취소)');
     } else {
       const saved = this.uid; this.uid = uid;
-      const prev = this.S('stamplog', []); const removed = prev.filter(e => e.date === today && ['visit','buy1','buy2'].indexOf(e.source) >= 0).length;
+      const prev = this.S('stamplog', []); const removedVisit = prev.filter(e => e.date === today && e.source === 'visit').length;
       const log = prev.filter(e => !(e.date === today && ['visit','buy1','buy2'].indexOf(e.source) >= 0)); this.W('stamplog', log);
-      if (removed > 0) { const b = Math.max(0, this.S('spinBonus', 0) - removed); this.W('spinBonus', b); this.setState({ spinBonus: b }); }
+      if (removedVisit > 0) { const b = Math.max(0, this.S('spinBonus', 0) - removedVisit); this.W('spinBonus', b); this.setState({ spinBonus: b }); }
       this.setState({ stampLog: log }); this.uid = saved; this.toast('취소 완료.');
     }
   }
@@ -2390,7 +2385,7 @@ class Component extends DCLogic {
     const rLive = opened && this.evStatus({ id:'roulette', status:'auto' }) !== 'off';
     const rouletteCard = {
       title: this.t('roulette.title'),
-      desc: rLive ? '방문할 때마다 룰렛을 돌려 다양한 혜택을 받아보세요.' : '오픈일에 열려요!\n방문할 때마다 룰렛을 돌려 다양한 혜택을 받아보세요.',
+      desc: rLive ? '회원가입 시 1회, 매장 방문마다 1회씩 룰렛을 돌려 혜택을 받아보세요.' : '오픈일에 열려요!\n회원가입 시 1회, 매장 방문마다 1회씩 돌릴 수 있어요.',
       badge: rLive ? '진행 중' : ('D-' + dday + ' 공개'),
       badgeStyle: rLive ? 'font-size:11px; font-weight:800; padding:5px 13px; border-radius:40px; background:rgba(1,192,164,.18); color:#00786F;' : 'font-size:11px; font-weight:800; padding:5px 13px; border-radius:40px; background:rgba(157,179,177,.14); color:#7C938F;',
       cta: rLive ? this.t('roulette.spin') + ' →' : '오픈일 공개',
@@ -2652,7 +2647,7 @@ class Component extends DCLogic {
         { iconEl:_ico(svgs.receipt,'#E8F8EE'), title:'네이버 영수증 리뷰 이벤트', body:'네이버 MY플레이스에서 리뷰 쓰기 → 영수증 인증 후 작성!\n작성 화면을 직원에게 보여주시면 사은품을 즉시 드려요.' },
         { iconEl:_ico(svgs.game,'#FFF2DF'), title:'브랜드 게임 & 공유', body:'브랜드 퀴즈를 맞히면 브랜드 사은품을 드려요.\n기본 1회 참여 + 친구에게 공유하면 1회 더! (최대 2회)' },
         { iconEl:_ico(svgs.insta,'#FCEAF1'), title:'인스타 친구 태그 이벤트', body:'인스타그램 팔로우 + 게시물 좋아요 + 댓글에 친구 태그!\n참여하신 분들께 선물을 드려요. (공유 시 당첨 확률 UP)' },
-        { iconEl:_ico(svgs.wheel,'#EEF1F6'), title:'오픈 기념 럭키 룰렛 (오픈 후)', body:'오픈 시 기본 1회 제공, 이후 매장 방문할 때마다 1회씩 추가돼요.\n다양한 소소한 혜택이 준비되어 있어요.' },
+        { iconEl:_ico(svgs.wheel,'#EEF1F6'), title:'오픈 기념 럭키 룰렛 (오픈 후)', body:'오픈 후 회원가입 시 1회, 이후 매장 방문(방문 스탬프)마다 1회씩 추가돼요.\n다양한 소소한 혜택이 준비되어 있어요.' },
         { iconEl:_ico(svgs.star,'#F1F7F5'), title:'스탬프 카드 (6개 달성 시 굿즈 증정)', body:'· 오픈 기대평 작성 시 1개\n· 브랜드 게임 성공 시 1개\n· 매장 방문 시 1개 (직원 확인)\n· 1만원 이상 구매 시 1개\n· 2만원 이상 구매 시 1개\n방문+1만원 또는 방문+2만원은 같은 날 가능, 1만원과 2만원은 같은 날 불가!' },
       ],
       goGuide: () => this.go('guide'), goReadybag: () => this.go('readybag'),
