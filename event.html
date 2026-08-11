@@ -1698,9 +1698,18 @@ class Component extends DCLogic {
   }
 
   stampCount() { return Math.min(this.STAMP_GOAL, this.state.stampLog.length); }
-  who() { return this.state.member ? (this.state.member.name + ' ' + this.tail(this.state.member.phone)) : '게스트'; }
-  addStamp(source) {
-    const entry = { date: this.todayStr(), source, who: this.who(), ts: new Date().toISOString() };
+  who() { return this.stampWhoLabel(); }
+  stampWhoLabel(name, phone) {
+    if (name) return phone ? (name + ' ' + this.tail(phone)) : name;
+    const m = this.S('member', null);
+    if (m && m.name) return m.phone ? (m.name + ' ' + this.tail(m.phone)) : m.name;
+    const sm = this.state.member;
+    const uid = String(this.uid || '').replace(/\D/g, '');
+    if (sm && sm.name && String(sm.phone || '').replace(/\D/g, '') === uid) return sm.phone ? (sm.name + ' ' + this.tail(sm.phone)) : sm.name;
+    return '게스트';
+  }
+  addStamp(source, whoOverride) {
+    const entry = { date: this.todayStr(), source, who: whoOverride || this.stampWhoLabel(), ts: new Date().toISOString() };
     const log = this.S('stamplog', []); log.push(entry); this.W('stamplog', log);
     const gl = this.S('allStamps', []); gl.push(Object.assign({ uid: this.uid }, entry)); this.W('allStamps', gl);
     if (['visit','buy1','buy2'].indexOf(source) >= 0) { const b = this.S('spinBonus', 0) + 1; this.W('spinBonus', b); this.setState({ spinBonus: b }); }
@@ -2036,7 +2045,7 @@ class Component extends DCLogic {
   rewardByReview(r) { const arr = this.S('reviews', []); let i = arr.findIndex(x => x.uid === r.uid && x.ts === r.ts); if (i >= 0) return this.rewardReview(i); this.rewardByUid(String(r.uid || (r.phone||'')).replace(/\D/g,''), r.name); }
   rewardByUid(uid, name) {
     if (!uid) return;
-    if (this.serverOn) { this.apiPost({ action: 'reward', pw: '1234', uid: uid }).catch(() => {}); const saved = this.uid; this.uid = uid; if (!this.S('welcomeIssued', false)) { this.W('welcomeIssued', true); this.issueCoupon('1,000원 웰컴 할인 쿠폰', '매장에서 사용 가능', '오픈 기대평', '', 'discount'); this.addStamp('review'); this.apiPost({ action: 'sync', uid: uid, member: this.personalBlob() }).catch(() => {}); } this.uid = saved; }
+    if (this.serverOn) { this.apiPost({ action: 'reward', pw: '1234', uid: uid }).catch(() => {}); const saved = this.uid; this.uid = uid; if (!this.S('welcomeIssued', false)) { this.W('welcomeIssued', true); this.issueCoupon('1,000원 웰컴 할인 쿠폰', '매장에서 사용 가능', '오픈 기대평', '', 'discount'); this.addStamp('review', this.stampWhoLabel(name, uid)); this.apiPost({ action: 'sync', uid: uid, member: this.personalBlob() }).catch(() => {}); } this.uid = saved; }
     this.adminLoadAll(); this.toast((name || '') + '님 웰컴 혜택 지급 완료.');
   }
   deleteMemberByUid(phone, name) {
@@ -2122,7 +2131,7 @@ class Component extends DCLogic {
       if (!this.S('welcomeIssued', false)) {
         this.W('welcomeIssued', true);
         this.issueCoupon('1,000원 웰컴 할인 쿠폰', '매장에서 사용 가능', '오픈 기대평', '', 'discount');
-        this.addStamp('review');
+        this.addStamp('review', this.stampWhoLabel(rv.name, rv.phone));
       }
       this.uid = saved;
       if (this.serverOn) { this.apiPost({ action: 'reward', pw: '1234', uid: targetUid }).catch(() => {}); const saved2 = this.uid; this.uid = targetUid; this.apiPost({ action: 'sync', uid: targetUid, member: this.personalBlob() }).catch(() => {}); this.uid = saved2; }
@@ -2486,7 +2495,7 @@ class Component extends DCLogic {
     const reviewSource = srvUp ? mergeBy(s.srvReviews, s.reviews, r => (r.uid || '') + '|' + (r.ts || '')) : s.reviews;
     const memberSource = (srvUp ? mergeBy(s.srvMembers, s.members, m => String(m.phone || '').replace(/\D/g, '')) : s.members).filter(m => (m && ((m.name && m.name.trim()) || String(m.phone||'').replace(/\D/g,''))));
     const allCoupons = this.collectAdminCoupons();
-    const allStamps = (srvUp ? memberSource.reduce((arr, m) => { (m.stamplog || []).forEach(e => arr.push(Object.assign({ who: m.name || e.who }, e))); return arr; }, []) : this.S('allStamps', [])).slice().sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
+    const allStamps = (srvUp ? memberSource.reduce((arr, m) => { (m.stamplog || []).forEach(e => arr.push(Object.assign({}, e, { who: (m.name && m.name.trim()) || e.who || '게스트' }))); return arr; }, []) : this.S('allStamps', [])).slice().sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
     const statCards = [
       { label: '등록 회원', value: memberSource.length },
       { label: '기대평', value: reviewSource.length },
@@ -2777,7 +2786,7 @@ class Component extends DCLogic {
       }),
       reviewEmptyText: query ? '검색 결과가 없습니다.' : '등록된 기대평이 없습니다.',
       gameBrandRows, addBrand: () => this.addBrand(),
-      stampCount: s.stampLog.length, hasStamps: s.stampLog.length > 0, noStamps: s.stampLog.length === 0, stampRows,
+      stampCount: allStamps.length, hasStamps: allStamps.length > 0, noStamps: allStamps.length === 0, stampRows,
       verifyCode: s.verifyCode, onVerifyCode: e => this.setState({ verifyCode: e.target.value }), doVerify: () => this.doVerify(),
       verifyResult: !!vr,
       verifyTitle: vr ? (vr.ok ? (vr.used ? '이미 사용된 쿠폰' : '유효한 쿠폰') : '조회되지 않는 코드') : '',
