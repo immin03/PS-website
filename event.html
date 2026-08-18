@@ -632,7 +632,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="display:inline-flex; align-items:center; gap:8px; margin-top:15px; padding:8px 16px; border-radius:40px; background:#fff; border:1px solid #C9EFE6; box-shadow:0 4px 14px rgba(1,192,164,.12); font-size:13.5px; font-weight:700; color:#00786F;">남은 기회 <span style="font-size:16px;">{{ availableSpins }}</span>회</div>
 <div style="position:relative; width:308px; height:308px; margin:26px auto 0;">
 <div style="position:absolute; top:-2px; left:50%; transform:translateX(-50%); width:0; height:0; border-left:14px solid transparent; border-right:14px solid transparent; border-top:26px solid #005251; z-index:6; filter:drop-shadow(0 3px 5px rgba(0,82,81,.28));"></div>
-<div style="width:308px; height:308px; border-radius:50%; position:absolute; inset:0; background:{{ wheelGradient }}; box-shadow:inset 0 0 0 11px #fff, 0 0 0 2px #DFF6F0, 0 22px 55px rgba(1,192,164,.30); transition:transform 4.6s cubic-bezier(.15,.62,.22,1); transform:rotate({{ angle }}deg);">
+<div style="width:308px; height:308px; border-radius:50%; position:absolute; inset:0; background-color:#01C0A4; background-image:{{ wheelGradient }}; box-shadow:inset 0 0 0 11px #fff, 0 0 0 2px #DFF6F0, 0 22px 55px rgba(1,192,164,.30); transition:transform 4.6s cubic-bezier(.15,.62,.22,1); transform:rotate({{ angle }}deg);">
 <sc-for list="{{ wheelLabels }}" as="wl" hint-placeholder-count="8">
 <div style="{{ wl.layer }}"><span style="position:absolute; top:20px; left:50%; transform:translateX(-50%); width:66px; text-align:center; color:#fff; font-size:11.5px; font-weight:800; letter-spacing:-.02em; line-height:1.12; text-shadow:0 1px 2px rgba(0,82,81,.35);">{{ wl.short }}</span></div>
 </sc-for>
@@ -923,9 +923,9 @@ input, textarea, button, select { font-family:inherit; }
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>브랜드 게임</b><br>종근당·함소아 퀴즈 정답 시 브랜드 사은품 쿠폰 (1인 최대 2회 · 한정 수량). 공유 시 스탬프 1개</div>
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>인스타 이벤트</b><br>팔로우·좋아요·친구 태그·스토리 공유 → 추첨으로 사은품</div>
 <div style="padding:9px 0; border-bottom:1px solid #EEF3F1;"><b>럭키 룰렛 (오픈 후)</b><br>오픈 후 회원가입 시 1회 + 매장 방문(방문 스탬프)마다 1회. 할인권·사은품</div>
-<div style="padding:9px 0;"><b>스탬프 카드</b><br>스탬프 6개 = 굿즈(레디백, 100개 한정)</div>
+<div style="padding:9px 0;"><b>스탬프 카드 · 레디백</b><br>레디백(선착순 100명): ① 스탬프 6개 달성 · ② 15만원 이상 구매 + 회원가입 + 카카오채널 추가 (둘 중 하나, 중복 수령 불가)</div>
 </div>
-<div style="font-size:15px; font-weight:800; color:#00524F; margin:26px 0 9px; padding-bottom:7px; border-bottom:2px solid #01C0A4;">2. 스탬프 적립 규칙 (6개 = 굿즈)</div>
+<div style="font-size:15px; font-weight:800; color:#00524F; margin:26px 0 9px; padding-bottom:7px; border-bottom:2px solid #01C0A4;">2. 스탬프 적립 규칙 (6개 = 레디백)</div>
 <div style="font-size:13.5px; color:#26403D;">
 <div style="padding:7px 0; border-bottom:1px solid #EEF3F1;">오픈 기대평 작성 (매장 방문 시) — <b>+1</b></div>
 <div style="padding:7px 0; border-bottom:1px solid #EEF3F1;">브랜드 게임 성공 — <b>+1</b> (게임은 2회지만 스탬프는 1회)</div>
@@ -934,6 +934,7 @@ input, textarea, button, select { font-family:inherit; }
 <div style="padding:7px 0; border-bottom:1px solid #EEF3F1;">1만원 이상 구매 — <b>+1</b> (직원 확인)</div>
 <div style="padding:7px 0;">2만원 이상 구매 — <b>+1</b> (직원 확인)</div>
 </div>
+<div style="margin-top:11px; background:#F1F7F5; border:1px solid #D5EDE7; border-radius:12px; padding:12px 15px; font-size:12.5px; color:#00786F; line-height:1.65;"><b>레디백 수령 (선착순 100명)</b><br>· <b>방법 ①</b> 위 규칙대로 스탬프 6개 달성<br>· <b>방법 ②</b> 15만원 이상 구매 + 회원가입 + 카카오채널 추가<br>→ 둘 중 하나만 충족하면 지급 (중복 수령 불가)</div>
 <div style="margin-top:11px; background:#FDF3F0; border:1px solid #F3D6CC; border-radius:12px; padding:12px 15px; font-size:12.5px; color:#A8452C;"><b>같은 날 중복 규칙</b><br>· <b>방문 + 1만원</b> 또는 <b>방문 + 2만원</b>은 같은 날 함께 적립 가능<br>· <b>1만원과 2만원</b>은 같은 날 둘 다 불가 (구매 스탬프는 하루 1개)<br>· 오픈 기대평 스탬프와 매장 방문 스탬프는 같은 날 중복 불가<br>· 오픈 기대평 받은 날에도 1만원/2만원 구매 스탬프는 추가 적립 가능<br>→ 중복으로 찍으면 "이미 적립됐어요" 안내가 떠요</div>
 <div style="font-size:15px; font-weight:800; color:#00524F; margin:26px 0 9px; padding-bottom:7px; border-bottom:2px solid #01C0A4;">3. 관리자 사용법</div>
 <div style="font-size:13.5px; color:#26403D;">
@@ -1595,6 +1596,10 @@ class Component extends DCLogic {
     try { const kill = []; for (let i=0;i<localStorage.length;i++){ const k = localStorage.key(i); if (k && k.indexOf(this.KP+'u_')===0 && (k.endsWith('_rpVer') || k.endsWith('_gameBrandsVersion'))) kill.push(k); } kill.forEach(k => localStorage.removeItem(k)); } catch(e) {}
     let rp = this.S('roulettePrizes', null);
     if (!Array.isArray(rp) || !rp.length || this.S('rpVer', 0) !== this.RPV) { rp = this.defaultRoulette.slice(); this.W('roulettePrizes', rp); this.W('rpVer', this.RPV); }
+    else {
+      const cleaned = rp.filter(p => p && (String(p.label || '').trim() || String(p.title || '').trim()));
+      if (cleaned.length !== rp.length && cleaned.length >= 2) { rp = this.normalizePrizeWeights(cleaned); this.W('roulettePrizes', rp); }
+    }
     let gb = this.S('gameBrands', null);
     if (!Array.isArray(gb) || !gb.length || !gb[0] || !Array.isArray(gb[0].questions) || this.S('gameBrandsVersion', 0) !== this.GBV) { gb = this.defaultBrands.slice(); this.W('gameBrands', gb); this.W('gameBrandsVersion', this.GBV); }
     const gp = this.S('gameplays', { date: today, used: 0 });
@@ -1958,12 +1963,29 @@ class Component extends DCLogic {
 
   // ----- roulette -----
   isOpened() { try { const od = new Date(this.openDate() + 'T00:00:00'); const now = new Date(this.todayStr() + 'T00:00:00'); return (od - now) <= 0; } catch (e) { return false; } }
+  activeRoulettePrizes(list) {
+    const src = (Array.isArray(list) && list.length) ? list : this.defaultRoulette.slice();
+    const filtered = src.filter(p => p && (String(p.label || '').trim() || String(p.title || '').trim()));
+    return filtered.length >= 2 ? filtered : this.defaultRoulette.slice();
+  }
+  normalizePrizeWeights(arr) {
+    const n = arr.length || 1; let rest = 100; const base = Math.floor(100 / n);
+    return arr.map((p, i) => { const w = i === n - 1 ? rest : base; rest -= w; return Object.assign({}, p, { w }); });
+  }
+  buildRouletteWheel(prizes) {
+    const n = prizes.length; const seg = 360 / n; const stops = [];
+    for (let i = 0; i < n; i++) stops.push((i % 2 ? '#38D9C0' : '#01C0A4') + ' ' + (100 * i / n).toFixed(4) + '%');
+    stops.push(((n - 1) % 2 ? '#38D9C0' : '#01C0A4') + ' 100%');
+    const wheelGradient = 'conic-gradient(from -90deg, ' + stops.join(', ') + ')';
+    const wheelLabels = prizes.map((p, i) => ({ short: (p.label || p.title || ('칸 ' + (i + 1))).trim(), layer: 'position:absolute; inset:0; transform:rotate(' + (i * seg + seg / 2) + 'deg); transform-origin:50% 50%;' }));
+    return { wheelGradient, wheelLabels, seg, n };
+  }
   grantRouletteSpin() { const b = this.S('spinBonus', 0) + 1; this.W('spinBonus', b); this.setState({ spinBonus: b }); this.scheduleSync(); }
   grantSignupRouletteIfEligible() { if (!this.isOpened() || this.S('rouletteSignupGranted', false)) return; this.W('rouletteSignupGranted', true); this.grantRouletteSpin(); }
   availableSpins() { return Math.max(0, this.state.spinBonus); }
   spin() {
     if (this.state.spinning || this.availableSpins() <= 0) return;
-    const prizes = this.state.roulettePrizes; const n = prizes.length; if (!n) return;
+    const prizes = this.activeRoulettePrizes(this.state.roulettePrizes); const n = prizes.length; if (!n) return;
     const seg = 360 / n;
     const total = prizes.reduce((s, p) => s + (Number(p.w) || 0), 0) || n;
     let r = Math.random() * total, idx = 0;
@@ -1979,7 +2001,7 @@ class Component extends DCLogic {
       if (p.kind === 'coupon' || p.kind === 'goods') code = this.issueCoupon(p.title, p.desc, '럭키 룰렛', '', p.kind === 'goods' ? 'gift' : 'discount');
       else if (p.kind === 'retry') { const b = this.S('spinBonus', 0) + 1; this.W('spinBonus', b); this.setState({ spinBonus: b }); }
       this.W('roulettelog', [...this.S('roulettelog', []), { prize: p.title, code, ts: new Date().toISOString() }]);
-      this.setState({ spinning: false, result: { kind: (p.kind === 'coupon' || p.kind === 'goods') ? 'coupon' : (p.kind === 'retry' ? 'retry' : 'none'), name: p.title, couponDesc: p.desc, code } });
+      this.setState({ spinning: false, result: { kind: (p.kind === 'coupon' || p.kind === 'goods') ? (p.kind === 'goods' ? 'gift' : 'coupon') : (p.kind === 'retry' ? 'retry' : 'none'), name: p.title, couponDesc: p.desc, code, source: '럭키 룰렛' } });
       this.scheduleSync();
     }, 4700);
   }
@@ -2253,8 +2275,8 @@ class Component extends DCLogic {
   saveAdminPw() { const v = (this.state.newAdminPw || '').trim(); if (v.length < 4) return this.toast('비밀번호는 4자 이상 입력해주세요.'); this.W('adminPwCfg', v); this.setState({ newAdminPw: '' }); if (this.serverOn) this.pushConfig({ adminPw: v }); this.toast('관리자 비밀번호를 변경했어요.'); }
 
   setPrize(i, field, value) { const arr = this.state.roulettePrizes.map((p, k) => k === i ? Object.assign({}, p, { [field]: field === 'w' ? (parseInt(value, 10) || 0) : value }) : p); this.W('roulettePrizes', arr); this.setState({ roulettePrizes: arr }, () => this.syncConfig()); }
-  addPrize() { const arr = [...this.state.roulettePrizes, { label:'새 칸', title:'새 혜택', desc:'', kind:'coupon', w:2 }]; this.W('roulettePrizes', arr); this.setState({ roulettePrizes: arr }, () => this.syncConfig()); }
-  removePrize(i) { if (this.state.roulettePrizes.length <= 2) return this.toast('최소 2칸은 있어야 해요.'); const arr = this.state.roulettePrizes.filter((_, k) => k !== i); this.W('roulettePrizes', arr); this.setState({ roulettePrizes: arr }, () => this.syncConfig()); }
+  addPrize() { const arr = this.normalizePrizeWeights([...this.state.roulettePrizes, { label:'새 칸', title:'새 혜택', desc:'매장에서 수령', kind:'coupon', w:1 }]); this.W('roulettePrizes', arr); this.setState({ roulettePrizes: arr, angle: 0 }, () => this.syncConfig()); }
+  removePrize(i) { if (this.state.roulettePrizes.length <= 2) return this.toast('최소 2칸은 있어야 해요.'); const arr = this.normalizePrizeWeights(this.state.roulettePrizes.filter((_, k) => k !== i)); this.W('roulettePrizes', arr); this.setState({ roulettePrizes: arr, angle: 0 }, () => this.syncConfig()); }
 
   setBrand(i, field, value) {
     const arr = this.state.gameBrands.map((b, k) => {
@@ -2400,19 +2422,19 @@ class Component extends DCLogic {
     const gq = qs[s.gStep];
     const gameDots = qs.map((_, i) => ({ color: i <= s.gStep ? '#01C0A4' : '#E0EAE7' }));
 
-    const prizes = s.roulettePrizes.length ? s.roulettePrizes : this.defaultRoulette;
-    const n = prizes.length; const seg = 360 / n;
-    const wheelGradient = 'conic-gradient(' + prizes.map((p, i) => (i % 2 ? '#38D9C0' : '#01C0A4') + ' ' + (i * seg) + 'deg ' + ((i + 1) * seg) + 'deg').join(',') + ')';
-    const wheelLabels = prizes.map((p, i) => ({ short: p.label || p.title, layer: 'position:absolute; inset:0; transform:rotate(' + (i * seg + seg / 2) + 'deg); transform-origin:50% 50%;' }));
+    const prizes = this.activeRoulettePrizes(s.roulettePrizes);
+    const wheel = this.buildRouletteWheel(prizes);
+    const wheelGradient = wheel.wheelGradient;
+    const wheelLabels = wheel.wheelLabels;
     const availSpins = this.availableSpins();
     const spinDisabled = s.spinning || availSpins <= 0;
     const _gImg = { '어나더페이스':'anotherface', '팜스테이':'farmstay', '올록담':'ollocdam', '아리얼':'ariul', '낼라':'nelly', '아브카':'avca', '보고신약':'bogo', '텐덴자':'tendenza' };
     const _isWM = (t) => { let k=''; Object.keys(_gImg).forEach(x => { if ((t||'').indexOf(x) >= 0) k = _gImg[x]; }); return /(anotherface|farmstay|avca)/i.test(k); };
-    const _wmFlags = (s.roulettePrizes || []).map(x => _isWM(x.title));
-    const prizeShowcase = (s.roulettePrizes || []).map((p, i) => {
+    const _wmFlags = prizes.map(x => _isWM(x.title));
+    const prizeShowcase = prizes.map((p, i) => {
       let key = ''; Object.keys(_gImg).forEach(k => { if ((p.title || '').indexOf(k) >= 0) key = _gImg[k]; });
       const src = key ? './assets/gifts/' + key + '.png' : '';
-      const tw = (s.roulettePrizes || []).reduce((n, x) => n + (parseInt(x.w, 10) || 0), 0) || 1;
+      const tw = prizes.reduce((n, x) => n + (parseInt(x.w, 10) || 0), 0) || 1;
       const pct = ((parseInt(p.w, 10) || 0) / tw) * 100;
       const tier = pct >= 20 ? 'hi' : (pct >= 6 ? 'mid' : 'low');
       const rate = tier === 'hi' ? '체험 사이즈' : (tier === 'mid' ? '2,500~3,500원 상당' : '13,900원 상당');
@@ -2429,7 +2451,7 @@ class Component extends DCLogic {
         imgEl: src ? React.createElement('img', { src, alt: '', onError: (ev) => { try { ev.target.style.display='none'; ev.target.parentNode.textContent='🎁'; ev.target.parentNode.style.fontSize='17px'; } catch (e) {} }, style: { maxWidth: '100%', maxHeight: '40px', objectFit: 'contain' } }) : React.createElement('span', { style: { fontSize: '17px' } }, '🎁') };
     });
     const prizeRangeText = '약 2,500원 ~ 13,900원 상당 · 총 ' + prizeShowcase.length + '종';
-    const prizeNamesText = (s.roulettePrizes || []).map(p => String(p.title || '').replace(/^\[[^\]]*\]\s*/, '')).join(' · ');
+    const prizeNamesText = prizes.map(p => String(p.title || '').replace(/^\[[^\]]*\]\s*/, '')).join(' · ');
     const spinBtnLabel = s.spinning ? this.t('roulette.spinning') : (availSpins <= 0 ? this.t('roulette.none') : this.t('roulette.spin'));
     const spinBtnStyle = 'width:100%; margin-top:26px; height:56px; border-radius:40px; border:none; font-size:17px; font-weight:800; cursor:' + (spinDisabled ? 'default' : 'pointer') + '; color:#fff; background:' + (spinDisabled ? '#B7C7C4' : '#01C0A4') + '; box-shadow:' + (spinDisabled ? 'none' : '0 12px 28px rgba(1,192,164,.34)') + ';';
     const _ico = (svg, bg) => React.createElement('span', { style: { width:'38px', height:'38px', borderRadius:'10px', background: bg, display:'inline-flex', flexShrink:0, alignItems:'center', justifyContent:'center' } }, React.createElement('span', { dangerouslySetInnerHTML: { __html: svg } }));
@@ -2468,8 +2490,9 @@ class Component extends DCLogic {
       const isGift = (c.kind === 'gift') || (!c.kind && (/사은품|증정|굿즈|키트|선물/.test((c.title||'') + (c.desc||''))));
       const accent = c.used ? '#B7C7C4' : (isGift ? '#F5A623' : '#01C0A4');
       const accentBg = c.used ? '#F1F3F2' : (isGift ? '#FFF6E6' : '#E6F7F2');
+      const isRoulette = (c.source || '') === '럭키 룰렛';
       const note = isGift
-        ? '한정 수량 · 매장에서 사은품으로 교환'
+        ? (isRoulette ? '한정 수량 · 매장 수령 · 소진·대체·조기종료 가능' : '한정 수량 · 매장에서 사은품으로 교환')
         : '중복 적용 불가 · 1회 결제 시 1매 사용';
       return { name: c.title, desc: c.desc || '', code: c.code, date: this.fmtDate(c.ts), tag: c.used ? '사용완료' : '사용 가능', source: c.source || '이벤트', note: note, kindLabel: isGift ? '사은품' : '할인권',
       canStaffUse: !c.used, onStaffUse: () => this.staffUseCoupon(c.code, c.title),
@@ -2806,7 +2829,7 @@ class Component extends DCLogic {
       resultDesc: r ? (r.kind === 'coupon' ? ('할인 쿠폰에 당첨되었어요!' + (r.stamp ? ' 스탬프도 1개 적립됐어요.' : '')) : r.kind === 'gift' ? ('선물에 당첨! 매장에서 코드를 보여주고 받아가세요.' + (r.stamp ? ' 스탬프도 1개 적립됐어요.' : '')) : r.kind === 'retry' ? '룰렛 기회가 1회 추가되었어요.' : r.kind === 'fail' ? (r.total + '문제 중 ' + r.correct + '개 정답. 모두 맞혀야 선물을 받아요. 공유하고 다시 도전!') : '아쉽지만 다음 기회에 도전해주세요!') : '',
       resultHasCode: r ? (r.kind === 'coupon' || r.kind === 'gift') : false,
       resultCode: r ? r.code : '', resultCouponDesc: r ? (r.couponDesc || '') : '',
-      resultNote: r ? (r.kind === 'gift' ? ((r.couponDesc ? r.couponDesc + ' · ' : '') + '한정 수량으로 조기 소진될 수 있어요') : ((r.couponDesc ? r.couponDesc + ' · ' : '') + '중복 적용 불가 · 1회 결제 시 1매 사용')) : '',
+      resultNote: r ? (r.kind === 'gift' ? ((r.couponDesc ? r.couponDesc + ' · ' : '') + ((r.source === '럭키 룰렛') ? '한정 수량 · 소진·대체·조기종료 가능' : '한정 수량으로 조기 소진될 수 있어요')) : ((r.couponDesc ? r.couponDesc + ' · ' : '') + '중복 적용 불가 · 1회 결제 시 1매 사용')) : '',
       resultBtn: r ? ((r.kind === 'coupon' || r.kind === 'gift') ? '쿠폰함에서 확인' : '확인') : '확인',
       closeResult: () => this.closeResult(),
 
