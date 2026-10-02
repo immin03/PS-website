@@ -207,6 +207,7 @@ input, textarea, button, select { font-family:inherit; }
 <meta name="ext-resource-dependency" content="assets/guro-hero-02.jpg">
 <meta name="ext-resource-dependency" content="assets/guro-01.jpg">
 <meta name="ext-resource-dependency" content="assets/guro-02.jpg">
+<meta name="ext-resource-dependency" content="assets/guro-03.jpg">
 <meta name="ext-resource-dependency" content="assets/c-gallery-01.jpg">
 <meta name="ext-resource-dependency" content="assets/c-gallery-02.jpg">
 <meta name="ext-resource-dependency" content="assets/c-gallery-03.jpg">
@@ -874,7 +875,12 @@ input, textarea, button, select { font-family:inherit; }
     </div>
     <div style="background:#fff; border:1px solid #E3EAEA; border-radius:12px; overflow:hidden;">
       <sc-for list="{{ newsItems }}" as="ni" hint-placeholder-count="4">
-        <a href="{{ ni.href }}" style="display:flex; align-items:center; gap:16px; padding:clamp(18px,2vw,24px) clamp(18px,2.2vw,28px); border-bottom:1px solid #E8F0F0; transition:background .2s;" style-hover="background:#F7FAFA;">
+        <a href="{{ ni.href }}" style="display:flex; align-items:center; gap:14px; padding:clamp(14px,1.6vw,20px) clamp(16px,2vw,24px); border-bottom:1px solid #E8F0F0; transition:background .2s;" style-hover="background:#F7FAFA;">
+          <sc-if value="{{ ni.hasImage }}" hint-placeholder-val="{{ false }}">
+            <span style="flex:none; width:clamp(72px,8vw,96px); height:clamp(54px,6vw,72px); border-radius:8px; overflow:hidden; background:#E8F0F0;">
+              <img src="{{ ni.image }}" alt="" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy" decoding="async" />
+            </span>
+          </sc-if>
           <span style="flex:none; font-size:11px; font-weight:500; color:#8B9A9C; letter-spacing:0.01em; min-width:72px; white-space:nowrap;">{{ ni.date }}</span>
           <span style="flex:1; min-width:0; font-size:clamp(15px,1.5vw,17px); font-weight:{{ ni.weight }}; color:#10181E; line-height:1.45;">{{ ni.title }}</span>
           <sc-if value="{{ ni.pinned }}" hint-placeholder-val="{{ false }}">
@@ -957,52 +963,6 @@ input, textarea, button, select { font-family:inherit; }
   </div>
 </footer>
 
-<!-- ============ POPUP (구로점 이벤트) ============ -->
-<div style="{{ popupOverlay }}">
-  <div style="position:relative; width:min(420px,92vw); animation:psPopIn .5s cubic-bezier(.2,.9,.3,1.3) both;">
-    <div style="position:absolute; inset:0; overflow:hidden; border-radius:20px; pointer-events:none; z-index:3;">
-      <span style="position:absolute; top:-10px; left:6.0%; width:10px; height:12px; background:#FFD23F; border-radius:50%; animation:psConfFall 1.99s ease-in 0.13s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:11.6%; width:6px; height:8px; background:#FF6B6B; border-radius:2px; animation:psConfFall 2.20s ease-in 0.48s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:17.2%; width:9px; height:11px; background:#4ECDC4; border-radius:2px; animation:psConfFall 2.08s ease-in 0.15s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:22.8%; width:8px; height:10px; background:#fff; border-radius:50%; animation:psConfFall 2.04s ease-in 0.04s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:28.4%; width:10px; height:12px; background:#FFA5D8; border-radius:2px; animation:psConfFall 2.47s ease-in 0.32s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:34.0%; width:6px; height:8px; background:#7CE7C6; border-radius:2px; animation:psConfFall 2.32s ease-in 0.36s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:39.6%; width:8px; height:10px; background:#FFD23F; border-radius:50%; animation:psConfFall 2.49s ease-in 0.44s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:45.2%; width:8px; height:10px; background:#FF6B6B; border-radius:2px; animation:psConfFall 2.70s ease-in 0.14s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:50.8%; width:8px; height:10px; background:#4ECDC4; border-radius:2px; animation:psConfFall 2.29s ease-in 0.46s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:56.4%; width:10px; height:12px; background:#fff; border-radius:50%; animation:psConfFall 2.25s ease-in 0.34s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:62.0%; width:9px; height:11px; background:#FFA5D8; border-radius:2px; animation:psConfFall 2.51s ease-in 0.46s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:67.6%; width:7px; height:9px; background:#7CE7C6; border-radius:2px; animation:psConfFall 2.01s ease-in 0.46s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:73.2%; width:10px; height:12px; background:#FFD23F; border-radius:50%; animation:psConfFall 2.14s ease-in 0.31s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:78.8%; width:7px; height:9px; background:#FF6B6B; border-radius:2px; animation:psConfFall 2.40s ease-in 0.06s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:84.4%; width:6px; height:8px; background:#4ECDC4; border-radius:2px; animation:psConfFall 1.74s ease-in 0.49s infinite;"></span>
-      <span style="position:absolute; top:-10px; left:90.0%; width:7px; height:9px; background:#fff; border-radius:50%; animation:psConfFall 2.03s ease-in 0.38s infinite;"></span>
-    </div>
-    <div style="position:relative; background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 36px 90px rgba(0,48,47,.4);">
-      <button onClick="{{ closePopup }}" style="position:absolute; top:14px; right:14px; z-index:5; background:rgba(255,255,255,.2); border:none; color:#fff; width:34px; height:34px; border-radius:50%; font-size:16px; line-height:1; cursor:pointer;">✕</button>
-      <a href="./event.html" onClick="{{ closePopup }}" style="display:block; text-decoration:none;">
-        <div style="position:relative; background:linear-gradient(155deg,#01D9B8 0%,#01C0A4 45%,#019184 100%); padding:40px 30px 34px; text-align:center; overflow:hidden;">
-          <div style="position:absolute; top:-40px; right:-30px; width:150px; height:150px; border-radius:50%; background:rgba(255,255,255,.12);"></div>
-          <div style="position:absolute; bottom:-46px; left:-30px; width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,.10);"></div>
-          <div style="position:relative;">
-            <div style="display:inline-flex; align-items:center; gap:7px; padding:6px 15px; border-radius:40px; background:rgba(255,255,255,.22);">
-              <span style="width:6px; height:6px; border-radius:50%; background:#fff; animation:psPulse 1.6s ease-in-out infinite;"></span>
-              <span style="font-size:11px; font-weight:800; letter-spacing:0.16em; color:#fff;">GRAND OPEN EVENT</span>
-            </div>
-            <div style="font-size:52px; line-height:1; margin-top:18px; animation:psGiftBob 2.2s ease-in-out infinite;">🎁</div>
-            <h3 style="margin-top:14px; font-size:26px; font-weight:800; color:#fff; line-height:1.26; letter-spacing:-0.02em; text-shadow:0 4px 16px rgba(0,60,55,.3);">구로점 오픈 이벤트<br>지금 참여하세요!</h3>
-            <p style="margin-top:12px; font-size:14px; font-weight:400; color:rgba(255,255,255,.94); line-height:1.6;">기대평 · 브랜드 게임 · 인스타 이벤트로<br>웰컴 쿠폰과 다양한 선물을 드려요 🎉</p>
-            <div style="display:inline-flex; align-items:center; gap:8px; margin-top:24px; height:54px; padding:0 34px; border-radius:40px; background:#fff; color:#00786F; font-size:16px; font-weight:800; box-shadow:0 12px 26px rgba(0,60,55,.28);">이벤트 참여하러 가기 →</div>
-          </div>
-        </div>
-      </a>
-      <div style="padding:13px 28px; background:#F8FAFA; display:flex; align-items:center; justify-content:center;">
-        <button onClick="{{ dismissPopupToday }}" style="font-size:12px; font-weight:500; color:#8DA39F; background:none; border:none; cursor:pointer;">오늘 하루 보지 않기</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Scroll to top -->
 <button onClick="{{ scrollTop }}" class="ps-scroll-top" style="position:fixed; bottom:28px; right:28px; z-index:150; width:46px; height:46px; border-radius:50%; background:#005251; border:none; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 24px rgba(0,82,81,.35); cursor:pointer;" aria-label="Back to top">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
@@ -1058,12 +1018,6 @@ class Component extends DCLogic {
     try { fetch('./visits.php?action=hit&page=home&t=' + Date.now()).catch(() => {}); } catch (e) {}
 
     // Nav is fixed only — no section tracking.
-
-    const dismissed = localStorage.getItem('ps_event_popup_dismiss');
-    const now = Date.now();
-    if (!dismissed || now > parseInt(dismissed)) {
-      this._popupTimer = setTimeout(() => this.setState({ popupVisible: true }), 1800);
-    }
 
     this._io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); this._io.unobserve(e.target); } });
@@ -1231,17 +1185,19 @@ class Component extends DCLogic {
 
   _newsSeed() {
     return [
-      { id:'guro-open-2026', category:'notice', active:true, pinned:true, date:'2026-08-01', title:{ ko:'파마스퀘어 익스프레스 구로점 오픈', en:'Phama Square Express Guro Now Open', zh:'파马广场 九老快捷店开业' }, content:{ ko:'파마스퀘어 익스프레스 구로점이 오픈했습니다.' }, link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
-      { id:'renewal-2026-0628', category:'notice', active:true, pinned:true, date:'2026-06-28', title:{ ko:'파마스퀘어 공식 웹사이트 리뉴얼 안내', en:'Official Website Renewal', zh:'官网改版通知' }, content:{ ko:'' }, link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
-      { id:'s1', category:'notice', active:true, pinned:false, date:'2025-03-15', title:{ ko:'파마스퀘어 하남 플래그십 정식 오픈', en:'Hanam Flagship Officially Open', zh:'河南旗舰店正式开业' }, content:{ ko:'' }, link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
-      { id:'press-guro-sentv-20260803', category:'press', active:true, pinned:true, date:'2026-08-03', title:{ ko:'파마스퀘어, 구로디지털단지에 도심형 ‘익스프레스’ 첫 매장 오픈', en:'Phama Square Opens First Express Store in Guro', zh:'파马广场九老快捷店开业' }, content:{ ko:'' }, link:'https://www.sentv.co.kr/article/view/sentv202608030183', linkLabel:{ko:'서울경제TV 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
-      { id:'press-guro-wowtv-20260803', category:'press', active:true, pinned:false, date:'2026-08-03', title:{ ko:'파마스퀘어, 하남에 이어 구로디지털단지에 2호점 열어', en:'Phama Square Opens Second Store in Guro', zh:'파马广场九老2号店开业' }, content:{ ko:'' }, link:'https://www.wowtv.co.kr/NewsCenter/News/Read?articleId=A202608030253', linkLabel:{ko:'한국경제TV 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
-      { id:'press-members-enet-20260423', category:'press', active:true, pinned:false, date:'2026-04-23', title:{ ko:'파마스퀘어, 회원 8,500명 확보···투자 유치 후 확장 본격화', en:'Phama Square Reaches 8,500 Members After Funding', zh:'파马广场会员达8500人' }, content:{ ko:'' }, link:'https://www.enetnews.co.kr/news/articleView.html?idxno=49273', linkLabel:{ko:'이넷뉴스 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
-      { id:'press-hanam-sentv-20260325', category:'press', active:true, pinned:false, date:'2026-03-25', title:{ ko:'파마스퀘어, 하남 1호점 오픈…창고형 웰니스 시장 출사표', en:'Phama Square Opens Hanam Flagship', zh:'파马广场河南1号店开业' }, content:{ ko:'' }, link:'https://www.sentv.co.kr/article/view/sentv202603250149', linkLabel:{ko:'서울경제TV 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
-      { id:'press-softopen-enet-20251223', category:'press', active:true, pinned:false, date:'2025-12-23', title:{ ko:'파마스퀘어, 12월 23일 Soft Open “창고형 H&B로 새로운 소비 경험 제시”', en:'Phama Square Soft Opens on Dec 23', zh:'파马广场12月23日软开业' }, content:{ ko:'' }, link:'https://www.enetnews.co.kr/news/articleView.html?idxno=45404', linkLabel:{ko:'이넷뉴스 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'guro-open-2026', category:'notice', active:true, pinned:true, date:'2026-08-01', title:{ ko:'파마스퀘어 익스프레스 구로점 오픈', en:'Phama Square Express Guro Now Open', zh:'파马广场 九老快捷店开业' }, content:{ ko:'파마스퀘어 익스프레스 구로점이 오픈했습니다.' }, image:'./assets/guro-hero-01.jpg', link:'./event.html', linkLabel:{ko:'구로점 오픈 이벤트 참여',en:'Join event',zh:'参加活动'}, department:'', jobType:'', deadline:'' },
+      { id:'guro-event-2026', category:'notice', active:true, pinned:true, date:'2026-08-01', title:{ ko:'구로점 오픈 이벤트 안내', en:'Guro Store Opening Event', zh:'九老店开业活动通知' }, content:{ ko:'구로점 오픈 이벤트를 진행합니다.' }, image:'./assets/guro-03.jpg', link:'./event.html', linkLabel:{ko:'이벤트 페이지 바로가기',en:'Event page',zh:'活动页'}, department:'', jobType:'', deadline:'' },
+      { id:'renewal-2026-0628', category:'notice', active:true, pinned:false, date:'2026-06-28', title:{ ko:'파마스퀘어 공식 웹사이트 리뉴얼 안내', en:'Official Website Renewal', zh:'官网改版通知' }, content:{ ko:'' }, image:'', link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
+      { id:'s1', category:'notice', active:true, pinned:false, date:'2025-03-15', title:{ ko:'파마스퀘어 하남 플래그십 정식 오픈', en:'Hanam Flagship Officially Open', zh:'河南旗舰店正式开业' }, content:{ ko:'' }, image:'./assets/press/hanam-sentv.jpg', link:'', linkLabel:{ko:'',en:'',zh:''}, department:'', jobType:'', deadline:'' },
+      { id:'press-guro-sentv-20260803', category:'press', active:true, pinned:true, date:'2026-08-03', title:{ ko:'파마스퀘어, 구로디지털단지에 도심형 ‘익스프레스’ 첫 매장 오픈', en:'Phama Square Opens First Express Store in Guro', zh:'파马广场九老快捷店开业' }, content:{ ko:'' }, image:'./assets/press/guro-sentv.jpg', link:'https://www.sentv.co.kr/article/view/sentv202608030183', linkLabel:{ko:'서울경제TV 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'press-guro-wowtv-20260803', category:'press', active:true, pinned:false, date:'2026-08-03', title:{ ko:'파마스퀘어, 하남에 이어 구로디지털단지에 2호점 열어', en:'Phama Square Opens Second Store in Guro', zh:'파马广场九老2号店开业' }, content:{ ko:'' }, image:'./assets/press/guro-wowtv.jpg', link:'https://www.wowtv.co.kr/NewsCenter/News/Read?articleId=A202608030253', linkLabel:{ko:'한국경제TV 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'press-guro-globalepic-20260803', category:'press', active:true, pinned:false, date:'2026-08-03', title:{ ko:'파마스퀘어, 구로디지털단지에 ‘익스프레스’ 첫선…직장인·주거 수요 겨냥', en:'Phama Square Debuts Express in Guro', zh:'파马广场九老快捷首秀' }, content:{ ko:'' }, image:'./assets/press/guro-globalepic.jpg', link:'https://www.globalepic.co.kr/view.php?ud=20260803145521107448439a4874_29', linkLabel:{ko:'글로벌에픽 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'press-members-enet-20260423', category:'press', active:true, pinned:false, date:'2026-04-23', title:{ ko:'파마스퀘어, 회원 8,500명 확보···투자 유치 후 확장 본격화', en:'Phama Square Reaches 8,500 Members After Funding', zh:'파马广场会员达8500人' }, content:{ ko:'' }, image:'./assets/press/members-enet.jpg', link:'https://www.enetnews.co.kr/news/articleView.html?idxno=49273', linkLabel:{ko:'이넷뉴스 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'press-hanam-sentv-20260325', category:'press', active:true, pinned:false, date:'2026-03-25', title:{ ko:'파마스퀘어, 하남 1호점 오픈…창고형 웰니스 시장 출사표', en:'Phama Square Opens Hanam Flagship', zh:'파马广场河南1号店开业' }, content:{ ko:'' }, image:'./assets/press/hanam-sentv.jpg', link:'https://www.sentv.co.kr/article/view/sentv202603250149', linkLabel:{ko:'서울경제TV 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
+      { id:'press-softopen-enet-20251223', category:'press', active:true, pinned:false, date:'2025-12-23', title:{ ko:'파마스퀘어, 12월 23일 Soft Open “창고형 H&B로 새로운 소비 경험 제시”', en:'Phama Square Soft Opens on Dec 23', zh:'파马广场12月23日软开业' }, content:{ ko:'' }, image:'./assets/press/softopen-enet.jpg', link:'https://www.enetnews.co.kr/news/articleView.html?idxno=45404', linkLabel:{ko:'이넷뉴스 원문 보기',en:'Read article',zh:'查看原文'}, department:'', jobType:'', deadline:'' },
 
-      { id:'s5', category:'hr', active:true, pinned:true, date:'2026-06-01', title:{ ko:'[채용] 상품기획 MD', en:'[Hiring] Product Planning MD', zh:'[招聘] 商品企划 MD' }, content:{ ko:'' }, link:'mailto:official@phamasquare.com', linkLabel:{ko:'이메일로 지원',en:'Apply by email',zh:'邮件投递'}, department:'상품팀', jobType:'정규직', deadline:'상시채용' },
-      { id:'s6', category:'hr', active:true, pinned:false, date:'2026-06-15', title:{ ko:'[채용] 디지털 마케터', en:'[Hiring] Digital Marketer', zh:'[招聘] 数字营销' }, content:{ ko:'' }, link:'mailto:official@phamasquare.com', linkLabel:{ko:'이메일로 지원',en:'Apply by email',zh:'邮件投递'}, department:'마케팅팀', jobType:'정규직', deadline:'2026-07-31' }
+      { id:'s5', category:'hr', active:true, pinned:true, date:'2026-06-01', title:{ ko:'[채용] 상품기획 MD', en:'[Hiring] Product Planning MD', zh:'[招聘] 商品企划 MD' }, content:{ ko:'' }, image:'', link:'mailto:official@phamasquare.com', linkLabel:{ko:'이메일로 지원',en:'Apply by email',zh:'邮件投递'}, department:'상품팀', jobType:'정규직', deadline:'상시채용' },
+      { id:'s6', category:'hr', active:true, pinned:false, date:'2026-06-15', title:{ ko:'[채용] 디지털 마케터', en:'[Hiring] Digital Marketer', zh:'[招聘] 数字营销' }, content:{ ko:'' }, image:'', link:'mailto:official@phamasquare.com', linkLabel:{ko:'이메일로 지원',en:'Apply by email',zh:'邮件投递'}, department:'마케팅팀', jobType:'정규직', deadline:'2026-07-31' }
     ];
   }
 
@@ -1931,13 +1887,18 @@ class Component extends DCLogic {
             return new Date(b.date) - new Date(a.date);
           })
           .slice(0, this.state.newsVisible || 5)
-          .map(p => ({
-            date: p.date,
-            title: (p.title && (p.title[lang] || p.title.ko || '')) || '',
-            weight: p.pinned ? '600' : '500',
-            pinned: !!p.pinned,
-            href: './board.dc.html#' + cat
-          }));
+          .map(p => {
+            const img = (p.image || '').trim();
+            return {
+              date: p.date,
+              title: (p.title && (p.title[lang] || p.title.ko || '')) || '',
+              weight: p.pinned ? '600' : '500',
+              pinned: !!p.pinned,
+              hasImage: !!img,
+              image: img || './assets/favicon.png',
+              href: './board.dc.html#' + cat
+            };
+          });
         return list;
       })(),
       newsHasMore: (() => {
@@ -1962,7 +1923,8 @@ class Component extends DCLogic {
         const sets = [
           [
             { src: './assets/guro-01.jpg', alt: 'PHAMA SQUARE 구로점 01' },
-            { src: './assets/guro-02.jpg', alt: 'PHAMA SQUARE 구로점 02' }
+            { src: './assets/guro-02.jpg', alt: 'PHAMA SQUARE 구로점 02' },
+            { src: './assets/guro-03.jpg', alt: 'PHAMA SQUARE 구로점 03' }
           ],
           [
             { src: './assets/c-gallery-01.jpg', alt: 'PHAMA SQUARE 하남점 01' },
@@ -1977,12 +1939,12 @@ class Component extends DCLogic {
         return sets[this.state.galleryStore] || sets[0];
       })(),
       galleryDots: (() => {
-        const counts = [2, 7];
-        const max = counts[this.state.galleryStore] || 2;
+        const counts = [3, 7];
+        const max = counts[this.state.galleryStore] || 3;
         return Array.from({ length: max }, (_, i) => ({ style: 'width:' + (i===this.state.galleryIdx?'22px':'7px') + '; height:7px; border-radius:40px; background:' + (i===this.state.galleryIdx?'#01C0A4':'#D5E0E0') + '; transition:all .3s;' }));
       })(),
       galleryPrev: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const w = card.offsetWidth + 12; const newIdx = Math.max(0, this.state.galleryIdx - 1); track.scrollBy({ left: -w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
-      galleryNext: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const counts = [2, 7]; const max = (counts[this.state.galleryStore] || 2) - 1; const w = card.offsetWidth + 12; const newIdx = Math.min(max, this.state.galleryIdx + 1); track.scrollBy({ left: w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
+      galleryNext: () => { const track = document.getElementById('ps-gallery-track'); if (!track) return; const card = track.querySelector('div'); if (!card) return; const counts = [3, 7]; const max = (counts[this.state.galleryStore] || 3) - 1; const w = card.offsetWidth + 12; const newIdx = Math.min(max, this.state.galleryIdx + 1); track.scrollBy({ left: w, behavior: 'smooth' }); this.setState({ galleryIdx: newIdx }); },
       galleryDragStart: (e) => { this._dragX = e.clientX; this._dragging = true; const t = document.getElementById('ps-gallery-track'); if (t) { t.style.cursor = 'grabbing'; this._dragSX = t.scrollLeft; } },
       galleryDragMove: (e) => { if (!this._dragging) return; const t = document.getElementById('ps-gallery-track'); if (t) t.scrollLeft = this._dragSX - (e.clientX - this._dragX); },
       galleryDragEnd: () => { this._dragging = false; const t = document.getElementById('ps-gallery-track'); if (t) { t.style.cursor = 'grab'; const card = t.querySelector('div'); if (card) this.setState({ galleryIdx: Math.round(t.scrollLeft / (card.offsetWidth + 12)) }); } },
